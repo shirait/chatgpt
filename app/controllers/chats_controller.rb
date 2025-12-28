@@ -45,7 +45,7 @@ class ChatsController < ApplicationController
       message.save!
     end
     # TODO: エラーハンドリング
-    redirect_to @message_thread
+    redirect_to chat_path(@message_thread)
   end
 
   def show
@@ -82,7 +82,7 @@ class ChatsController < ApplicationController
       message.save!
     end
 
-    redirect_to @message_thread
+    redirect_to chat_path(@message_thread)
   end
 
   def edit
@@ -96,7 +96,7 @@ class ChatsController < ApplicationController
     @message_thread.assign_attributes(update_message_thread_params)
     @message_thread.save!
     # TODO: エラーハンドリング
-    redirect_to @message_thread
+    redirect_to chat_path(@message_thread)
   end
 
   def destroy
