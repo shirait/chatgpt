@@ -55,6 +55,8 @@
   document.addEventListener('turbo:load', scrollToBottom);
 
   // 削除リンクのconfirm処理
+  // navbarに設定したところ２重に実行されるようになった。いったんコメントアウト
+  /*
   function setupDeleteLinks() {
     const deleteLinks = document.querySelectorAll('a[data-confirm][data-method="delete"]');
     deleteLinks.forEach(function(link) {
@@ -95,16 +97,19 @@
       });
     });
   }
+  */
 
   // ページ読み込み時に削除リンクを設定
+  /*
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', setupDeleteLinks);
   } else {
     setupDeleteLinks();
   }
+  */
 
   // Turboを使っている場合のイベント
-  document.addEventListener('turbo:load', setupDeleteLinks);
+  // document.addEventListener('turbo:load', setupDeleteLinks);
 
   // コピー実行
   function copyButton(messageId) {
