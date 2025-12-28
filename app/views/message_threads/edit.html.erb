@@ -2,3 +2,5 @@
   <%= f.text_field(:title, placeholder: 'タイトルを入力してください', size: 50) %>
   <%= f.submit('更新する') %>
 <% end %>
+
+<%= link_to('戻る', message_thread_path(@message_thread)) %>

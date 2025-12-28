@@ -1,3 +1,7 @@
+<div class="sidebar-message-thread-link">
+  <%= link_to('新しいチャット', new_message_thread_path) %>
+</div>
+
 <% @message_threads.each do |message_thread| %>
   <div class="sidebar-message-thread-link">
     <%= link_to(message_thread.title, message_thread_path(message_thread)) %>
