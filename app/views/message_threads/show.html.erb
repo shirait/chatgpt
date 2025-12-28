@@ -12,3 +12,24 @@
   <%= f.text_area(:content, size: "80x5", placeholder: '質問を入力してください') %>
   <%= f.submit('質問する') %>
 <% end %>
+
+<script>
+  // ページ読み込み時に最下行にスクロール
+  function scrollToBottom() {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth'
+    });
+  }
+
+  // DOMContentLoadedイベントで実行
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scrollToBottom);
+  } else {
+    // すでに読み込み済みの場合は即座に実行
+    scrollToBottom();
+  }
+
+  // Turboを使っている場合のイベント
+  document.addEventListener('turbo:load', scrollToBottom);
+</script>
