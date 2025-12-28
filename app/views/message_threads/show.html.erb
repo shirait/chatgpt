@@ -6,6 +6,9 @@
       <%= simple_format(message.content) %>
     </div>
   </div>
+  <% if message.gpt? %>
+    <hr />
+  <% end %>
 <% end %>
 
 <%= form_with(model: @message, url: add_message_message_thread_path(@message_thread), method: :post, html: { class: "new-message-form" }) do |f| %>
