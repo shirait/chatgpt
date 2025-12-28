@@ -45,8 +45,8 @@
   padding: 20px;
   position: fixed;
   left: 0;
-  top: 0;
-  height: 100vh;
+  top: 52px; /* navbarの高さ分下げる */
+  height: calc(100vh - 52px); /* navbarの高さを引く */
 }
 
 .main-content {
@@ -55,6 +55,7 @@
   padding: 20px;
   overflow-y: auto;
   height: 100vh;
+  padding-top: 72px; /* navbarの高さ + 余白 */
 }
 
 .sidebar-message-thread-link {
@@ -64,4 +65,10 @@
 .sidebar-message-thread-link.selected {
   font-weight: bold;
   color: #007bff;
+}
+
+/* navbar_menuがsidebarを侵食しないようにする */
+.navbar.is-fixed-top {
+  left: 250px; /* sidebarの幅分右にずらす */
+  width: calc(100% - 250px); /* sidebarの幅を引いた幅にする */
 }
