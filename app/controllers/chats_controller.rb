@@ -125,7 +125,7 @@ class ChatsController < ApplicationController
 
   def prepare_user_message(message_thread)
     user_message = Message.new(message_params)
-    user_message.message_thread = @message_thread
+    user_message.message_thread = message_thread
     user_message.message_type = Message.message_types[:user]
     user_message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
     user_message.gpt_model = GptModel.active_model
