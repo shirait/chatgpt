@@ -46,7 +46,7 @@ class ChatsController < ApplicationController
       render :new and return
     rescue => e
       # 未知のエラー。openai apiとの疎通に失敗した場合などに発生する想定。
-      flash.now[:alert] = e.message
+      flash.now[:alert] = '想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。'
       load_message_threads
       render :new and return
     end
@@ -85,6 +85,14 @@ class ChatsController < ApplicationController
         updater_id: 1 # current_user.id
       )
       message.save!
+    rescue ActiveRecord::RecordInvalid => e
+      flash.now[:alert] = 'チャットのDBへの保存に失敗しました。'
+      load_message_threads
+      render :show and return
+    rescue => e
+      flash.now[:alert] = '想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。'
+      load_message_threads
+      render :show and return
     end
 
     redirect_to chat_path(@message_thread)
