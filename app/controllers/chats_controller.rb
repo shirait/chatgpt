@@ -19,12 +19,15 @@ class ChatsController < ApplicationController
 
     begin
       create_gpt_message!(@message_thread, @user_message)
+      redirect_to chat_path(@message_thread) and return
+    # 例外処理について、StandardError以外はrescueしないように注意（ https://github.com/shirait/blog_import_sample/issues/9#issuecomment-2142528418 ）
     rescue Faraday::Error => e
       flash.now[:alert] = faraday_error_message
-      load_message_threads
-      render :new and return
+    rescue StandardError => e
+      flash.now[:alert] = unexpected_error_message
     end
-    redirect_to chat_path(@message_thread)
+    load_message_threads
+    render :new
   end
 
   def show
@@ -46,13 +49,14 @@ class ChatsController < ApplicationController
 
     begin
       create_gpt_message!(@message_thread, @user_message)
+      redirect_to chat_path(@message_thread) and return
     rescue Faraday::Error => e
       flash.now[:alert] = faraday_error_message
-      load_message_threads
-      render :show and return
+    rescue StandardError => e
+      flash.now[:alert] = unexpected_error_message
     end
-
-    redirect_to chat_path(@message_thread)
+    load_message_threads
+    render :show
   end
 
   def edit
@@ -135,5 +139,9 @@ class ChatsController < ApplicationController
 
   def faraday_error_message
     "OpenAI APIの利用でエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。"
+  end
+
+  def unexpected_error_message
+    "想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。"
   end
 end
