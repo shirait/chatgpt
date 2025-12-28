@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_28_094446) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_28_123349) do
   create_table "gpt_models", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "creator_id", null: false
@@ -41,6 +41,24 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_28_094446) do
     t.index ["creator_id"], name: "index_messages_on_creator_id"
     t.index ["gpt_model_id"], name: "fk_rails_73e5df9141"
     t.index ["message_thread_id"], name: "fk_rails_48a2f10058"
+  end
+
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "current_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.integer "failed_attempts", default: 0, null: false
+    t.datetime "last_sign_in_at"
+    t.string "last_sign_in_ip"
+    t.datetime "locked_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.string "unlock_token"
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
   add_foreign_key "messages", "gpt_models"
