@@ -1,9 +1,9 @@
 <%= @message_thread.title %><br>
 
 <% @message_thread.messages.each do |message| %>
-  <%= label_tag('ID') %>: <%= message.id %><br>
-  <%= label_tag('Message Type') %>: <%= message.message_type %><br>
-  <%= label_tag('Content') %>: <%= message.content %><br>
+  <div class="<%= "#{message.message_type.to_s}-message" %>">
+    <%= simple_format(message.content) %>
+  </div>
 <% end %>
 
 新規メッセージ

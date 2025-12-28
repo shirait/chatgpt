@@ -35,7 +35,7 @@ class MessageThreadsController < ApplicationController
   end
 
   def show
-    @message_thread = MessageThread.find(params[:id])
+    @message_thread = MessageThread.eager_load(:messages).order('messages.id').find(params[:id])
     @message = Message.new(message_thread_id: @message_thread.id)
   end
 

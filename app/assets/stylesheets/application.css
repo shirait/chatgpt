@@ -8,3 +8,18 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+.user-message {
+  display: inline-block; /* 幅をテキストの長さにする */
+  background-color: lightyellow;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.gpt-message {
+  background-color: lightblue;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
