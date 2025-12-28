@@ -9,4 +9,14 @@ class Message < ApplicationRecord
   validates :message_thread, presence: true
   validates :content, presence: true # text型なのでlengthは指定しない。トークン数が増えすぎるようであれば別途指定を検討する。
   validates :creator_id, presence: true
+
+  def self.build_user_message(params:, message_thread:, creator_id:)
+    new(
+      content: params[:content],
+      message_thread: message_thread,
+      message_type: :user,
+      creator_id: creator_id,
+      gpt_model: GptModel.active_model
+    )
+  end
 end

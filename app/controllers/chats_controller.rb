@@ -5,11 +5,15 @@ class ChatsController < ApplicationController
   end
 
   def create
-    @message_thread = MessageThread.new(
-      title: Message.new(message_params).content.split("\n").select(&:present?).first,
+    @message_thread = MessageThread.build_message_thread(
+      params: message_params,
       creator_id: 1 # current_user.id TODO: ログイン機能を追加したら修正する
     )
-    @user_message = prepare_user_message(@message_thread)
+    @user_message = Message.build_user_message(
+      params: message_params,
+      message_thread: @message_thread,
+      creator_id: 1 # current_user.id TODO: ログイン機能を追加したら修正する
+    )
 
     if !(@user_message.save && @message_thread.save)
       flash.now[:alert] = @message_thread.errors.full_messages.join(", ") + @user_message.errors.full_messages.join(", ")
@@ -39,7 +43,11 @@ class ChatsController < ApplicationController
   def add_message
     # TODO: 認証・認可機能追加時にmessage_thread_idの権限チェック追加
     @message_thread = MessageThread.find(params[:id])
-    @user_message = prepare_user_message(@message_thread)
+    @user_message = Message.build_user_message(
+      params: message_params,
+      message_thread: @message_thread,
+      creator_id: 1 # current_user.id TODO: ログイン機能を追加したら修正する
+    )
 
     unless @user_message.save
       flash.now[:alert] = @user_message.errors.full_messages.join(", ")
@@ -100,15 +108,6 @@ class ChatsController < ApplicationController
 
   def update_message_thread_params
     params.require(:message_thread).permit(:title)
-  end
-
-  def prepare_user_message(message_thread)
-    user_message = Message.new(message_params)
-    user_message.message_thread = message_thread
-    user_message.message_type = Message.message_types[:user]
-    user_message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
-    user_message.gpt_model = GptModel.active_model
-    user_message
   end
 
   def faraday_error_message
