@@ -13,6 +13,7 @@ class ChatsController < ApplicationController
     @message.message_thread = @message_thread
     @message.message_type = Message.message_types[:user]
     @message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
+    @message.gpt_model = GptModel.active_model
     if @message.invalid?
       flash.now[:alert] = @message.errors.full_messages.join(', ')
       load_message_threads
@@ -63,6 +64,7 @@ class ChatsController < ApplicationController
     @message.message_thread_id = @message_thread.id
     @message.message_type = Message.message_types[:user]
     @message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
+    @message.gpt_model = GptModel.active_model
 
     if @message.invalid?
       flash.now[:alert] = @message.errors.full_messages.join(', ')
@@ -134,7 +136,7 @@ class ChatsController < ApplicationController
     client = OpenAI::Client.new(access_token: access_token)
     response = client.chat(
       parameters: {
-        model: 'gpt-4.1-mini',
+        model: message.gpt_model.name,
         messages: [{role: 'user', content: message.content}],
         temperature: 0.7,
       }
