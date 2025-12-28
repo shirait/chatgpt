@@ -49,6 +49,15 @@ class MessageThreadsController < ApplicationController
     @message.updater_id = 1 # current_user.id
     @message.save!
 
+    message = Message.new(
+      message_thread_id: @message_thread.id,
+      message_type: Message.message_types[:gpt],
+      content: request_to_openai_api(@message),
+      creator_id: 1, # current_user.id TODO: ログイン機能を追加したら修正する
+      updater_id: 1 # current_user.id
+    )
+    message.save!
+
     redirect_to @message_thread
   end
 
@@ -70,7 +79,7 @@ class MessageThreadsController < ApplicationController
     client = OpenAI::Client.new(access_token: access_token)
     response = client.chat(
       parameters: {
-        model: 'gpt-4.1',
+        model: 'gpt-4.1-mini',
         messages: [{role: 'user', content: message.content}],
         temperature: 0.7,
       }

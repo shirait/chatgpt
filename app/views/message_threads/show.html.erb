@@ -1,18 +1,14 @@
 <%= @message_thread.title %><br>
 
 <% @message_thread.messages.each do |message| %>
-  <div class="<%= "#{message.message_type.to_s}-message" %>">
-    <%= simple_format(message.content) %>
+  <div>
+    <div class="<%= "#{message.message_type.to_s}-message" %>">
+      <%= simple_format(message.content) %>
+    </div>
   </div>
 <% end %>
 
-新規メッセージ
-<%= form_with(model: @message, url: add_message_message_thread_path(@message_thread), method: :post) do |f| %>
-  <%= f.label(:content) %>
-  <%= f.text_field(:content) %>
-  <%= f.submit("Create Message") %>
+<%= form_with(model: @message, url: add_message_message_thread_path(@message_thread), method: :post, html: { class: "new-message-form" }) do |f| %>
+  <%= f.text_area(:content, size: "80x5", placeholder: '質問を入力してください') %>
+  <%= f.submit('質問する') %>
 <% end %>
-
-
-<%#= link_to "Edit", edit_message_thread_path(@message_thread) %>
-<%#= link_to "Destroy", message_thread_path(@message_thread), method: :delete, data: { confirm: "Are you sure?" } %>
