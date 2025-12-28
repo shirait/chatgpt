@@ -23,26 +23,23 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_28_084328) do
 
   create_table "message_threads", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "creator_id", null: false
+    t.integer "creator_id", null: false
     t.string "title", null: false
     t.datetime "updated_at", null: false
-    t.string "updater_id", null: false
-    t.index ["creator_id", "created_at"], name: "index_message_threads_on_creator_id_and_created_at"
+    t.index ["creator_id"], name: "index_message_threads_on_creator_id"
     t.index ["title"], name: "index_message_threads_on_title"
-    t.index ["updater_id", "updated_at"], name: "index_message_threads_on_updater_id_and_updated_at"
   end
 
   create_table "messages", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.text "content", null: false
     t.datetime "created_at", null: false
-    t.string "creator_id", null: false
+    t.integer "creator_id", null: false
+    t.bigint "gpt_model_id", null: false
     t.bigint "message_thread_id", null: false
     t.integer "message_type", null: false
     t.datetime "updated_at", null: false
-    t.string "updater_id", null: false
-    t.index ["creator_id", "created_at"], name: "index_messages_on_creator_id_and_created_at"
-    t.index ["message_thread_id"], name: "index_messages_on_message_thread_id"
-    t.index ["updater_id", "updated_at"], name: "index_messages_on_updater_id_and_updated_at"
+    t.index ["creator_id"], name: "index_messages_on_creator_id"
+    t.index ["message_thread_id"], name: "fk_rails_48a2f10058"
   end
 
   add_foreign_key "messages", "message_threads", on_delete: :cascade
