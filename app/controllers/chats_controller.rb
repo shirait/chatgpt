@@ -9,31 +9,17 @@ class ChatsController < ApplicationController
       title: Message.new(message_params).content.split("\n").select(&:present?).first,
       creator_id: 1 # current_user.id TODO: ログイン機能を追加したら修正する
     )
-
     @user_message = prepare_user_message(@message_thread)
-    if @user_message.invalid?
-      flash.now[:alert] = @user_message.errors.full_messages.join(', ')
-      load_message_threads
-      render :new and return
-    end
 
-    if @message_thread.invalid?
-      flash.now[:alert] = @message_thread.errors.full_messages.join(', ')
+    if !(@user_message.save && @message_thread.save)
+      flash.now[:alert] = @message_thread.errors.full_messages.join(', ') + @user_message.errors.full_messages.join(', ')
       load_message_threads
       render :new and return
     end
 
     begin
-      @message_thread.save!
-      @user_message.save!
       create_gpt_message!(@message_thread, @user_message)
-    rescue ActiveRecord::RecordInvalid => e
-      # DB保存エラー。基本的には発生しない想定。
-      flash.now[:alert] = 'チャットのDBへの保存に失敗しました。'
-      load_message_threads
-      render :new and return
     rescue => e
-      # 未知のエラー。openai apiとの疎通に失敗した場合などに発生する想定。
       flash.now[:alert] = '想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。'
       load_message_threads
       render :new and return
@@ -52,19 +38,14 @@ class ChatsController < ApplicationController
     @message_thread = MessageThread.find(params[:id])
     @user_message = prepare_user_message(@message_thread)
 
-    if @user_message.invalid?
+    unless @user_message.save
       flash.now[:alert] = @user_message.errors.full_messages.join(', ')
       load_message_threads
       render :show and return
     end
 
     begin
-      @user_message.save!
       create_gpt_message!(@message_thread, @user_message)
-    rescue ActiveRecord::RecordInvalid => e
-      flash.now[:alert] = 'チャットのDBへの保存に失敗しました。'
-      load_message_threads
-      render :show and return
     rescue => e
       flash.now[:alert] = '想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。'
       load_message_threads
