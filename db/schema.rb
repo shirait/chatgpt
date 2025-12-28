@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_28_123349) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_28_142608) do
   create_table "gpt_models", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "creator_id", null: false
@@ -54,10 +54,12 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_28_123349) do
     t.string "last_sign_in_ip"
     t.datetime "locked_at"
     t.datetime "remember_created_at"
+    t.integer "role", default: 1, null: false
     t.integer "sign_in_count", default: 0, null: false
     t.string "unlock_token"
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["role"], name: "index_users_on_role"
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
