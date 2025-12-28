@@ -91,6 +91,7 @@ class ChatsController < ApplicationController
   end
 
   # review: ここに書くべきロジックではないかもしれない。
+  # 注意。client.chatメソッド実行でエラーになっても、機密情報漏洩を避けるため、例外の情報はログに残らない。(https://github.com/alexrudall/ruby-openai?tab=readme-ov-file#errors)
   def request_to_openai_api(message)
     access_token = Rails.configuration.static_config.openai_key
     client = OpenAI::Client.new(access_token: access_token)
