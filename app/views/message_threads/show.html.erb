@@ -14,6 +14,15 @@
   <%= f.submit('質問する') %>
 <% end %>
 
+<%= link_to('スレッドタイトルを編集する', edit_message_thread_path(@message_thread)) %><br>
+<%#= link_to('スレッドを削除する', message_thread_path(@message_thread), method: :delete, data: { confirm: '本当に削除しますか？' }) %>
+<%= link_to(
+  'スレッドを削除する',
+  message_thread_path(@message_thread, turbo_method: :delete),
+  method: :delete,
+  data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' })
+%>
+
 <script>
   // ページ読み込み時に最下行にスクロール
   function scrollToBottom() {

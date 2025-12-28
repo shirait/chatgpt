@@ -71,9 +71,20 @@ class MessageThreadsController < ApplicationController
   end
 
   def update
+    # TODO: 認証・認可機能追加時にmessage_thread_idの権限チェック追加
+    @message_thread = MessageThread.find(params[:id])
+    @message_thread.assign_attributes(update_message_thread_params)
+    @message_thread.save!
+    # TODO: エラーハンドリング
+    redirect_to @message_thread
   end
 
   def destroy
+    # TODO: 認証・認可機能追加時にmessage_thread_idの権限チェック追加
+    @message_thread = MessageThread.find(params[:id])
+    @message_thread.destroy!
+    # TODO: エラーハンドリング
+    redirect_to root_path
   end
 
   private
@@ -103,5 +114,9 @@ class MessageThreadsController < ApplicationController
 
   def add_message_params
     params.require(:message).permit(:content)
+  end
+
+  def update_message_thread_params
+    params.require(:message_thread).permit(:title)
   end
 end
