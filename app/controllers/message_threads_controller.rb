@@ -13,13 +13,24 @@ class MessageThreadsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       @message_thread.save!
+
       @message = Message.new(message_params)
       @message.message_thread_id = @message_thread.id
       @message.message_type = Message.message_types[:user]
       @message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
       @message.updater_id = 1 # current_user.id
       @message.save!
+
+      message = Message.new(
+        message_thread_id: @message_thread.id,
+        message_type: Message.message_types[:gpt],
+        content: request_to_openai_api(@message),
+        creator_id: 1, # current_user.id TODO: ログイン機能を追加したら修正する
+        updater_id: 1 # current_user.id
+      )
+      message.save!
     end
+    # TODO: エラーハンドリング
     redirect_to @message_thread
   end
 
@@ -52,6 +63,20 @@ class MessageThreadsController < ApplicationController
   end
 
   private
+
+  # review: ここに書くべきロジックではないかもしれない。
+  def request_to_openai_api(message)
+    access_token = Rails.configuration.static_config.openai_key
+    client = OpenAI::Client.new(access_token: access_token)
+    response = client.chat(
+      parameters: {
+        model: 'gpt-4.1',
+        messages: [{role: 'user', content: message.content}],
+        temperature: 0.7,
+      }
+    )
+    response.dig('choices', 0, 'message', 'content')
+  end
 
   def message_thread_params
     params.require(:message_thread).permit(:title)

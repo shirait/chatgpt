@@ -23,5 +23,7 @@ module Chatgpt
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.static_config = config_for(:config)
   end
 end

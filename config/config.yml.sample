@@ -3,3 +3,12 @@
 # openai apiのキー（sampleの方に具体的な値を書かないこと！）
 default: &default
   openai_key: 'XXXXXXXX'
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
