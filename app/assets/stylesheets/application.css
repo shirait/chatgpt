@@ -61,12 +61,7 @@
   margin-bottom: 15px;
 }
 
-.delete-link {
+.sidebar-message-thread-link.selected {
+  font-weight: bold;
   color: #007bff;
-  text-decoration: underline;
-}
-
-.delete-link:hover {
-  color: #0056b3;
-  text-decoration: none;
 }
