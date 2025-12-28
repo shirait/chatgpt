@@ -107,9 +107,17 @@ class ChatsController < ApplicationController
     # TODO: 認証・認可機能追加時にmessage_thread_idの権限チェック追加
     @message_thread = MessageThread.find(params[:id])
     @message_thread.assign_attributes(update_message_thread_params)
-    @message_thread.save!
-    # TODO: エラーハンドリング
-    redirect_to chat_path(@message_thread)
+
+    @message_thread.updater_id = 1 # current_user.id
+
+    if @message_thread.save
+      flash[:notice] = 'スレッドタイトルを更新しました。'
+      redirect_to chat_path(@message_thread)
+    else
+      flash.now[:alert] = @message_thread.errors.full_messages.join(', ')
+      load_message_threads
+      render :edit and return
+    end
   end
 
   def destroy
