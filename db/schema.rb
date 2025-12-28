@@ -28,11 +28,9 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_28_000044) do
     t.string "creator_id", null: false
     t.bigint "message_thread_id", null: false
     t.integer "message_type", null: false
-    t.integer "sequence", null: false
     t.datetime "updated_at", null: false
     t.string "updater_id", null: false
     t.index ["creator_id", "created_at"], name: "index_messages_on_creator_id_and_created_at"
-    t.index ["message_thread_id", "sequence"], name: "index_messages_on_message_thread_id_and_sequence"
     t.index ["message_thread_id"], name: "index_messages_on_message_thread_id"
     t.index ["updater_id", "updated_at"], name: "index_messages_on_updater_id_and_updated_at"
   end
