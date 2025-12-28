@@ -1,4 +1,4 @@
-class ThreadsController < ApplicationController
+class MessageThreadsController < ApplicationController
   def index
   end
 
