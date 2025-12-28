@@ -62,23 +62,12 @@
   margin-bottom: 15px;
 }
 
-form.delete-button {
-  display: inline;
-}
-
-.delete-button input[type="submit"] {
-  display: inline;
-  background: none;
-  border: none;
+.delete-link {
   color: #007bff;
   text-decoration: underline;
-  cursor: pointer;
-  padding: 0;
-  font-size: inherit;
-  font-family: inherit;
 }
 
-.delete-button input[type="submit"]:hover {
+.delete-link:hover {
   color: #0056b3;
   text-decoration: none;
 }
