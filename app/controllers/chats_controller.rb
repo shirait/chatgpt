@@ -39,8 +39,17 @@ class ChatsController < ApplicationController
         updater_id: 1 # current_user.id
       )
       message.save!
+    rescue ActiveRecord::RecordInvalid => e
+      # DB保存エラー。基本的には発生しない想定。
+      flash.now[:alert] = 'チャットのDBへの保存に失敗しました。'
+      load_message_threads
+      render :new and return
+    rescue => e
+      # 未知のエラー。openai apiとの疎通に失敗した場合などに発生する想定。
+      flash.now[:alert] = e.message
+      load_message_threads
+      render :new and return
     end
-    # TODO: エラーハンドリング
     redirect_to chat_path(@message_thread)
   end
 
