@@ -1,14 +1,10 @@
 class GptMessageCreator
-  def self.create!(message_thread:, user_message:)
-    new(message_thread: message_thread, user_message: user_message).create!
-  end
-
   def initialize(message_thread:, user_message:)
     @message_thread = message_thread
     @user_message = user_message
   end
 
-  def create!
+  def call!
     Message.create!(
       message_thread_id: @message_thread.id,
       gpt_model_id: @user_message.gpt_model.id,
