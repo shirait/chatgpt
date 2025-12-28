@@ -9,12 +9,12 @@ class ChatsController < ApplicationController
   def create
     @message_thread = MessageThread.build_message_thread(
       params: message_params,
-      creator_id: 1 # current_user.id TODO: ログイン機能を追加したら修正する
+      creator_id: current_user.id
     )
     @user_message = Message.build_user_message(
       params: message_params,
       message_thread: @message_thread,
-      creator_id: 1 # current_user.id TODO: ログイン機能を追加したら修正する
+      creator_id: current_user.id
     )
 
     if !(@user_message.save && @message_thread.save)
@@ -48,7 +48,7 @@ class ChatsController < ApplicationController
     @user_message = Message.build_user_message(
       params: message_params,
       message_thread: @message_thread,
-      creator_id: 1 # current_user.id TODO: ログイン機能を追加したら修正する
+      creator_id: current_user.id
     )
 
     unless @user_message.save
@@ -100,8 +100,7 @@ class ChatsController < ApplicationController
   private
 
   def load_message_threads
-    # todo: ログイン機能を追加したら修正する
-    @message_threads = MessageThread.where(creator_id: 1).order(id: :asc)
+    @message_threads = MessageThread.where(creator_id: current_user.id).order(id: :asc)
   end
 
   def message_params
