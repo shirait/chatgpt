@@ -15,13 +15,24 @@ class MessageThreadsController < ApplicationController
     @message_thread.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
     @message_thread.updater_id = 1 # current_user.id
 
+    @message.message_thread = @message_thread
+    @message.message_type = Message.message_types[:user]
+    @message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
+    @message.updater_id = 1 # current_user.id
+    if @message.invalid?
+      flash.now[:alert] = @message.errors.full_messages.join(', ')
+      load_message_threads
+      render :new and return
+    end
+
+    if @message_thread.invalid?
+      flash.now[:alert] = @message_thread.errors.full_messages.join(', ')
+      load_message_threads
+      render :new and return
+    end
+
     ActiveRecord::Base.transaction do
       @message_thread.save!
-
-      @message.message_thread_id = @message_thread.id
-      @message.message_type = Message.message_types[:user]
-      @message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
-      @message.updater_id = 1 # current_user.id
       @message.save!
 
       message = Message.new(
