@@ -3,5 +3,4 @@ class MessageThread < ApplicationRecord
 
   validates :title, presence: true, length: { maximum: 255 }
   validates :creator_id, presence: true
-  validates :updater_id, presence: true
 end
