@@ -5,6 +5,14 @@ class ApplicationController < ActionController::Base
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
 
+  # 認証していないユーザーでアクセスした場合、ログイン画面にリダイレクト
+  before_action :authenticate_user!
+
+  # 認可されていないアクションを実行した場合の処理を定義
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to(root_path, alert: "アクセス権限がありません。")
+  end
+
   # ログイン後のリダイレクト先
   def after_sign_in_path_for(resource_or_scope)
     new_chat_path

@@ -1,6 +1,4 @@
 class ChatsController < ApplicationController
-  before_action :authenticate_user!
-
   def new
     authorize!(:new, MessageThread)
     @user_message = Message.new
