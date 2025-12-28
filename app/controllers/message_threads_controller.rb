@@ -4,6 +4,8 @@ class MessageThreadsController < ApplicationController
 
   def new
     @message_thread = MessageThread.new
+
+    load_message_threads
   end
 
   def create
@@ -36,6 +38,7 @@ class MessageThreadsController < ApplicationController
   end
 
   def show
+    load_message_threads
     @message_thread = MessageThread.eager_load(:messages).order('messages.id').find(params[:id])
     @message = Message.new(message_thread_id: @message_thread.id)
   end
@@ -63,6 +66,7 @@ class MessageThreadsController < ApplicationController
   end
 
   def edit
+    load_message_threads
     @message_thread = MessageThread.find(params[:id])
   end
 
@@ -73,6 +77,11 @@ class MessageThreadsController < ApplicationController
   end
 
   private
+
+  def load_message_threads
+    # todo: ログイン機能を追加したら修正する
+    @message_threads = MessageThread.where(creator_id: 1).order(id: :asc)
+  end
 
   # review: ここに書くべきロジックではないかもしれない。
   def request_to_openai_api(message)
