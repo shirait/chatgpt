@@ -18,7 +18,7 @@ class ChatsController < ApplicationController
     end
 
     begin
-      create_gpt_message!(@message_thread, @user_message)
+      GptMessageCreator.create!(message_thread: @message_thread, user_message: @user_message)
       redirect_to chat_path(@message_thread) and return
     # 例外処理について、StandardError以外はrescueしないように注意（ https://github.com/shirait/blog_import_sample/issues/9#issuecomment-2142528418 ）
     rescue Faraday::Error => e
@@ -48,7 +48,7 @@ class ChatsController < ApplicationController
     end
 
     begin
-      create_gpt_message!(@message_thread, @user_message)
+      GptMessageCreator.create!(message_thread: @message_thread, user_message: @user_message)
       redirect_to chat_path(@message_thread) and return
     rescue Faraday::Error => e
       flash.now[:alert] = faraday_error_message
@@ -94,38 +94,12 @@ class ChatsController < ApplicationController
     @message_threads = MessageThread.where(creator_id: 1).order(id: :asc)
   end
 
-  # review: ここに書くべきロジックではないかもしれない。
-  # 注意。client.chatメソッド実行でエラーになっても、機密情報漏洩を避けるため、例外の情報はログに残らない。(https://github.com/alexrudall/ruby-openai?tab=readme-ov-file#errors)
-  def request_to_openai_api(message)
-    access_token = Rails.configuration.static_config.openai_key
-    client = OpenAI::Client.new(access_token: access_token)
-    response = client.chat(
-      parameters: {
-        model: message.gpt_model.name,
-        messages: [ { role: "user", content: message.content } ],
-        temperature: 0.7
-      }
-    )
-    response.dig("choices", 0, "message", "content")
-  end
-
   def message_params
     params.require(:message).permit(:content)
   end
 
   def update_message_thread_params
     params.require(:message_thread).permit(:title)
-  end
-
-  # review: ここに書くべきロジックではないかもしれない。
-  def create_gpt_message!(message_thread, user_message)
-    Message.create!(
-      message_thread_id: message_thread.id,
-      gpt_model_id: user_message.gpt_model.id,
-      message_type: Message.message_types[:gpt],
-      content: request_to_openai_api(user_message),
-      creator_id: 1, # current_user.id TODO: ログイン機能を追加したら修正する
-    )
   end
 
   def prepare_user_message(message_thread)
