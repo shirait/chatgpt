@@ -11,7 +11,7 @@ class Ability
   end
 
   def admin_abilities(user)
-    can :manage, :all
+    can :manage, GptModel
   end
 
   def normal_abilities(user)
