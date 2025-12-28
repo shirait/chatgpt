@@ -6,3 +6,6 @@
 Rails.application.config.filter_parameters += [
   :passw, :email, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, :cvv, :cvc
 ]
+
+# messages.contentは個人情報等を含む場合があるが、ログ出力は行うものとする。
+# ただ、DBからmessages.contentを削除してもログに残る問題があるので、ログは定期的に削除するものとする。
