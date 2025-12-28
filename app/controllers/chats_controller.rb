@@ -1,7 +1,4 @@
 class ChatsController < ApplicationController
-  def index
-  end
-
   def new
     @message = Message.new
     load_message_threads
