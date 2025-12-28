@@ -3,8 +3,7 @@ class ChatsController < ApplicationController
   end
 
   def new
-    @message_thread = MessageThread.new
-
+    @message = Message.new
     load_message_threads
   end
 
@@ -57,7 +56,7 @@ class ChatsController < ApplicationController
   def add_message
     # TODO: 認証・認可機能追加時にmessage_thread_idの権限チェック追加
     @message_thread = MessageThread.find(params[:id])
-    @message = Message.new(add_message_params)
+    @message = Message.new(message_params)
     @message.message_thread_id = @message_thread.id
     @message.message_type = Message.message_types[:user]
     @message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
@@ -129,10 +128,6 @@ class ChatsController < ApplicationController
   end
 
   def message_params
-    params.require(:message_thread).permit(:content)
-  end
-
-  def add_message_params
     params.require(:message).permit(:content)
   end
 
