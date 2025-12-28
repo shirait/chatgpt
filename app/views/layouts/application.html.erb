@@ -28,9 +28,11 @@
 
   <body>
     <div class="layout-container">
-      <aside class="sidebar">
-        <%= render 'layouts/sidebar' %>
-      </aside>
+      <% if user_signed_in? %>
+        <aside class="sidebar">
+          <%= render 'layouts/sidebar' %>
+        </aside>
+      <% end %>
       <main class="main-content">
         <% if need_toplevel_flash_messages? %>
           <%= render 'layouts/flash_messages' %>

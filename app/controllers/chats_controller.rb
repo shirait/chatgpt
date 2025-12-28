@@ -1,4 +1,6 @@
 class ChatsController < ApplicationController
+  before_action :authenticate_user!
+
   def new
     @user_message = Message.new
     load_message_threads
