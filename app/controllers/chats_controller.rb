@@ -19,8 +19,8 @@ class ChatsController < ApplicationController
 
     begin
       create_gpt_message!(@message_thread, @user_message)
-    rescue => e
-      flash.now[:alert] = "想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。"
+    rescue Faraday::Error => e
+      flash.now[:alert] = faraday_error_message
       load_message_threads
       render :new and return
     end
@@ -46,8 +46,8 @@ class ChatsController < ApplicationController
 
     begin
       create_gpt_message!(@message_thread, @user_message)
-    rescue => e
-      flash.now[:alert] = "想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。"
+    rescue Faraday::Error => e
+      flash.now[:alert] = faraday_error_message
       load_message_threads
       render :show and return
     end
@@ -131,5 +131,9 @@ class ChatsController < ApplicationController
     user_message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
     user_message.gpt_model = GptModel.active_model
     user_message
+  end
+
+  def faraday_error_message
+    "OpenAI APIの利用でエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。"
   end
 end
