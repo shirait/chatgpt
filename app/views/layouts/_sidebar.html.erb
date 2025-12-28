@@ -1,9 +1,9 @@
-<div class="sidebar-message-thread-link">
+<div class="sidebar-message-thread-link <%= 'selected' if @message_thread.nil? %>">
   <%= link_to('新しいチャット', new_chat_path) %>
 </div>
 
 <% @message_threads.each do |message_thread| %>
-  <div class="sidebar-message-thread-link <%= 'selected' if message_thread.id == @message_thread.id %>">
+  <div class="sidebar-message-thread-link <%= 'selected' if message_thread.id == @message_thread&.id %>">
     <%= link_to(message_thread.title, chat_path(message_thread)) %>
   </div>
 <% end %>
