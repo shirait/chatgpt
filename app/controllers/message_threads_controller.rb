@@ -7,14 +7,15 @@ class MessageThreadsController < ApplicationController
   end
 
   def create
-    @message_thread = MessageThread.new(message_thread_params)
+    @message = Message.new(message_params)
+    @message_thread = MessageThread.new(title: @message.content.split("\n").select(&:present?).first)
+
     @message_thread.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
     @message_thread.updater_id = 1 # current_user.id
 
     ActiveRecord::Base.transaction do
       @message_thread.save!
 
-      @message = Message.new(message_params)
       @message.message_thread_id = @message_thread.id
       @message.message_type = Message.message_types[:user]
       @message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
@@ -85,10 +86,6 @@ class MessageThreadsController < ApplicationController
       }
     )
     response.dig('choices', 0, 'message', 'content')
-  end
-
-  def message_thread_params
-    params.require(:message_thread).permit(:title)
   end
 
   def message_params

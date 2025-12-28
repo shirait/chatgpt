@@ -1,9 +1,6 @@
 <%= form_with model: @message_thread, url: message_threads_path, method: :post do |f| %>
-  <%= f.label(:title) %>
-  <%= f.text_field(:title) %>
-  <%= f.label(:content) %>
-  <%= f.text_field(:content) %>
-
-  <%= f.submit "Create Message Thread" %>
+  <%#= f.text_field(:title, placeholder: 'タイトルを入力してください') %>
+  <%= f.text_area(:content, size: "80x5", placeholder: '質問を入力してください') %>
+  <%= f.submit('質問する') %>
 <% end %>
 
