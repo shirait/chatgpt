@@ -5,16 +5,12 @@ class ChatsController < ApplicationController
   end
 
   def create
-    @user_message = Message.new(message_params)
     @message_thread = MessageThread.new(
-      title: @user_message.content.split("\n").select(&:present?).first,
+      title: Message.new(message_params).content.split("\n").select(&:present?).first,
       creator_id: 1 # current_user.id TODO: ログイン機能を追加したら修正する
     )
 
-    @user_message.message_thread = @message_thread
-    @user_message.message_type = Message.message_types[:user]
-    @user_message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
-    @user_message.gpt_model = GptModel.active_model
+    @user_message = prepare_user_message(@message_thread)
     if @user_message.invalid?
       flash.now[:alert] = @user_message.errors.full_messages.join(', ')
       load_message_threads
@@ -54,11 +50,7 @@ class ChatsController < ApplicationController
   def add_message
     # TODO: 認証・認可機能追加時にmessage_thread_idの権限チェック追加
     @message_thread = MessageThread.find(params[:id])
-    @user_message = Message.new(message_params)
-    @user_message.message_thread_id = @message_thread.id
-    @user_message.message_type = Message.message_types[:user]
-    @user_message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
-    @user_message.gpt_model = GptModel.active_model
+    @user_message = prepare_user_message(@message_thread)
 
     if @user_message.invalid?
       flash.now[:alert] = @user_message.errors.full_messages.join(', ')
@@ -148,5 +140,14 @@ class ChatsController < ApplicationController
       content: request_to_openai_api(user_message),
       creator_id: 1, # current_user.id TODO: ログイン機能を追加したら修正する
     )
+  end
+
+  def prepare_user_message(message_thread)
+    user_message = Message.new(message_params)
+    user_message.message_thread = @message_thread
+    user_message.message_type = Message.message_types[:user]
+    user_message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
+    user_message.gpt_model = GptModel.active_model
+    user_message
   end
 end
