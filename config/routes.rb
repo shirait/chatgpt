@@ -1,11 +1,9 @@
 Rails.application.routes.draw do
-  root "message_threads#new"
+  root "chats#new"
 
-  resources :message_threads do
+  resources :chats do
     member do
       post :add_message
     end
   end
-
-  resources :messages, only: [:create]
 end

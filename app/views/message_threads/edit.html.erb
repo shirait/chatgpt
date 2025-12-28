@@ -1,6 +1,0 @@
-<%= form_with model: @message_thread, url: message_thread_path(@message_thread), method: :put do |f| %>
-  <%= f.text_field(:title, placeholder: 'タイトルを入力してください', size: 50) %>
-  <%= f.submit('更新する') %>
-<% end %>
-
-<%= link_to('戻る', message_thread_path(@message_thread)) %>
