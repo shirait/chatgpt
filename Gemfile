@@ -65,6 +65,11 @@ group :test do
   gem "selenium-webdriver"
 end
 
+# OpenAI APIを利用するためのgem
 gem "ruby-openai"
 
+# 認証機能を提供するgem
 gem "devise"
+
+# 認可機能を提供するgem
+gem "cancancan"
