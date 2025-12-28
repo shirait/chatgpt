@@ -27,7 +27,7 @@ class ChatsController < ApplicationController
       render :new and return
     end
 
-    ActiveRecord::Base.transaction do
+    begin
       @message_thread.save!
       @message.save!
       create_response_message!(@message_thread, @message)
@@ -68,17 +68,15 @@ class ChatsController < ApplicationController
       render :show and return
     end
 
-    ActiveRecord::Base.transaction do
+    begin
       @message.save!
       create_response_message!(@message_thread, @message)
     rescue ActiveRecord::RecordInvalid => e
       flash.now[:alert] = 'チャットのDBへの保存に失敗しました。'
-      # ロールバックは行わない
       load_message_threads
       render :show and return
     rescue => e
       flash.now[:alert] = '想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。'
-      # ロールバックは行わない
       load_message_threads
       render :show and return
     end
