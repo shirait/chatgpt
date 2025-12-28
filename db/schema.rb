@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_28_084328) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_28_094446) do
   create_table "gpt_models", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "creator_id", null: false
@@ -39,8 +39,10 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_28_084328) do
     t.integer "message_type", null: false
     t.datetime "updated_at", null: false
     t.index ["creator_id"], name: "index_messages_on_creator_id"
+    t.index ["gpt_model_id"], name: "fk_rails_73e5df9141"
     t.index ["message_thread_id"], name: "fk_rails_48a2f10058"
   end
 
+  add_foreign_key "messages", "gpt_models"
   add_foreign_key "messages", "message_threads", on_delete: :cascade
 end
