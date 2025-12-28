@@ -93,7 +93,7 @@ class ChatsController < ApplicationController
     # TODO: 認証・認可機能追加時にmessage_thread_idの権限チェック追加
     @message_thread = MessageThread.find(params[:id])
     @message_thread.destroy!
-    # TODO: エラーハンドリング
+    flash[:notice] = "スレッドを削除しました。"
     redirect_to root_path
   end
 

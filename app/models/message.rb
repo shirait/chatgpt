@@ -1,4 +1,5 @@
 class Message < ApplicationRecord
+  belongs_to :user, foreign_key: :creator_id
   belongs_to :gpt_model
   belongs_to :message_thread
 

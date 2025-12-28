@@ -1,4 +1,5 @@
 class MessageThread < ApplicationRecord
+  belongs_to :user, foreign_key: :creator_id
   has_many :messages, dependent: :destroy
 
   validates :title, presence: true, length: { maximum: 255 }
