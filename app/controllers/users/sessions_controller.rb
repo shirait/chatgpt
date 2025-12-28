@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# deviseのコントローラをカスタマイズしたい場合、このファイルを修正する。
 class Users::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
 
