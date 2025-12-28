@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users
-  root "chats#new"
+
+  # 役割に応じてリダイレクト先を振り分ける。
+  root "application#root_redirect"
 
   resources :chats, only: [ :new, :create, :show, :edit, :update, :destroy ] do
     member do
