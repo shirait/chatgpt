@@ -17,10 +17,19 @@
 <script>
   // ページ読み込み時に最下行にスクロール
   function scrollToBottom() {
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: 'smooth'
-    });
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+      mainContent.scrollTo({
+        top: mainContent.scrollHeight,
+        behavior: 'smooth'
+      });
+    } else {
+      // フォールバック: メインコンテンツが見つからない場合は通常のスクロール
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }
 
   // DOMContentLoadedイベントで実行
