@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   root "chats#new"
 
   resources :chats, only: [ :new, :create, :show, :edit, :update, :destroy ] do
