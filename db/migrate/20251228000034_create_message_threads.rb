@@ -7,7 +7,7 @@ class CreateMessageThreads < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :message_threads, [:title]
-    add_index :message_threads, [:creator_id]
+    add_index :message_threads, [ :title ]
+    add_index :message_threads, [ :creator_id ]
   end
 end

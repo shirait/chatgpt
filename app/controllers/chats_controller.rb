@@ -12,7 +12,7 @@ class ChatsController < ApplicationController
     @user_message = prepare_user_message(@message_thread)
 
     if !(@user_message.save && @message_thread.save)
-      flash.now[:alert] = @message_thread.errors.full_messages.join(', ') + @user_message.errors.full_messages.join(', ')
+      flash.now[:alert] = @message_thread.errors.full_messages.join(", ") + @user_message.errors.full_messages.join(", ")
       load_message_threads
       render :new and return
     end
@@ -20,7 +20,7 @@ class ChatsController < ApplicationController
     begin
       create_gpt_message!(@message_thread, @user_message)
     rescue => e
-      flash.now[:alert] = '想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。'
+      flash.now[:alert] = "想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。"
       load_message_threads
       render :new and return
     end
@@ -29,7 +29,7 @@ class ChatsController < ApplicationController
 
   def show
     load_message_threads
-    @message_thread = MessageThread.eager_load(:messages).order('messages.id').find(params[:id])
+    @message_thread = MessageThread.eager_load(:messages).order("messages.id").find(params[:id])
     @user_message = Message.new(message_thread_id: @message_thread.id)
   end
 
@@ -39,7 +39,7 @@ class ChatsController < ApplicationController
     @user_message = prepare_user_message(@message_thread)
 
     unless @user_message.save
-      flash.now[:alert] = @user_message.errors.full_messages.join(', ')
+      flash.now[:alert] = @user_message.errors.full_messages.join(", ")
       load_message_threads
       render :show and return
     end
@@ -47,7 +47,7 @@ class ChatsController < ApplicationController
     begin
       create_gpt_message!(@message_thread, @user_message)
     rescue => e
-      flash.now[:alert] = '想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。'
+      flash.now[:alert] = "想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。"
       load_message_threads
       render :show and return
     end
@@ -66,10 +66,10 @@ class ChatsController < ApplicationController
     @message_thread.assign_attributes(update_message_thread_params)
 
     if @message_thread.save
-      flash[:notice] = 'スレッドタイトルを更新しました。'
+      flash[:notice] = "スレッドタイトルを更新しました。"
       redirect_to chat_path(@message_thread)
     else
-      flash.now[:alert] = @message_thread.errors.full_messages.join(', ')
+      flash.now[:alert] = @message_thread.errors.full_messages.join(", ")
       load_message_threads
       render :edit and return
     end
@@ -98,11 +98,11 @@ class ChatsController < ApplicationController
     response = client.chat(
       parameters: {
         model: message.gpt_model.name,
-        messages: [{role: 'user', content: message.content}],
-        temperature: 0.7,
+        messages: [ { role: "user", content: message.content } ],
+        temperature: 0.7
       }
     )
-    response.dig('choices', 0, 'message', 'content')
+    response.dig("choices", 0, "message", "content")
   end
 
   def message_params

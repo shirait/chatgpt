@@ -12,6 +12,6 @@ class CreateMessages < ActiveRecord::Migration[8.1]
 
     add_foreign_key :messages, :message_threads, on_delete: :cascade
     # gpt_modelsテーブルは後で作成されるため、外部キー制約は別のマイグレーションで追加
-    add_index :messages, [:creator_id]
+    add_index :messages, [ :creator_id ]
   end
 end

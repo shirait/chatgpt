@@ -7,7 +7,7 @@ class CreateGptModels < ActiveRecord::Migration[8.1]
 
       t.timestamps
     end
-    add_index :gpt_models, [:name]
-    add_index :gpt_models, [:creator_id]
+    add_index :gpt_models, [ :name ]
+    add_index :gpt_models, [ :creator_id ]
   end
 end

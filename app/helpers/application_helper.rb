@@ -4,6 +4,6 @@ module ApplicationHelper
   end
 
   def not_need_toplevel_flash_messages?
-    params[:controller] == 'message_threads' && params[:action] == 'add_message'
+    params[:controller] == "message_threads" && params[:action] == "add_message"
   end
 end
