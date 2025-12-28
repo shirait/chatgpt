@@ -1,0 +1,2 @@
+class GptModel < ApplicationRecord
+end
