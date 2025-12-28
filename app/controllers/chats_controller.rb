@@ -6,9 +6,10 @@ class ChatsController < ApplicationController
 
   def create
     @message = Message.new(message_params)
-    @message_thread = MessageThread.new(title: @message.content.split("\n").select(&:present?).first)
-
-    @message_thread.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
+    @message_thread = MessageThread.new(
+      title: @message.content.split("\n").select(&:present?).first,
+      creator_id: 1 # current_user.id TODO: ログイン機能を追加したら修正する
+    )
 
     @message.message_thread = @message_thread
     @message.message_type = Message.message_types[:user]
@@ -29,23 +30,17 @@ class ChatsController < ApplicationController
     ActiveRecord::Base.transaction do
       @message_thread.save!
       @message.save!
-
-      message = Message.new(
-        message_thread_id: @message_thread.id,
-        gpt_model_id: @message.gpt_model.id,
-        message_type: Message.message_types[:gpt],
-        content: request_to_openai_api(@message),
-        creator_id: 1, # current_user.id TODO: ログイン機能を追加したら修正する
-      )
-      message.save!
+      create_response_message!(@message_thread, @message)
     rescue ActiveRecord::RecordInvalid => e
       # DB保存エラー。基本的には発生しない想定。
       flash.now[:alert] = 'チャットのDBへの保存に失敗しました。'
+      # ロールバックは行わない
       load_message_threads
       render :new and return
     rescue => e
       # 未知のエラー。openai apiとの疎通に失敗した場合などに発生する想定。
       flash.now[:alert] = '想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。'
+      # ロールバックは行わない
       load_message_threads
       render :new and return
     end
@@ -75,21 +70,15 @@ class ChatsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       @message.save!
-
-      message = Message.new(
-        message_thread_id: @message_thread.id,
-        gpt_model_id: @message.gpt_model.id,
-        message_type: Message.message_types[:gpt],
-        content: request_to_openai_api(@message),
-        creator_id: 1, # current_user.id TODO: ログイン機能を追加したら修正する
-      )
-      message.save!
+      create_response_message!(@message_thread, @message)
     rescue ActiveRecord::RecordInvalid => e
       flash.now[:alert] = 'チャットのDBへの保存に失敗しました。'
+      # ロールバックは行わない
       load_message_threads
       render :show and return
     rescue => e
       flash.now[:alert] = '想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。'
+      # ロールバックは行わない
       load_message_threads
       render :show and return
     end
@@ -152,5 +141,16 @@ class ChatsController < ApplicationController
 
   def update_message_thread_params
     params.require(:message_thread).permit(:title)
+  end
+
+  # review: ここに書くべきロジックではないかもしれない。
+  def create_response_message!(message_thread, message)
+    message = Message.create!(
+      message_thread_id: message_thread.id,
+      gpt_model_id: message.gpt_model.id,
+      message_type: Message.message_types[:gpt],
+      content: request_to_openai_api(message),
+      creator_id: 1, # current_user.id TODO: ログイン機能を追加したら修正する
+    )
   end
 end
