@@ -1,5 +1,7 @@
 class Message < ApplicationRecord
+  belongs_to :gpt_model
   belongs_to :message_thread
+
   enum :message_type, { user: 0, gpt: 1 } # user: ユーザーからのメッセージ, gpt: GPTからのメッセージ
 
   validates :message_type, presence: true, inclusion: { in: message_types.keys }

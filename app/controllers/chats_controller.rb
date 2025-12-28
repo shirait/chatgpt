@@ -9,12 +9,10 @@ class ChatsController < ApplicationController
     @message_thread = MessageThread.new(title: @message.content.split("\n").select(&:present?).first)
 
     @message_thread.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
-    @message_thread.updater_id = 1 # current_user.id
 
     @message.message_thread = @message_thread
     @message.message_type = Message.message_types[:user]
     @message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
-    @message.updater_id = 1 # current_user.id
     if @message.invalid?
       flash.now[:alert] = @message.errors.full_messages.join(', ')
       load_message_threads
@@ -36,7 +34,6 @@ class ChatsController < ApplicationController
         message_type: Message.message_types[:gpt],
         content: request_to_openai_api(@message),
         creator_id: 1, # current_user.id TODO: ログイン機能を追加したら修正する
-        updater_id: 1 # current_user.id
       )
       message.save!
     rescue ActiveRecord::RecordInvalid => e
@@ -66,7 +63,6 @@ class ChatsController < ApplicationController
     @message.message_thread_id = @message_thread.id
     @message.message_type = Message.message_types[:user]
     @message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
-    @message.updater_id = 1 # current_user.id
 
     if @message.invalid?
       flash.now[:alert] = @message.errors.full_messages.join(', ')
@@ -82,7 +78,6 @@ class ChatsController < ApplicationController
         message_type: Message.message_types[:gpt],
         content: request_to_openai_api(@message),
         creator_id: 1, # current_user.id TODO: ログイン機能を追加したら修正する
-        updater_id: 1 # current_user.id
       )
       message.save!
     rescue ActiveRecord::RecordInvalid => e
@@ -107,8 +102,6 @@ class ChatsController < ApplicationController
     # TODO: 認証・認可機能追加時にmessage_thread_idの権限チェック追加
     @message_thread = MessageThread.find(params[:id])
     @message_thread.assign_attributes(update_message_thread_params)
-
-    @message_thread.updater_id = 1 # current_user.id
 
     if @message_thread.save
       flash[:notice] = 'スレッドタイトルを更新しました。'
