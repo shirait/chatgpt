@@ -1,8 +1,10 @@
 <% @message_thread.messages.each do |message| %>
   <div>
-    <div class="<%= "#{message.message_type.to_s}-message" %>">
+    <div class="<%= "#{message.message_type.to_s}-message" %>" id="<%= "message-#{message.id}" %>">
       <%= simple_format(message.content) %>
     </div>
+    <br>
+    <button onclick="copyButton('<%= "message-#{message.id}" %>')">コピー</button>
   </div>
   <% if message.gpt? %>
     <hr />
@@ -102,4 +104,11 @@
 
   // Turboを使っている場合のイベント
   document.addEventListener('turbo:load', setupDeleteLinks);
+
+  // コピー実行
+  function copyButton(messageId) {
+    const message = document.getElementById(messageId);
+    const text = message.textContent;
+    navigator.clipboard.writeText(text);
+  }
 </script>
