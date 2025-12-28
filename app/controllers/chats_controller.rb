@@ -2,11 +2,13 @@ class ChatsController < ApplicationController
   before_action :authenticate_user!
 
   def new
+    authorize!(:new, MessageThread)
     @user_message = Message.new
     load_message_threads
   end
 
   def create
+    authorize!(:create, MessageThread)
     @message_thread = MessageThread.build_message_thread(
       params: message_params,
       creator_id: current_user.id
@@ -37,14 +39,15 @@ class ChatsController < ApplicationController
   end
 
   def show
-    load_message_threads
     @message_thread = MessageThread.eager_load(:messages).order("messages.id").find(params[:id])
+    authorize!(:read, @message_thread)
+    load_message_threads
     @user_message = Message.new(message_thread_id: @message_thread.id)
   end
 
   def add_message
-    # TODO: 認証・認可機能追加時にmessage_thread_idの権限チェック追加
     @message_thread = MessageThread.find(params[:id])
+    authorize!(:add_message, @message_thread)
     @user_message = Message.build_user_message(
       params: message_params,
       message_thread: @message_thread,
@@ -70,15 +73,16 @@ class ChatsController < ApplicationController
   end
 
   def edit
-    load_message_threads
     @message_thread = MessageThread.find(params[:id])
+    authorize!(:edit, @message_thread)
+    load_message_threads
   end
 
   def update
-    # TODO: 認証・認可機能追加時にmessage_thread_idの権限チェック追加
     @message_thread = MessageThread.find(params[:id])
-    @message_thread.assign_attributes(update_message_thread_params)
+    authorize!(:update, @message_thread)
 
+    @message_thread.assign_attributes(update_message_thread_params)
     if @message_thread.save
       flash[:notice] = "スレッドタイトルを更新しました。"
       redirect_to chat_path(@message_thread)
@@ -90,8 +94,8 @@ class ChatsController < ApplicationController
   end
 
   def destroy
-    # TODO: 認証・認可機能追加時にmessage_thread_idの権限チェック追加
     @message_thread = MessageThread.find(params[:id])
+    authorize!(:destroy, @message_thread)
     @message_thread.destroy!
     flash[:notice] = "スレッドを削除しました。"
     redirect_to root_path
@@ -100,7 +104,7 @@ class ChatsController < ApplicationController
   private
 
   def load_message_threads
-    @message_threads = MessageThread.where(creator_id: current_user.id).order(id: :asc)
+    @message_threads = MessageThread.accessible_by(current_ability).order(id: :asc)
   end
 
   def message_params
