@@ -32,7 +32,9 @@
         <%= render 'layouts/sidebar' %>
       </aside>
       <main class="main-content">
-        <%= render 'layouts/flash_messages' %>
+        <% if need_toplevel_flash_messages? %>
+          <%= render 'layouts/flash_messages' %>
+        <% end %>
         <%= yield %>
       </main>
     </div>

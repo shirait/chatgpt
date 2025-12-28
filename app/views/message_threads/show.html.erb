@@ -11,6 +11,7 @@
   <% end %>
 <% end %>
 
+<%= render 'layouts/flash_messages' %>
 <%= form_with(model: @message, url: add_message_message_thread_path(@message_thread), method: :post, html: { class: "new-message-form" }) do |f| %>
   <%= f.text_area(:content, size: "80x5", placeholder: '質問を入力してください') %>
   <%= f.submit('質問する') %>

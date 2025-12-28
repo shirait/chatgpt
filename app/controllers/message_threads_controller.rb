@@ -62,16 +62,25 @@ class MessageThreadsController < ApplicationController
     @message.message_type = Message.message_types[:user]
     @message.creator_id = 1 # current_user.id TODO: ログイン機能を追加したら修正する
     @message.updater_id = 1 # current_user.id
-    @message.save!
 
-    message = Message.new(
-      message_thread_id: @message_thread.id,
-      message_type: Message.message_types[:gpt],
-      content: request_to_openai_api(@message),
-      creator_id: 1, # current_user.id TODO: ログイン機能を追加したら修正する
-      updater_id: 1 # current_user.id
-    )
-    message.save!
+    if @message.invalid?
+      flash.now[:alert] = @message.errors.full_messages.join(', ')
+      load_message_threads
+      render :show and return
+    end
+
+    ActiveRecord::Base.transaction do
+      @message.save!
+
+      message = Message.new(
+        message_thread_id: @message_thread.id,
+        message_type: Message.message_types[:gpt],
+        content: request_to_openai_api(@message),
+        creator_id: 1, # current_user.id TODO: ログイン機能を追加したら修正する
+        updater_id: 1 # current_user.id
+      )
+      message.save!
+    end
 
     redirect_to @message_thread
   end
