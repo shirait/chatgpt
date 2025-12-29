@@ -4,7 +4,12 @@
       <%= simple_format(message.content) %>
     </div>
     <br>
-    <button onclick="copyButton('<%= "message-#{message.id}" %>')">コピー</button>
+    <%= link_to(
+      "コピー",
+      "#",
+      onclick: "copyButton('message-#{message.id}'); return false;",
+      class: "button is-small mt-1")
+    %>
   </div>
   <% if message.gpt? %>
     <hr />
@@ -112,6 +117,7 @@
   // document.addEventListener('turbo:load', setupDeleteLinks);
 
   // コピー実行
+  // todo: コピーを実行したら文言を「コピーしました」に変更したい。
   function copyButton(messageId) {
     const message = document.getElementById(messageId);
     const text = message.textContent;
