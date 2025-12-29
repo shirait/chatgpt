@@ -26,6 +26,7 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
   </head>
 
+  <% if false # debug %>
   <body class="<%= 'has-navbar-fixed-top' if user_signed_in? %>">
     <div class="layout-container">
       <% if user_signed_in? %>
@@ -43,5 +44,75 @@
         <%= yield %>
       </main>
     </div>
+  </body>
+  <% end %>
+
+  <body>
+    <%# navbarメニュー %>
+    <header class="navbar">
+      <div class="navbar-brand">
+        <span class="navbar-item">
+          <span class="fa fa-language"></span>一言SNS
+        </span>
+      </div>
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="field has-addons">
+            <div class="control">
+              <input class="input" type="text" name="search" placeholder="キーワード検索">
+            </div>
+            <div class="control">
+              <a class="button is-info"><i class="fa fa-search"></i>検索</a>
+            </div>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <a href="#"><i class="fa fa-user"></i>ログイン</a>
+        </div>
+      </div>
+    </header>
+
+    <%# heroレイアウト。webページの閲覧者に印象づけたいコンテンツを載せる %>
+    <div class="hero is-info is-bold">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">CASAREAL</h1>
+          <h2 class="subtitle">@casareal-ls</h2>
+        </div>
+      </div>
+    </div>
+
+    <%# levelクラスでボタン等を水平に並べる。heroレイアウトの直下にフォローボタン等を用意。 %>
+    <section class="level">
+      <div class="level-left"></div>
+      <div class="level-right">
+        <div class="level-item tabs">
+          <ul>
+            <li class="is-active"><a>最近の一言</a></li>
+              <li><a>古い一言</a></li>
+              <li><a>コメント付き</a></li>
+            </ul>
+          </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <a class="button is-greylight">フォロー</a>
+        </div>
+      </div>
+    </section>
+
+    <%# メインコンテンツ（にする予定） %>
+    <%#= yield %>
+
+    <main class="columns">
+      <div class="submenu column is-3">
+          <aside>
+          カサレアルは、ＸＸＸＸＸＸＸＸを実現する△△△△△△△△です。
+          </aside>
+      </div>
+      <div class="column">
+          本文
+      </div>
+    </main>
   </body>
 </html>
