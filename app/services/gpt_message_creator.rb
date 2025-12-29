@@ -25,11 +25,10 @@ class GptMessageCreator
     response = client.chat(
       parameters: {
         model: message.gpt_model.name,
-        messages: [{ role: "user", content: message.content }],
+        messages: [ { role: "user", content: message.content } ],
         temperature: 0.7
       }
     )
     response.dig("choices", 0, "message", "content")
   end
 end
-

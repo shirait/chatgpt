@@ -105,13 +105,93 @@
     <%#= yield %>
 
     <main class="columns">
+      <%# column is-3 で画面の3/12を占有。%>
       <div class="submenu column is-3">
-          <aside>
-          カサレアルは、ＸＸＸＸＸＸＸＸを実現する△△△△△△△△です。
-          </aside>
+        <%# boxクラスで 角丸、白地のエリアを作成 %>
+      　<aside class="box">
+          カサレアルは、ＸＸＸＸＸＸＸＸを実現する会社です。私たちは△△△△△△△△を通じて社会に貢献していきます。
+        </aside>
+        <%# menuで垂直型のナビゲーションを作成 %>
+        <aside class="box menu">
+          <p class="menu-label">
+              おすすめの一言
+          </p>
+          <ul class="menu-list">
+              <li><a href="#">株式会社カサ<small>@casainc</small></a></li>
+              <li><a href="#">レア製作所<small>@rea-product</small></a></li>
+              <li><a href="#">オフィス・アル<small>@office-al</small></a></li>
+            </ul>
+            <p class="menu-label">
+                キーワード
+            </p>
+            <ul class="menu-list">
+              <li><a href="#">システム開発</a></li>
+              <li><a class="is-active" href="#">技術教育</a>
+                  <ul>
+                    <li><a href="#">一社研修</a></li>
+                    <li><a href="#">定期開催コース</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">ソフトウェアテスティング</a></li>
+            </ul>
+        </aside>
       </div>
+
+      <%# 前のcolumnで 3/12を使っているので、残りは以下のcolumnで使われる。 %>
+      <%# ここがメインコンテンツになる。 %>
       <div class="column">
-          本文
+        <article class="box media">
+   <figure class="media-left">
+      <p class="image is-64x64">
+         <img src="http://placehold.it/128x128">
+      </p>
+   </figure>
+   <div class="media-content">
+      <div class="content">
+         <p><strong>CASAREAL</strong><br>
+            内容、内容、内容、内容、内容、内容、内容、内容、内容、内容、内容、内容、内容<br>
+            <small><a>Like</a> · <a>Reply</a> · 3 hrs</small>
+          </p>
+      </div>
+      <article class="media">
+          <figure class="media-left">
+             <p class="image is-48x48">
+                <img src="http://placehold.it/96x96">
+             </p>
+          </figure>
+          <div class="media-content">
+             <div class="content">
+               <p><strong>Sean Brown</strong><br>
+                  コメントコメントコメントコメントコメントコメントコメントコメントコメントコメント<br>
+                  <small><a>Like</a> · <a>Reply</a> · 2 hrs</small>
+               </p>
+             </div>
+             <article class="media">
+                リプライリプライリプライリプライリプライリプライリプライリプライリプライリプライ。
+             </article>
+             <article class="media">
+                リプライリプライリプライリプライリプライリプライリプライリプライリプライリプライ。
+             </article>
+          </div>
+      </article>
+   </div>
+</article>
+<article class="box media">
+   <figure class="media-left">
+      <p class="image is-48x48">
+         <img src="http://placehold.it/96x96">
+      </p>
+   </figure>
+   <div class="media-content">
+      <div class="content">
+         <p><strong>CASAREAL</strong><br>
+           内容、内容、内容、内容、内容、内容、内容、内容、内容、内容、内容、内容、内容、内容<br>
+           <small><a>Like</a> · <a>Reply</a> · 2 hrs</small>
+         </p>
+      </div>
+   </div>
+</article>
+
       </div>
     </main>
   </body>

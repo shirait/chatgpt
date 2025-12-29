@@ -11,7 +11,7 @@ class User < ApplicationRecord
 
   validates :email, presence: true, uniqueness: true
   # on: :createはCRUD画面を作成したら追加する。
-  validates :password, presence: true, length: { minimum: 6 }#, on: :create
-  validates :password_confirmation, presence: true#, on: :create
+  validates :password, presence: true, length: { minimum: 6 }# , on: :create
+  validates :password_confirmation, presence: true# , on: :create
   validates :role, presence: true, inclusion: { in: roles.keys }
 end
