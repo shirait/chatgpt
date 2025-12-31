@@ -25,7 +25,7 @@ body.has-navbar-fixed-top .column.is-9 {
 /* サイドバーを固定表示 */
 .submenu.column.is-3 {
   position: fixed;
-  top: 3.5rem; /* navbarの高さ分下げる */
+  top: 2.75rem; /* navbarの高さ分下げる */
   left: 0.5rem; /* bodyのmargin分 */
   height: calc(100vh - 3.5rem); /* 画面高さからnavbarの高さを引く */
   overflow-y: auto; /* スクロール可能にする */
@@ -70,5 +70,4 @@ body.has-navbar-fixed-top .column.is-9 {
 
 .sidebar-message-thread-link.selected {
   font-weight: bold;
-
 }
