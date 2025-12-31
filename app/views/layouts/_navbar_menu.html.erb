@@ -1,17 +1,22 @@
 <%# todo: navbarメニューをモバイル表示（1024px以下）のとき非表示となる。別途ハンバーガーメニューを追加することを検討する。(navbar-burgerクラスでできそう) %>
 
 <%# is-fixed-top で固定表示にする。 %>
-<header class="navbar is-fixed-top is-9">
+<header class="navbar is-fixed-top">
   <div class="navbar-menu">
 
-    <% if false %>
-    <div class="navbar-center">
-      <%= render("layouts/flash_messages") %>
-    </div>
-    <% end %>
 
 
     <div class="navbar-end">
+      <% if false %>
+      ここにflashメッセージを置くのは一旦諦める。
+      ・太いので、メインメニューのmarginの調整が必要
+      ・画面幅を小さくするとサイドメニューと被る
+      <div class="navbar-item">
+        <div class="">
+          <%= render("layouts/flash_messages") %>
+        </div>
+      </div>
+      <% end %>
       <div class="navbar-item">
         <div class="field has-addons">
           <div class="control">

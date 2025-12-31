@@ -54,7 +54,7 @@ class ChatsController < ApplicationController
     )
 
     unless @user_message.save
-      flash.now[:danger] = @user_message.errors.full_messages.join(", ")
+      flash.now[:danger] = "入力に問題があります。エラー内容を確認してください。"
       load_message_threads
       render :show and return
     end

@@ -43,7 +43,8 @@
 
         <%# フラッシュメッセージ %>
         <% if need_toplevel_flash_messages? %>
-          <%= render('layouts/flash_messages') %>
+          <%# どこに表示するかは別途検討する。 %>
+          <%#= render('layouts/flash_messages') %>
         <% end %>
 
         <%# メインコンテンツ %>
