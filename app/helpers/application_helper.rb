@@ -31,6 +31,9 @@ module ApplicationHelper
       lax_spacing:        true,  # 緩いスペーシングを有効にする
       strikethrough:      true,  # 取り消し線を有効にする
       superscript:        true,  # 上付き文字を有効にする
+      tables:             true,  # テーブルを有効にする
+      with_toc_data:      true,  # 目次を有効にする
+      escape_html:        true,  # HTMLエスケープを有効にする
     }
 
     # マークダウンをHTMLに変換し、結果をhtml_safeにする
