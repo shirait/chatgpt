@@ -26,7 +26,7 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
   </head>
 
-  <body class="m-2">
+  <body class="m-2 <%= 'has-navbar-fixed-top' if user_signed_in? %>">
     <main class="columns">
 
       <%# サイドバーメニュー %>

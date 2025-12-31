@@ -17,6 +17,26 @@ header.navbar {
   background-color: #eeeeee;
 }
 
+/* navbarが固定表示の場合、コンテンツが隠れないようにpadding-topを設定 */
+body.has-navbar-fixed-top .column.is-9 {
+  padding-top: 0.5rem; /* navbarの高さ分の余白 */
+}
+
+/* サイドバーを固定表示 */
+.submenu.column.is-3 {
+  position: fixed;
+  top: 3.5rem; /* navbarの高さ分下げる */
+  left: 0.5rem; /* bodyのmargin分 */
+  height: calc(100vh - 3.5rem); /* 画面高さからnavbarの高さを引く */
+  overflow-y: auto; /* スクロール可能にする */
+  z-index: 10; /* navbarより下、コンテンツより上 */
+}
+
+/* サイドバーが固定されている場合、メインコンテンツの左マージンを調整 */
+body.has-navbar-fixed-top .column.is-9 {
+  margin-left: 25%; /* サイドバーの幅分（is-3 = 25%） */
+}
+
 .gpt-message .box {
   background-color: #a6f1b9;
   margin-bottom: 0;
