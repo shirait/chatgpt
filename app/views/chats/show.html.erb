@@ -24,7 +24,9 @@
       <%= "Content: #{@user_message.errors[:content].join(", ")}" %>
     </div>
   <% end %>
-  <%= f.text_area(:content, placeholder: '質問を入力してください', class: "textarea", rows: 5) %>
+  <div class="message-content-input">
+    <%= f.text_area(:content, placeholder: '質問を入力してください', class: "textarea", rows: 5) %>
+  </div>
   <div>
     <%= f.submit('質問する', class: "button is-primary is-normal") %>
   </div>
