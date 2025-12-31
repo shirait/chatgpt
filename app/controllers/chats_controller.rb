@@ -44,6 +44,12 @@ class ChatsController < ApplicationController
     @user_message = Message.new(message_thread_id: @message_thread.id)
   end
 
+  def search
+    authorize!(:search, MessageThread)
+    @searched_message_threads = MessageThread.eager_load(:messages).order("messages.id").where("messages.content LIKE ?", "%#{params[:search]}%")
+    load_message_threads
+  end
+
   def add_message
     @message_thread = MessageThread.find(params[:id])
     authorize!(:add_message, @message_thread)
