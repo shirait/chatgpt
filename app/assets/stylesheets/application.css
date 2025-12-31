@@ -30,9 +30,12 @@ body.has-navbar-fixed-top .column.is-9 {
 /* サイドバーを固定表示 */
 .submenu.column.is-3 {
   position: fixed;
+  /*
+  このコメントを解除すると、サイドバーの位置が上にくる。( https://developer.mozilla.org/ja/docs/Web/CSS/Reference/Properties/position )
   top: 0;
   left: 0;
   right: 0;
+  */
   overflow-y: auto;
   z-index: 1000;
 }
