@@ -1,6 +1,6 @@
 seed_files = [
   "users.rb",
-  "gpt_models.rb",
+  "gpt_models.rb"
 ]
 
 seed_files.each do |file|

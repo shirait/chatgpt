@@ -18,19 +18,20 @@ class ChatsController < ApplicationController
     )
 
     if !(@user_message.save && @message_thread.save)
-      flash.now[:alert] = @message_thread.errors.full_messages.join(", ") + @user_message.errors.full_messages.join(", ")
+      flash.now[:danger] = "入力に問題があります。エラー内容を確認してください。"
       load_message_threads
       render :new and return
     end
 
     begin
       GptMessageCreator.new(message_thread: @message_thread, user_message: @user_message).call!
+      flash[:success] = "メッセージの送受信に成功しました。"
       redirect_to chat_path(@message_thread) and return
     # 例外処理について、StandardError以外はrescueしないように注意（ https://github.com/shirait/blog_import_sample/issues/9#issuecomment-2142528418 ）
     rescue Faraday::Error => e
-      flash.now[:alert] = faraday_error_message
+      flash.now[:danger] = faraday_error_message
     rescue StandardError => e
-      flash.now[:alert] = unexpected_error_message
+      flash.now[:danger] = unexpected_error_message
     end
     load_message_threads
     render :new
@@ -53,18 +54,19 @@ class ChatsController < ApplicationController
     )
 
     unless @user_message.save
-      flash.now[:alert] = @user_message.errors.full_messages.join(", ")
+      flash.now[:danger] = "入力に問題があります。エラー内容を確認してください。"
       load_message_threads
       render :show and return
     end
 
     begin
       GptMessageCreator.new(message_thread: @message_thread, user_message: @user_message).call!
+      flash[:success] = "メッセージの送受信に成功しました。"
       redirect_to chat_path(@message_thread) and return
     rescue Faraday::Error => e
-      flash.now[:alert] = faraday_error_message
+      flash.now[:danger] = faraday_error_message
     rescue StandardError => e
-      flash.now[:alert] = unexpected_error_message
+      flash.now[:danger] = unexpected_error_message
     end
     load_message_threads
     render :show
@@ -82,10 +84,10 @@ class ChatsController < ApplicationController
 
     @message_thread.assign_attributes(update_message_thread_params)
     if @message_thread.save
-      flash[:notice] = "スレッドタイトルを更新しました。"
+      flash[:success] = "スレッドタイトルを更新しました。"
       redirect_to chat_path(@message_thread)
     else
-      flash.now[:alert] = @message_thread.errors.full_messages.join(", ")
+      flash.now[:danger] = @message_thread.errors.full_messages.join(", ")
       load_message_threads
       render :edit and return
     end
@@ -95,7 +97,7 @@ class ChatsController < ApplicationController
     @message_thread = MessageThread.find(params[:id])
     authorize!(:destroy, @message_thread)
     @message_thread.destroy!
-    flash[:notice] = "スレッドを削除しました。"
+    flash[:success] = "スレッドを削除しました。"
     redirect_to root_path
   end
 

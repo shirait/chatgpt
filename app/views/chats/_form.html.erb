@@ -1,0 +1,11 @@
+  <% if @user_message.errors[:content].present? %>
+    <div style="color: red;">
+      <%= "Content: #{@user_message.errors[:content].join(", ")}" %>
+    </div>
+  <% end %>
+  <div class="message-content-input">
+    <%= f.text_area(:content, placeholder: '質問を入力してください', class: "textarea", rows: 5) %>
+  </div>
+  <div>
+    <%= f.submit('送信する', class: "button is-info is-normal mt-1") %>
+  </div>

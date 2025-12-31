@@ -24,24 +24,32 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
   </head>
 
-  <body class="<%= 'has-navbar-fixed-top' if user_signed_in? %>">
-    <div class="layout-container">
+  <%# bulmaのデフォルトのnavbarを固定表示にする場合、bodyにもhas-navbar-fixed-topクラスを追加する。 %>
+  <body class="m-2 <%= 'has-navbar-fixed-top' if user_signed_in? %>">
+    <main class="columns">
+      <%# サイドバーメニュー %>
       <% if user_signed_in? %>
-        <aside class="sidebar">
-          <%= render 'layouts/sidebar' %>
-        </aside>
+        <div class="submenu column is-3">
+          <%= render('layouts/sidebar') %>
+        </div>
       <% end %>
-      <main class="main-content">
+
+      <div class="column is-9">
+        <%# navbarメニュー %>
+        <%= render('layouts/navbar_menu') if user_signed_in? %>
+
+        <%# フラッシュメッセージ %>
         <% if need_toplevel_flash_messages? %>
-          <%= render 'layouts/flash_messages' %>
+          <%# どこに表示するかは別途検討する。 %>
+          <%#= render('layouts/flash_messages') %>
         <% end %>
-        <% if user_signed_in? %>
-          <%= render 'layouts/navbar_menu' %>
-        <% end %>
+
+        <%# メインコンテンツ %>
         <%= yield %>
-      </main>
-    </div>
+      </div>
+    </main>
   </body>
 </html>
