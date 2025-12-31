@@ -16,6 +16,8 @@
   </div>
 <% end %>
 
+<%= render('layouts/flash_messages') %>
+
 <%= form_with(model: @user_message, url: add_message_chat_path(@message_thread), method: :post, html: { class: "new-message-form" }) do |f| %>
   <%= render('form', f: f) %>
 <% end %>

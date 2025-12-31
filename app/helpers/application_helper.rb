@@ -4,7 +4,7 @@ module ApplicationHelper
   end
 
   def not_need_toplevel_flash_messages?
-    params[:controller] == "message_threads" && params[:action] == "add_message"
+    params[:action].in?(["add_message", "show"])
   end
 
   # review: スコープを小さくできないか確認（chats_helper.rb に移動できないか確認）

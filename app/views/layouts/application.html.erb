@@ -36,14 +36,14 @@
         </div>
       <% end %>
 
-      <%# フラッシュメッセージ %>
-      <% if need_toplevel_flash_messages? %>
-        <%#= render('layouts/flash_messages') %>
-      <% end %>
-
       <div class="column is-9">
         <%# navbarメニュー %>
         <%= render('layouts/navbar_menu') if user_signed_in? %>
+
+        <%# フラッシュメッセージ %>
+        <% if need_toplevel_flash_messages? %>
+          <%= render('layouts/flash_messages') %>
+        <% end %>
 
         <%# メインコンテンツ %>
         <%= yield %>
