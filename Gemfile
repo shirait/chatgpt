@@ -73,3 +73,6 @@ gem "devise"
 
 # 認可機能を提供するgem
 gem "cancancan"
+
+# MarkdownをHTMLに変換するgem
+gem "redcarpet"
