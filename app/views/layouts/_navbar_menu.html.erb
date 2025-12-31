@@ -1,6 +1,16 @@
-<%# todo: navbarメニューをモバイル表示（1024px以下）のとき非表示となる。別途ハンバーガーメニューを追加する。 %>
+<%# todo: navbarメニューをモバイル表示（1024px以下）のとき非表示となる。別途ハンバーガーメニューを追加することを検討する。(navbar-burgerクラスでできそう) %>
+
+<%# is-fixed-top で固定表示にする。 %>
 <header class="navbar is-fixed-top is-9">
   <div class="navbar-menu">
+
+    <% if false %>
+    <div class="navbar-center">
+      <%= render("layouts/flash_messages") %>
+    </div>
+    <% end %>
+
+
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="field has-addons">

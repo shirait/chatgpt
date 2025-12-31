@@ -22,14 +22,19 @@ body.has-navbar-fixed-top .column.is-9 {
   padding-top: 0.5rem; /* navbarの高さ分の余白 */
 }
 
+/* navbar の表示の優先順位を指定（サイドバーより下になるように） */
+.navbar.is-9 {
+  z-index: 100;
+}
+
 /* サイドバーを固定表示 */
 .submenu.column.is-3 {
   position: fixed;
-  top: 2.75rem; /* navbarの高さ分下げる */
-  left: 0.5rem; /* bodyのmargin分 */
-  height: calc(100vh - 3.5rem); /* 画面高さからnavbarの高さを引く */
-  overflow-y: auto; /* スクロール可能にする */
-  z-index: 10; /* navbarより下、コンテンツより上 */
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  z-index: 1000;
 }
 
 /* サイドバーが固定されている場合、メインコンテンツの左マージンを調整 */
