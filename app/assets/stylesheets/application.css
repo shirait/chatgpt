@@ -16,9 +16,13 @@ main {
 .gpt-message.box {
   background-color: #a6f1b9;
   margin-bottom: 0;
+  max-width: 1300px; /* 最大幅を設定 */
+  width: fit-content; /* コンテンツに合わせた幅 */
 }
 
 .user-message.box {
   background-color: #b0e8f1;
   margin-bottom: 0;
+  max-width: 1300px; /* 最大幅を設定 */
+  width: fit-content; /* コンテンツに合わせた幅 */
 }
