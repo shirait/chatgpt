@@ -1,28 +1,30 @@
 <% @message_thread.messages.each do |message| %>
-  <div>
-    <div class="<%= "#{message.message_type.to_s}-message" %>" id="<%= "message-#{message.id}" %>">
-      <%#= simple_format(message.content) %>
-      <%= markdown_to_html(message.content) %>
+  <% flex_direction = message.user? ? "is-flex-direction-row-reverse" : "" %>
+  <div style="" class="is-flex <%= flex_direction %>">
+    <div class="<%= message_type_class(message) %>">
+      <div class="box">
+        <%= markdown_to_html(message.content) %>
+        <%= hidden_field_tag("message-#{message.id}", message.content) %>
+      </div>
+      <div class="copy">
+        <%= link_to("#", onclick: "copyButton('message-#{message.id}'); return false;") do %>
+          <i class="fa fa-copy"></i>
+          <span>コピー</span>
+        <% end %>
+      </div>
     </div>
-    <br>
-    <button onclick="copyButton('<%= "message-#{message.id}" %>')">コピー</button>
   </div>
-  <% if message.gpt? %>
-    <hr />
-  <% end %>
 <% end %>
 
-<%= render 'layouts/flash_messages' %>
 <%= form_with(model: @user_message, url: add_message_chat_path(@message_thread), method: :post, html: { class: "new-message-form" }) do |f| %>
-  <%= f.text_area(:content, size: "80x5", placeholder: '質問を入力してください') %>
-  <%= f.submit('質問する') %>
+  <%= render('form', f: f) %>
 <% end %>
 
-<%= link_to('スレッドタイトルを編集する', edit_chat_path(@message_thread)) %><br>
+<%= link_to('スレッドタイトルを編集する', edit_chat_path(@message_thread), class: "button is-primary is-light is-normal mt-1") %><br>
 <%= link_to(
   'スレッドを削除する',
   chat_path(@message_thread),
-  class: 'delete-link',
+  class: 'delete-link button is-danger is-light is-normal mt-1',
   data: { confirm: '本当に削除しますか？', method: 'delete' }
 ) %>
 
@@ -39,7 +41,7 @@
       // フォールバック: メインコンテンツが見つからない場合は通常のスクロール
       window.scrollTo({
         top: document.documentElement.scrollHeight,
-        behavior: 'smooth'
+        behavior: 'instant'
       });
     }
   }
@@ -55,67 +57,13 @@
   // Turboを使っている場合のイベント
   document.addEventListener('turbo:load', scrollToBottom);
 
-  // 削除リンクのconfirm処理
-  // navbarに設定したところ２重に実行されるようになった。いったんコメントアウト
-  /*
-  function setupDeleteLinks() {
-    const deleteLinks = document.querySelectorAll('a[data-confirm][data-method="delete"]');
-    deleteLinks.forEach(function(link) {
-      link.addEventListener('click', function(e) {
-        const confirmMessage = link.getAttribute('data-confirm');
-        if (!confirm(confirmMessage)) {
-          e.preventDefault();
-          return false;
-        }
-
-        // DELETEリクエストを送信するためのフォームを作成
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = link.href;
-
-        // CSRFトークンを追加
-        const csrfToken = document.querySelector('meta[name="csrf-token"]');
-        if (csrfToken) {
-          const csrfInput = document.createElement('input');
-          csrfInput.type = 'hidden';
-          csrfInput.name = 'authenticity_token';
-          csrfInput.value = csrfToken.getAttribute('content');
-          form.appendChild(csrfInput);
-        }
-
-        // method override
-        const methodInput = document.createElement('input');
-        methodInput.type = 'hidden';
-        methodInput.name = '_method';
-        methodInput.value = 'delete';
-        form.appendChild(methodInput);
-
-        document.body.appendChild(form);
-        form.submit();
-
-        e.preventDefault();
-        return false;
-      });
-    });
-  }
-  */
-
-  // ページ読み込み時に削除リンクを設定
-  /*
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupDeleteLinks);
-  } else {
-    setupDeleteLinks();
-  }
-  */
-
-  // Turboを使っている場合のイベント
-  // document.addEventListener('turbo:load', setupDeleteLinks);
+  <%# setupDeleteLinksは application.html.erb で共通化済み %>
 
   // コピー実行
+  // todo: コピーを実行したら文言を「コピーしました」に変更したい。
   function copyButton(messageId) {
     const message = document.getElementById(messageId);
-    const text = message.textContent;
+    const text = message.value;
     navigator.clipboard.writeText(text);
   }
 </script>

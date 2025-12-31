@@ -19,16 +19,16 @@ class GptMessageCreator
   # 注意。client.chatメソッド実行でエラーになっても、機密情報漏洩を避けるため、例外の情報はログに残らない。
   # (https://github.com/alexrudall/ruby-openai?tab=readme-ov-file#errors)
   def request_to_openai_api(message)
+    return "Hello, world!(stub message)" # stub message
     access_token = Rails.configuration.static_config.openai_key
     client = OpenAI::Client.new(access_token: access_token)
     response = client.chat(
       parameters: {
         model: message.gpt_model.name,
-        messages: [{ role: "user", content: message.content }],
+        messages: [ { role: "user", content: message.content } ],
         temperature: 0.7
       }
     )
     response.dig("choices", 0, "message", "content")
   end
 end
-
