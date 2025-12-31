@@ -1,6 +1,9 @@
 <aside class="box">
   <div class="sidebar-message-thread-link <%= 'selected' if @message_thread.nil? %>">
-    <%= link_to('新しいチャット', new_chat_path) %>
+    <%= link_to(new_chat_path) do %>
+      <i class="fa fa-plus"></i>
+      <span>新しいチャット</span>
+    <% end %>
   </div>
 
   <% @message_threads.each do |message_thread| %>

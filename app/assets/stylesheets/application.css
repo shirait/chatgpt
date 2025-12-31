@@ -67,3 +67,8 @@ body.has-navbar-fixed-top .column.is-9 {
   /* max-width: 70%; *//* 最大幅を設定 */
   margin-right: 1em;
 }
+
+.sidebar-message-thread-link.selected {
+  font-weight: bold;
+
+}

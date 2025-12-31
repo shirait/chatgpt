@@ -7,12 +7,10 @@
         <%= hidden_field_tag("message-#{message.id}", message.content) %>
       </div>
       <div class="copy">
-        <%= link_to(
-          "コピー",
-          "#",
-          onclick: "copyButton('message-#{message.id}'); return false;",
-          class: "fa fa-copy")
-        %>
+        <%= link_to("#", onclick: "copyButton('message-#{message.id}'); return false;") do %>
+          <i class="fa fa-copy"></i>
+          <span>コピー</span>
+        <% end %>
       </div>
     </div>
   </div>
