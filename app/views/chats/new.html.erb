@@ -1,7 +1,14 @@
 <%= form_with model: @user_message, url: chats_path, method: :post do |f| %>
-  <%= f.text_area(:content, size: "80x5", placeholder: '質問を入力してください') %>
+  <% if @user_message.errors[:content].present? %>
+    <div class="notification is-danger is-small">
+      <%= "Content: #{@user_message.errors[:content].join(", ")}" %>
+    </div>
+  <% end %>
+  <div class="message-content-input">
+    <%= f.text_area(:content, placeholder: '質問を入力してください', class: "textarea", rows: 5) %>
+  </div>
   <div>
-    <%= f.submit('質問する') %>
+    <%= f.submit('質問する', class: "button is-primary is-normal") %>
   </div>
 <% end %>
 
