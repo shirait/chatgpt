@@ -12,3 +12,13 @@
 main {
   background-color: #eeeeee;
 }
+
+.gpt-message.box {
+  background-color: #a6f1b9;
+  margin-bottom: 0;
+}
+
+.user-message.box {
+  background-color: #b0e8f1;
+  margin-bottom: 0;
+}

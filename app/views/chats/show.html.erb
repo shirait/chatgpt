@@ -1,25 +1,33 @@
 <% @message_thread.messages.each do |message| %>
   <div>
-    <div class="<%= "#{message.message_type.to_s}-message" %>" id="<%= "message-#{message.id}" %>">
+    <div class="<%= message_type_class(message) %> box">
       <%= simple_format(message.content) %>
+      <%= hidden_field_tag("message-#{message.id}", message.content) %>
     </div>
-    <br>
-    <%= link_to(
-      "コピー",
-      "#",
-      onclick: "copyButton('message-#{message.id}'); return false;",
-      class: "button is-small mt-1")
-    %>
+    <div class="mb-4">
+      <%= link_to(
+        "コピー",
+        "#",
+        onclick: "copyButton('message-#{message.id}'); return false;",
+        class: "button is-small")
+      %>
+    </div>
   </div>
   <% if message.gpt? %>
     <hr />
   <% end %>
 <% end %>
 
-<%= render 'layouts/flash_messages' %>
 <%= form_with(model: @user_message, url: add_message_chat_path(@message_thread), method: :post, html: { class: "new-message-form" }) do |f| %>
-  <%= f.text_area(:content, size: "80x5", placeholder: '質問を入力してください') %>
-  <%= f.submit('質問する') %>
+  <% if @user_message.errors[:content].present? %>
+    <div class="notification is-danger is-small">
+      <%= "Content: #{@user_message.errors[:content].join(", ")}" %>
+    </div>
+  <% end %>
+  <%= f.text_area(:content, placeholder: '質問を入力してください', class: "textarea", rows: 5) %>
+  <div>
+    <%= f.submit('質問する', class: "button is-primary is-normal") %>
+  </div>
 <% end %>
 
 <%= link_to('スレッドタイトルを編集する', edit_chat_path(@message_thread)) %><br>
@@ -120,7 +128,7 @@
   // todo: コピーを実行したら文言を「コピーしました」に変更したい。
   function copyButton(messageId) {
     const message = document.getElementById(messageId);
-    const text = message.textContent;
+    const text = message.value;
     navigator.clipboard.writeText(text);
   }
 </script>

@@ -26,27 +26,34 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
   </head>
 
-  <% if false # debug %>
-  <body class="<%= 'has-navbar-fixed-top' if user_signed_in? %>">
-    <div class="layout-container">
+  <body class="m-2">
+    <main class="columns">
+
+      <%# サイドバーメニュー %>
       <% if user_signed_in? %>
-        <aside class="sidebar">
+        <div class="submenu column is-3">
           <%= render 'layouts/sidebar' %>
-        </aside>
+        </div>
       <% end %>
-      <main class="main-content">
-        <% if need_toplevel_flash_messages? %>
-          <%= render 'layouts/flash_messages' %>
-        <% end %>
-        <% if user_signed_in? %>
-          <%= render 'layouts/navbar_menu' %>
-        <% end %>
+
+      <%# フラッシュメッセージ %>
+      <% if need_toplevel_flash_messages? %>
+        <%#= render 'layouts/flash_messages' %>
+      <% end %>
+
+      <%# navbarメニュー %>
+      <% if user_signed_in? %>
+        <%#= render 'layouts/navbar_menu' %>
+      <% end %>
+
+      <%# メインコンテンツ %>
+      <div class="column is-9">
         <%= yield %>
-      </main>
+      </div>
     </div>
   </body>
-  <% end %>
 
+  <% if false # debug %>
   <body>
     <%# navbarメニュー %>
     <header class="navbar">
@@ -203,4 +210,5 @@
       </div>
     </footer>
   </body>
+  <% end %>
 </html>

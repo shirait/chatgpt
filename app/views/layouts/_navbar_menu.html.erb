@@ -1,3 +1,4 @@
+<% if true # debug %>
 <nav class="navbar is-fixed-top">
   <div>
     <%#= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'navbar-item' %>
@@ -9,6 +10,7 @@
     ) %>
   </div>
 </nav>
+<% end %>
 
 <%# todo: scriptの内容を chats/show.html.erb と共通化する。 %>
 <script>
