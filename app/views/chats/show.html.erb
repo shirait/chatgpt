@@ -1,21 +1,21 @@
 <% @message_thread.messages.each do |message| %>
-  <div>
-    <div class="<%= message_type_class(message) %> box">
-      <%= simple_format(message.content) %>
-      <%= hidden_field_tag("message-#{message.id}", message.content) %>
-    </div>
-    <div class="mb-4">
-      <%= link_to(
-        "コピー",
-        "#",
-        onclick: "copyButton('message-#{message.id}'); return false;",
-        class: "button is-small")
-      %>
+  <% flex_direction = message.user? ? "is-flex-direction-row-reverse" : "" %>
+  <div style="" class="is-flex <%= flex_direction %>">
+    <div class="<%= message_type_class(message) %>">
+      <div class="box">
+        <%= simple_format(message.content) %>
+        <%= hidden_field_tag("message-#{message.id}", message.content) %>
+      </div>
+      <div class="copy">
+        <%= link_to(
+          "コピー",
+          "#",
+          onclick: "copyButton('message-#{message.id}'); return false;",
+          class: "fa fa-copy")
+        %>
+      </div>
     </div>
   </div>
-  <% if message.gpt? %>
-    <hr />
-  <% end %>
 <% end %>
 
 <%= form_with(model: @user_message, url: add_message_chat_path(@message_thread), method: :post, html: { class: "new-message-form" }) do |f| %>
