@@ -11,4 +11,9 @@ module ApplicationHelper
   def message_type_class(message)
     "#{message.message_type.to_s}-message"
   end
+
+  def message_background_color(message)
+    return "has-background-primary-light" if message.user?
+    return "has-background-link-light"    if message.gpt?
+  end
 end
