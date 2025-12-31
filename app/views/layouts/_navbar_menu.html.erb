@@ -1,15 +1,17 @@
 <% if true # debug %>
-<nav class="navbar is-fixed-top">
-  <div>
-    <%#= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'navbar-item' %>
-    <%= link_to(
-      'ログアウト',
-      destroy_user_session_path,
-      class: 'button mt-1 is-small delete-link',
-      data: { confirm: 'ログアウトしますか？', method: 'delete' }
-    ) %>
+<header class="navbar">
+  <div class="is-flex">
+    <div class="is-justify-content-flex-end">
+      <%#= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'navbar-item' %>
+      <%= link_to(
+        'ログアウト',
+        destroy_user_session_path,
+        class: 'button mt-1 is-small delete-link',
+        data: { confirm: 'ログアウトしますか？', method: 'delete' }
+      ) %>
+    </div>
   </div>
-</nav>
+</header>
 <% end %>
 
 <%# todo: scriptの内容を chats/show.html.erb と共通化する。 %>

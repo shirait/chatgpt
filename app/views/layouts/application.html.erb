@@ -32,22 +32,20 @@
       <%# サイドバーメニュー %>
       <% if user_signed_in? %>
         <div class="submenu column is-3">
-          <%= render 'layouts/sidebar' %>
+          <%= render('layouts/sidebar') %>
         </div>
       <% end %>
 
       <%# フラッシュメッセージ %>
       <% if need_toplevel_flash_messages? %>
-        <%#= render 'layouts/flash_messages' %>
+        <%#= render('layouts/flash_messages') %>
       <% end %>
 
-      <%# navbarメニュー %>
-      <% if user_signed_in? %>
-        <%#= render 'layouts/navbar_menu' %>
-      <% end %>
-
-      <%# メインコンテンツ %>
       <div class="column is-9">
+        <%# navbarメニュー %>
+        <%= render('layouts/navbar_menu') if user_signed_in? %>
+
+        <%# メインコンテンツ %>
         <%= yield %>
       </div>
     </div>

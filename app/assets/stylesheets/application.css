@@ -13,6 +13,10 @@ main {
   background-color: #eeeeee;
 }
 
+header.navbar {
+  background-color: #eeeeee;
+}
+
 .gpt-message .box {
   background-color: #a6f1b9;
   margin-bottom: 0;
