@@ -69,62 +69,7 @@
   // Turboを使っている場合のイベント
   document.addEventListener('turbo:load', scrollToBottom);
 
-  // 削除リンクのconfirm処理
-  // navbarに設定したところ２重に実行されるようになった。いったんコメントアウト
-  /*
-  function setupDeleteLinks() {
-    const deleteLinks = document.querySelectorAll('a[data-confirm][data-method="delete"]');
-    deleteLinks.forEach(function(link) {
-      link.addEventListener('click', function(e) {
-        const confirmMessage = link.getAttribute('data-confirm');
-        if (!confirm(confirmMessage)) {
-          e.preventDefault();
-          return false;
-        }
-
-        // DELETEリクエストを送信するためのフォームを作成
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = link.href;
-
-        // CSRFトークンを追加
-        const csrfToken = document.querySelector('meta[name="csrf-token"]');
-        if (csrfToken) {
-          const csrfInput = document.createElement('input');
-          csrfInput.type = 'hidden';
-          csrfInput.name = 'authenticity_token';
-          csrfInput.value = csrfToken.getAttribute('content');
-          form.appendChild(csrfInput);
-        }
-
-        // method override
-        const methodInput = document.createElement('input');
-        methodInput.type = 'hidden';
-        methodInput.name = '_method';
-        methodInput.value = 'delete';
-        form.appendChild(methodInput);
-
-        document.body.appendChild(form);
-        form.submit();
-
-        e.preventDefault();
-        return false;
-      });
-    });
-  }
-  */
-
-  // ページ読み込み時に削除リンクを設定
-  /*
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupDeleteLinks);
-  } else {
-    setupDeleteLinks();
-  }
-  */
-
-  // Turboを使っている場合のイベント
-  // document.addEventListener('turbo:load', setupDeleteLinks);
+  <%# setupDeleteLinksは application.html.erb で共通化済み %>
 
   // コピー実行
   // todo: コピーを実行したら文言を「コピーしました」に変更したい。
