@@ -16,6 +16,11 @@ module ApplicationHelper
     "#{message.message_type.to_s}-message"
   end
 
+  def message_background_color(message)
+    return "has-background-primary-light" if message.user?
+    return "has-background-link-light"    if message.gpt?
+  end
+
   def markdown_to_html(text)
     render_options = {
       filter_html:         true,  # HTMLタグのフィルタリングを有効にする

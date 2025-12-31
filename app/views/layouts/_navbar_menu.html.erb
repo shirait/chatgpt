@@ -22,14 +22,14 @@
       </div>
       <% end %>
       <div class="navbar-item">
-        <div class="field has-addons">
+        <%= form_with(url: search_chats_path, method: :get, class: "field has-addons", id: "search-form") do |f| %>
           <div class="control">
-            <%= text_field_tag :search, nil, placeholder: '検索', class: "input" %>
+            <%= text_field_tag :search, nil, placeholder: '検索', class: "input", value: params[:search] %>
           </div>
           <div class="control">
-            <a class="button is-info"><i class="fa fa-search"></i>検索</a>
+            <a class="button is-info" onclick="document.getElementById('search-form').submit();"><i class="fa fa-search"></i>検索</a>
           </div>
-        </div>
+        <% end %>
       </div>
       <div class="navbar-item">
         <%= link_to(

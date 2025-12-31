@@ -2,7 +2,7 @@
   <% flex_direction = message.user? ? "is-flex-direction-row-reverse" : "" %>
   <div style="" class="is-flex <%= flex_direction %>">
     <div class="<%= message_type_class(message) %>">
-      <div class="box">
+      <div class="box <%= message_background_color(message) %>">
         <%= markdown_to_html(message.content) %>
         <%= hidden_field_tag("message-#{message.id}", message.content) %>
       </div>

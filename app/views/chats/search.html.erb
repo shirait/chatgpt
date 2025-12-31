@@ -1,0 +1,6 @@
+検索にヒットしたチャットは以下になります。
+<% @searched_message_threads.each do |message_thread| %>
+  <div>
+    <%= link_to(message_thread.title, chat_path(message_thread)) %>
+  </div>
+<% end %>

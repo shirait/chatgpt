@@ -8,6 +8,9 @@ Rails.application.routes.draw do
     member do
       post :add_message
     end
+    collection do
+      get :search
+    end
   end
 
   # gpt_modelsのCRUD機能は後回しとする。（当面はrails consoleから直接操作する。）

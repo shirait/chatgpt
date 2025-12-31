@@ -9,14 +9,6 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
-main {
-  background-color: #eeeeee;
-}
-
-header.navbar {
-  background-color: #eeeeee;
-}
-
 /* navbarが固定表示の場合、コンテンツが隠れないようにpadding-topを設定 */
 body.has-navbar-fixed-top .column.is-9 {
   padding-top: 0.5rem; /* navbarの高さ分の余白 */
@@ -46,7 +38,6 @@ body.has-navbar-fixed-top .column.is-9 {
 }
 
 .gpt-message .box {
-  background-color: #a6f1b9;
   margin-bottom: 0;
   width: fit-content; /* コンテンツに合わせた幅 */
   margin-right: 6em;
@@ -58,7 +49,6 @@ body.has-navbar-fixed-top .column.is-9 {
 }
 
 .user-message .box {
-  background-color: #b0e8f1;
   margin-bottom: 0;
   width: fit-content; /* コンテンツに合わせた幅 */
   margin-left: 4em;
