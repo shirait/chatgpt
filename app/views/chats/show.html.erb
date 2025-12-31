@@ -3,7 +3,7 @@
   <div style="" class="is-flex <%= flex_direction %>">
     <div class="<%= message_type_class(message) %>">
       <div class="box">
-        <%= simple_format(message.content) %>
+        <%= markdown_to_html(message.content) %>
         <%= hidden_field_tag("message-#{message.id}", message.content) %>
       </div>
       <div class="copy">
