@@ -1,4 +1,5 @@
-class GptMessageCreator
+# OpenAI APIを呼び出してアシスタントメッセージを作成するサービスクラス
+class OpenAiChatCaller
   def initialize(message_thread:, user_message:)
     @message_thread = message_thread
     @user_message = user_message
@@ -8,7 +9,7 @@ class GptMessageCreator
     Message.create!(
       message_thread_id: @message_thread.id,
       gpt_model_id: @user_message.gpt_model.id,
-      message_type: Message.message_types[:gpt],
+      message_type: Message.message_types[:assistant],
       content: request_to_openai_api(@user_message),
       creator_id: @user_message.creator_id
     )
@@ -28,7 +29,7 @@ class GptMessageCreator
     response = client.chat(
       parameters: {
         model: message.gpt_model.name,
-        messages: [ { role: "user", content: message.content } ],
+        messages: OpenAiMessageBuilder.build(message: message),
         temperature: 0.7
       }
     )

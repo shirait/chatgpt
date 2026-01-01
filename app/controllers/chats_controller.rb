@@ -1,7 +1,7 @@
 class ChatsController < ApplicationController
   def new
     authorize!(:new, MessageThread)
-    @user_message = Message.new
+    @user_message = Message.new(send_prev_messages_to_openai_api: true)
     load_message_threads
   end
 
@@ -24,7 +24,7 @@ class ChatsController < ApplicationController
     end
 
     begin
-      GptMessageCreator.new(message_thread: @message_thread, user_message: @user_message).call!
+      OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
       flash[:success] = "メッセージの送受信に成功しました。"
       redirect_to chat_path(@message_thread) and return
     # 例外処理について、StandardError以外はrescueしないように注意（ https://github.com/shirait/blog_import_sample/issues/9#issuecomment-2142528418 ）
@@ -41,7 +41,7 @@ class ChatsController < ApplicationController
     @message_thread = MessageThread.eager_load(:messages).order("messages.id").find(params[:id])
     authorize!(:read, @message_thread)
     load_message_threads
-    @user_message = Message.new(message_thread_id: @message_thread.id)
+    @user_message = Message.new(message_thread_id: @message_thread.id, send_prev_messages_to_openai_api: true)
   end
 
   def search
@@ -66,7 +66,7 @@ class ChatsController < ApplicationController
     end
 
     begin
-      GptMessageCreator.new(message_thread: @message_thread, user_message: @user_message).call!
+      OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
       flash[:success] = "メッセージの送受信に成功しました。"
       redirect_to chat_path(@message_thread) and return
     rescue Faraday::Error => e
@@ -114,7 +114,7 @@ class ChatsController < ApplicationController
   end
 
   def message_params
-    params.require(:message).permit(:content)
+    params.require(:message).permit(:content, :send_prev_messages_to_openai_api)
   end
 
   def update_message_thread_params

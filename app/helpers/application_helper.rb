@@ -18,7 +18,7 @@ module ApplicationHelper
 
   def message_background_color(message)
     return "has-background-primary-light" if message.user?
-    return "has-background-link-light"    if message.gpt?
+    return "has-background-link-light"    if message.assistant?
   end
 
   def markdown_to_html(text)
