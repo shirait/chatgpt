@@ -11,7 +11,7 @@ class OpenAiMessageBuilder
     if should_include_prev_messages?
       prev_messages.reverse << current_user_message
     else
-      [current_user_message]
+      [ current_user_message ]
     end
   end
 
@@ -34,4 +34,3 @@ class OpenAiMessageBuilder
     { role: "user", content: @message.content }
   end
 end
-

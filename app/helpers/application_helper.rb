@@ -1,33 +1,33 @@
 module ApplicationHelper
   # マークダウン表示に必要なgem
-  require 'redcarpet'
-  require 'redcarpet/render_strip'
+  require "redcarpet"
+  require "redcarpet/render_strip"
 
   def need_toplevel_flash_messages?
     !not_need_toplevel_flash_messages?
   end
 
   def not_need_toplevel_flash_messages?
-    params[:action].in?(["add_message", "show"])
+    params[:action].in?([ "add_message", "show" ])
   end
 
   # review: スコープを小さくできないか確認（chats_helper.rb に移動できないか確認）
   def message_type_class(message)
-    "#{message.message_type.to_s}-message"
+    "#{message.message_type}-message"
   end
 
   def message_background_color(message)
     return "has-background-primary-light" if message.user?
-    return "has-background-link-light"    if message.assistant?
+    "has-background-link-light"    if message.assistant?
   end
 
   def markdown_to_html(text)
     render_options = {
       filter_html:         true,  # HTMLタグのフィルタリングを有効にする
       hard_wrap:           true,  # ハードラップを有効にする
-      link_attributes:     { rel: 'nofollow', target: "_blank" },  # リンクの属性を設定する
+      link_attributes:     { rel: "nofollow", target: "_blank" },  # リンクの属性を設定する
       space_after_headers: true,  # ヘッダー後のスペースを有効にする
-      fenced_code_blocks:  true,  # フェンス付きコードブロックを有効にする
+      fenced_code_blocks:  true  # フェンス付きコードブロックを有効にする
     }
 
     # HTMLレンダラーを作成する
@@ -43,7 +43,7 @@ module ApplicationHelper
       superscript:        true,  # 上付き文字を有効にする
       tables:             true,  # テーブルを有効にする
       with_toc_data:      true,  # 目次を有効にする
-      escape_html:        true,  # HTMLエスケープを有効にする
+      escape_html:        true  # HTMLエスケープを有効にする
     }
 
     # マークダウンをHTMLに変換し、結果をhtml_safeにする
