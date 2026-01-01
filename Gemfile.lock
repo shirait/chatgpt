@@ -433,6 +433,7 @@ DEPENDENCIES
   bundler-audit
   cancancan
   capistrano
+  capistrano-bundler
   capistrano-passenger
   capistrano-rails
   capistrano-rbenv

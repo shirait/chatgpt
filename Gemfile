@@ -79,9 +79,9 @@ gem "redcarpet"
 
 gem "rails-i18n"
 
-gem "capistrano"
-
-gem "capistrano"
-gem 'capistrano-rails'
-gem 'capistrano-rbenv'
-gem 'capistrano-passenger'
+# Capistrano deployment
+gem "capistrano", require: false
+gem "capistrano-rails", require: false
+gem "capistrano-rbenv", require: false
+gem "capistrano-passenger", require: false
+gem "capistrano-bundler", require: false
