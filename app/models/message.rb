@@ -5,6 +5,8 @@ class Message < ApplicationRecord
 
   enum :message_type, { user: 0, assistant: 1 } # user: ユーザーからのメッセージ, assistant: GPTからのメッセージ
 
+  attr_accessor :send_prev_messages_to_openai_api
+
   validates :message_type, presence: true, inclusion: { in: message_types.keys }
   validates :gpt_model, presence: true
   validates :message_thread, presence: true
@@ -17,7 +19,12 @@ class Message < ApplicationRecord
       message_thread: message_thread,
       message_type: :user,
       creator_id: creator_id,
-      gpt_model: GptModel.active_model
+      gpt_model: GptModel.active_model,
+      send_prev_messages_to_openai_api: params[:send_prev_messages_to_openai_api] == "1"
     )
+  end
+
+  def send_prev_messages_to_openai_api?
+    !!send_prev_messages_to_openai_api
   end
 end

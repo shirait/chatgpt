@@ -36,7 +36,15 @@ class GptMessageCreator
   end
 
   def message_to_openai_api(message)
-    prev_messages(message).reverse << { role: "user", content: message.content }
+    if send_prev_messages_to_openai_api?(message)
+      return prev_messages(message).reverse << { role: "user", content: message.content }
+    end
+
+    [{ role: "user", content: message.content }]
+  end
+
+  def send_prev_messages_to_openai_api?(message)
+    message.send_prev_messages_to_openai_api? && Rails.configuration.static_config.max_prev_message_count.to_i > 0
   end
 
   def prev_messages(message)
