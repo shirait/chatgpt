@@ -2,8 +2,8 @@
 <header class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <div class="navbar-item">
-      <div class="is-size-3-desktop is-size-4-tablet is-size-5-mobile">
-        <%= Rails.configuration.static_config.title %>
+      <div class="is-size-3-desktop is-size-4-tablet is-size-6-mobile">
+        <%= link_to(Rails.configuration.static_config.title, root_path) %>
       </div>
     </div>
 
