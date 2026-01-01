@@ -20,9 +20,9 @@
   <%= render('form', f: f) %>
 <% end %>
 
-<%= link_to('スレッドタイトルを編集する', edit_chat_path(@message_thread), class: "button is-primary is-light is-normal mt-1") %><br>
+<%= link_to('タイトルを編集する', edit_chat_path(@message_thread), class: "button is-primary is-light is-normal mt-1") %><br>
 <%= link_to(
-  'スレッドを削除する',
+  '削除する',
   chat_path(@message_thread),
   class: 'delete-link button is-danger is-light is-normal mt-1',
   data: { confirm: '本当に削除しますか？', method: 'delete' }
