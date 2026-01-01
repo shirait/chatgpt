@@ -8,7 +8,7 @@ class GptMessageCreator
     Message.create!(
       message_thread_id: @message_thread.id,
       gpt_model_id: @user_message.gpt_model.id,
-      message_type: Message.message_types[:gpt],
+      message_type: Message.message_types[:assistant],
       content: request_to_openai_api(@user_message),
       creator_id: @user_message.creator_id
     )
@@ -47,8 +47,7 @@ class GptMessageCreator
                       .order(id: :desc)
                       .limit(limit)
     messages.map do |msg|
-      role = msg.message_type.to_s == "user" ? "user" : "assistant"
-      { role: role, content: msg.content }
+      { role: msg.message_type.to_s, content: msg.content }
     end
   end
 
