@@ -85,9 +85,19 @@ body.has-navbar-fixed-top .column.is-9 {
     display: block;
   }
 
-  /* モバイル表示時、サイドバーを非表示にするか、調整が必要な場合はここに追加 */
-  /* 例: サイドバーを非表示にする場合 */
-  /* .submenu.column.is-3 {
+  /* モバイル表示時、サイドバーを非表示（ハンバーガーメニューに表示されるため） */
+  .submenu.column.is-3 {
     display: none;
-  } */
+  }
+
+  /* モバイル表示時、メインコンテンツの左マージンを削除 */
+  body.has-navbar-fixed-top .column.is-9 {
+    margin-left: 0;
+  }
+
+  /* ハンバーガーメニュー内のサイドバーコンテンツのスタイル */
+  .navbar-menu .navbar-item .box {
+    margin: 0;
+    padding: 0.75rem;
+  }
 }
