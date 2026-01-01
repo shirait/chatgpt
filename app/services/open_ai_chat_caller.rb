@@ -1,5 +1,5 @@
 # OpenAI APIを呼び出してアシスタントメッセージを作成するサービスクラス
-class OpenAIChatCaller
+class OpenAiChatCaller
   def initialize(message_thread:, user_message:)
     @message_thread = message_thread
     @user_message = user_message

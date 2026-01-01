@@ -34,5 +34,8 @@ module Chatgpt
     config.i18n.default_locale = :ja
     # i18nファイルのロード設定
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
+
+    # app/servicesディレクトリを自動読み込みパスに追加
+    config.autoload_paths += %W[#{config.root}/app/services]
   end
 end
