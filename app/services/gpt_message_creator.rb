@@ -28,11 +28,28 @@ class GptMessageCreator
     response = client.chat(
       parameters: {
         model: message.gpt_model.name,
-        messages: [ { role: "user", content: message.content } ],
+        messages: message_to_openai_api(message),
         temperature: 0.7
       }
     )
     response.dig("choices", 0, "message", "content")
+  end
+
+  def message_to_openai_api(message)
+    prev_messages(message).reverse << { role: "user", content: message.content }
+  end
+
+  def prev_messages(message)
+    # 過去n往復分のメッセージを履歴に含める。（ユーザーの送信とGPTの回答で1往復とし、最大値は config.yml で設定可能とする。）
+    limit = Rails.configuration.static_config.max_prev_message_count * 2
+    messages = Message.where(message_thread_id: message.message_thread.id)
+                      .where.not(id: message.id)
+                      .order(id: :desc)
+                      .limit(limit)
+    messages.map do |msg|
+      role = msg.message_type.to_s == "user" ? "user" : "assistant"
+      { role: role, content: msg.content }
+    end
   end
 
   def use_stub?
