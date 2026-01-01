@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     # カスタムコントローラー利用設定
     confirmations: 'users/confirmations',
-    omniauth_callbacks: 'users/omniauth_callbacks',
+    # omniauth_callbacks: 'users/omniauth_callbacks', # user.rb で :omniauthableを有効にしたら指定する。
     passwords: 'users/passwords',
     registrations: 'users/registrations',
     unlocks: 'users/unlocks',
