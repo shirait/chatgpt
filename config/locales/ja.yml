@@ -1,0 +1,28 @@
+ja:
+  activerecord:
+    models:
+      message_thread: "メッセージスレッド"
+      message: "メッセージ"
+      gpt_model: "GPTモデル"
+      user: "ユーザー"
+    attributes:
+      message_thread:
+        title: "タイトル"
+      message:
+        content: "内容"
+        question: "質問"
+      gpt_model:
+        name: "名前"
+        description: "説明"
+      user:
+        email: "メールアドレス"
+        password: "パスワード"
+        password_confirmation: "パスワード確認"
+        role: "権限"
+    errors:
+      messages:
+        not_saved:
+          one: "%{resource}を保存できませんでした。1件のエラーがあります:"
+          other: "%{resource}を保存できませんでした。%{count}件のエラーがあります:"
+      models:
+        attributes:

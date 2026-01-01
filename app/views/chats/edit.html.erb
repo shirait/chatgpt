@@ -1,7 +1,8 @@
 <%= form_with model: @message_thread, url: chat_path(@message_thread), method: :put do |f| %>
   <% if @message_thread.errors[:title].present? %>
     <div style="color: red;">
-      <%= "Title: #{@message_thread.errors[:title].join(", ")}" %>
+      <%= t("activerecord.attributes.message_thread.title") %>
+      <%= @message_thread.errors[:title].join(", ") %>
     </div>
   <% end %>
   <div class="field">
