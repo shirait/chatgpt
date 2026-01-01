@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {
-    # カスタムコントローラーを使いたい場合は以下を指定する。
-    unlocks: 'users/unlocks'
+    # カスタムコントローラー利用設定
+    confirmations: 'users/confirmations',
+    omniauth_callbacks: 'users/omniauth_callbacks',
+    passwords: 'users/passwords',
+    registrations: 'users/registrations',
+    unlocks: 'users/unlocks',
+    sessions: 'users/sessions',
   }
 
   # 役割に応じてリダイレクト先を振り分ける。

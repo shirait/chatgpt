@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  before_action :raise_error
+
   # You should configure your model like this:
   # devise :omniauthable, omniauth_providers: [:twitter]
 
@@ -27,4 +29,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # def after_omniauth_failure_path_for(scope)
   #   super(scope)
   # end
+
+  private
+  def raise_error
+    raise ActionController::RoutingError, "Omniauth functionality is not available"
+  end
 end
