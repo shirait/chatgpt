@@ -36,4 +36,6 @@
 # 設定ファイルは管理対象外とする
 /config/config.yml
 /config/database.yml
+/config/credentials.yml.enc
+/config/master.key
 
