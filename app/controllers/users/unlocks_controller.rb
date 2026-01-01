@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class Users::UnlocksController < Devise::UnlocksController
+  # ロックは管理者のみ可能とする。
+  # 画面上に導線は公開していないが、直接POSTされた場合にエラーを返すようにしておく。
+  before_action :raise_error
+
   # GET /resource/unlock/new
   # def new
   #   super
@@ -27,4 +31,10 @@ class Users::UnlocksController < Devise::UnlocksController
   # def after_unlock_path_for(resource)
   #   super(resource)
   # end
+
+  private
+
+  def raise_error
+    raise ActionController::RoutingError, "Unlock functionality is not available"
+  end
 end

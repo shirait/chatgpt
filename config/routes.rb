@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: {
+    # カスタムコントローラーを使いたい場合は以下を指定する。
+    unlocks: 'users/unlocks'
+  }
 
   # 役割に応じてリダイレクト先を振り分ける。
   root "application#root_redirect"
