@@ -1,13 +1,23 @@
-<%# todo: navbarメニューをモバイル表示（1024px以下）のとき非表示となる。別途ハンバーガーメニューを追加することを検討する。(navbar-burgerクラスでできそう) %>
-
 <%# is-fixed-top で固定表示にする。 %>
-<header class="navbar is-fixed-top">
-  <div class="navbar-menu">
-
-    <div class="navbar-start">
+<header class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <div class="navbar-item">
       <div class="is-size-3">
         <%= Rails.configuration.static_config.title %>
       </div>
+    </div>
+
+    <%# ハンバーガーメニューアイコン（モバイル表示時のみ表示） %>
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar-menu">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbar-menu" class="navbar-menu">
+    <div class="navbar-start">
+      <%# 必要に応じてメニュー項目を追加 %>
     </div>
 
     <div class="navbar-end">

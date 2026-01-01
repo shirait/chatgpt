@@ -73,3 +73,21 @@ body.has-navbar-fixed-top .column.is-9 {
 .sidebar-message-thread-link.selected {
   font-weight: bold;
 }
+
+/* モバイル表示時のナビゲーションメニューのスタイル */
+@media screen and (max-width: 1023px) {
+  /* モバイル表示時、navbar-menuはデフォルトで非表示（is-activeクラスがある場合のみ表示） */
+  .navbar-menu {
+    display: none;
+  }
+
+  .navbar-menu.is-active {
+    display: block;
+  }
+
+  /* モバイル表示時、サイドバーを非表示にするか、調整が必要な場合はここに追加 */
+  /* 例: サイドバーを非表示にする場合 */
+  /* .submenu.column.is-3 {
+    display: none;
+  } */
+}
