@@ -1,6 +1,7 @@
   <% if @user_message.errors[:content].present? %>
     <div style="color: red;">
-      <%= "Content: #{@user_message.errors[:content].join(", ")}" %>
+      <%= t("activerecord.attributes.message.question") %>
+      <%= @user_message.errors[:content].join(", ") %>
     </div>
   <% end %>
   <div class="message-content-input">

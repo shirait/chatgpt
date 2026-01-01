@@ -76,3 +76,5 @@ gem "cancancan"
 
 # MarkdownをHTMLに変換するgem
 gem "redcarpet"
+
+gem "rails-i18n"

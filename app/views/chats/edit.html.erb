@@ -1,6 +1,15 @@
 <%= form_with model: @message_thread, url: chat_path(@message_thread), method: :put do |f| %>
-  <%= f.text_field(:title, placeholder: 'タイトルを入力してください', size: 50) %>
-  <%= f.submit('更新する') %>
+  <% if @message_thread.errors[:title].present? %>
+    <div style="color: red;">
+      <%= t("activerecord.attributes.message_thread.title") %>
+      <%= @message_thread.errors[:title].join(", ") %>
+    </div>
+  <% end %>
+  <div class="field">
+    <label class="label">タイトル</label>
+    <%= f.text_field(:title, placeholder: 'タイトルを入力してください', size: 50, class: "input") %>
+  </div>
+  <%= f.submit('更新する', class: "button is-info is-normal mt-1") %>
+  <%= link_to('戻る', chat_path(@message_thread), class: "button is-warning is-light is-normal mt-1") %>
 <% end %>
 
-<%= link_to('戻る', chat_path(@message_thread)) %>
