@@ -64,3 +64,6 @@ ja:
         one: "%{resource}を保存できませんでした。1件のエラーがあります:"
         other: "%{resource}を保存できませんでした。%{count}件のエラーがあります:"
 
+  remember_me: "ログイン状態を保持する"
+  log_in: "ログイン"
+
