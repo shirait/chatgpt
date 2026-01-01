@@ -5,6 +5,8 @@ default: &default
   openai_key: 'XXXXXXXX'
   # openai apiへのリクエストにスタブを使用する場合は true に設定
   use_openai_stub: false
+  # サイトタイトル
+  title: 'ChatGPT Web版クローンアプリ'
 
 development:
   <<: *default
