@@ -78,3 +78,5 @@ gem "cancancan"
 gem "redcarpet"
 
 gem "rails-i18n"
+
+gem "capistrano"
