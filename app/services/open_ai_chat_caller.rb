@@ -38,7 +38,7 @@ class OpenAiChatCaller
 
   def use_stub?
     Rails.configuration.static_config.use_openai_stub == true ||
-    ENV['USE_OPENAI_STUB'] == 'true'
+    ENV["USE_OPENAI_STUB"] == "true"
   end
 
   def stub_response(message)
