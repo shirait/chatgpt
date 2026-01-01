@@ -12,6 +12,7 @@
 /* navbarが固定表示の場合、コンテンツが隠れないようにpadding-topを設定 */
 body.has-navbar-fixed-top .column.is-9-desktop {
   padding-top: 0.5rem; /* navbarの高さ分の余白 */
+  margin-top: 0.5rem;
 }
 
 /* navbar の表示の優先順位を指定（サイドバーより下になるように） */
