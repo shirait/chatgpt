@@ -80,3 +80,8 @@ gem "redcarpet"
 gem "rails-i18n"
 
 gem "capistrano"
+
+gem "capistrano"
+gem 'capistrano-rails'
+gem 'capistrano-rbenv'
+gem 'capistrano-passenger'
