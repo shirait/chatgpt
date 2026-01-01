@@ -29,7 +29,7 @@ class OpenAiChatCaller
     response = client.chat(
       parameters: {
         model: message.gpt_model.name,
-        messages: MessageHistoryBuilder.build(message: message),
+        messages: OpenAiMessageBuilder.build(message: message),
         temperature: 0.7
       }
     )

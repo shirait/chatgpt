@@ -1,5 +1,4 @@
-# メッセージ履歴をOpenAI API形式に変換するサービスクラス
-class MessageHistoryBuilder
+class OpenAiMessageBuilder
   def self.build(message:)
     new(message: message).build
   end
