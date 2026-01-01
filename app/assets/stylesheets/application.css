@@ -10,8 +10,9 @@
  */
 
 /* navbarが固定表示の場合、コンテンツが隠れないようにpadding-topを設定 */
-body.has-navbar-fixed-top .column.is-9 {
+body.has-navbar-fixed-top .column.is-9-desktop {
   padding-top: 0.5rem; /* navbarの高さ分の余白 */
+  margin-top: 0.5rem;
 }
 
 /* navbar の表示の優先順位を指定（サイドバーより下になるように） */
@@ -32,9 +33,11 @@ body.has-navbar-fixed-top .column.is-9 {
   z-index: 1000;
 }
 
-/* サイドバーが固定されている場合、メインコンテンツの左マージンを調整 */
-body.has-navbar-fixed-top .column.is-9 {
-  margin-left: 25%; /* サイドバーの幅分（is-3 = 25%） */
+/* サイドバーが固定されている場合、メインコンテンツの左マージンを調整（デスクトップ表示時のみ） */
+@media screen and (min-width: 1024px) {
+  body.has-navbar-fixed-top .column.is-9-desktop {
+    margin-left: 25%; /* サイドバーの幅分（is-3 = 25%） */
+  }
 }
 
 .assistant-message .box {
@@ -72,4 +75,29 @@ body.has-navbar-fixed-top .column.is-9 {
 
 .sidebar-message-thread-link.selected {
   font-weight: bold;
+}
+
+/* モバイル表示時のナビゲーションメニューのスタイル */
+@media screen and (max-width: 1023px) {
+  /* モバイル表示時、navbar-menuはデフォルトで非表示（is-activeクラスがある場合のみ表示） */
+  .navbar-menu {
+    display: none;
+  }
+
+  .navbar-menu.is-active {
+    display: block;
+  }
+
+  /* モバイル表示時、サイドバーを非表示（ハンバーガーメニューに表示されるため） */
+  .submenu.column.is-3 {
+    display: none;
+  }
+
+  /* モバイル表示時、メインコンテンツは全幅表示（is-9-desktopが適用されないため自動的に全幅になる） */
+
+  /* ハンバーガーメニュー内のサイドバーコンテンツのスタイル */
+  .navbar-menu .navbar-item .box {
+    margin: 0;
+    padding: 0.75rem;
+  }
 }

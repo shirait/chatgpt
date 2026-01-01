@@ -90,7 +90,7 @@ class ChatsController < ApplicationController
 
     @message_thread.assign_attributes(update_message_thread_params)
     if @message_thread.save
-      flash[:success] = "スレッドタイトルを更新しました。"
+      flash[:success] = "タイトルを更新しました。"
       redirect_to chat_path(@message_thread)
     else
       flash.now[:danger] = @message_thread.errors.full_messages.join(", ")
@@ -103,7 +103,7 @@ class ChatsController < ApplicationController
     @message_thread = MessageThread.find(params[:id])
     authorize!(:destroy, @message_thread)
     @message_thread.destroy!
-    flash[:success] = "スレッドを削除しました。"
+    flash[:success] = "削除しました。"
     redirect_to root_path
   end
 

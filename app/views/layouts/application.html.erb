@@ -30,14 +30,14 @@
   <%# bulmaのデフォルトのnavbarを固定表示にする場合、bodyにもhas-navbar-fixed-topクラスを追加する。 %>
   <body class="m-2 <%= 'has-navbar-fixed-top' if user_signed_in? %>">
     <main class="columns">
-      <%# サイドバーメニュー %>
+      <%# サイドバーメニュー（デスクトップ表示時のみ表示） %>
       <% if user_signed_in? %>
-        <div class="submenu column is-3">
+        <div class="submenu column is-3 is-hidden-touch">
           <%= render('layouts/sidebar') %>
         </div>
       <% end %>
 
-      <div class="column is-9">
+      <div class="column is-9-desktop">
         <%# navbarメニュー %>
         <%= render('layouts/navbar_menu') if user_signed_in? %>
 
