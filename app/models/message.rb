@@ -27,4 +27,11 @@ class Message < ApplicationRecord
   def send_prev_messages_to_openai_api?
     !!send_prev_messages_to_openai_api
   end
+
+  scope :prev_messages, ->(message, limit) {
+    where(message_thread_id: message.message_thread.id)
+      .where.not(id: message.id)
+      .order(id: :desc)
+      .limit(limit)
+  }
 end

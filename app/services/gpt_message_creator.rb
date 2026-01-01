@@ -1,3 +1,4 @@
+# review: クラス名は OpenAIChatCallerにした方がいいかも。
 class GptMessageCreator
   def initialize(message_thread:, user_message:)
     @message_thread = message_thread
@@ -50,10 +51,7 @@ class GptMessageCreator
   def prev_messages(message)
     # 過去n往復分のメッセージを履歴に含める。（ユーザーの送信とGPTの回答で1往復とし、最大値は config.yml で設定可能とする。）
     limit = Rails.configuration.static_config.max_prev_message_count * 2
-    messages = Message.where(message_thread_id: message.message_thread.id)
-                      .where.not(id: message.id)
-                      .order(id: :desc)
-                      .limit(limit)
+    messages = Message.prev_messages(message, limit)
     messages.map do |msg|
       { role: msg.message_type.to_s, content: msg.content }
     end
