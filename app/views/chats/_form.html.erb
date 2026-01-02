@@ -7,12 +7,14 @@
   <div class="message-content-input">
     <%= f.text_area(:content, placeholder: '質問を入力してください', class: "textarea", rows: 5) %>
   </div>
-  <div class="field">
-    <label class="checkbox">
-      <%= f.check_box(:send_prev_messages_to_openai_api, value: 1, class: "checkbox", checked: @user_message.send_prev_messages_to_openai_api) %>
-      過去のやり取りを履歴としてChatGPTに送信する（最大<%= Rails.configuration.static_config.max_prev_message_count %>ターンまで）
-    </label>
-  </div>
+  <% if params[:action] == "show" %>
+    <div class="field">
+      <label class="checkbox">
+        <%= f.check_box(:send_prev_messages_to_openai_api, value: 1, class: "checkbox", checked: @user_message.send_prev_messages_to_openai_api) %>
+        過去のやり取りを履歴としてChatGPTに送信する（最大<%= Rails.configuration.static_config.max_prev_message_count %>ターンまで）
+      </label>
+    </div>
+  <% end %>
   <div>
     <%= f.submit('送信する', class: "button is-info is-normal mt-1", id: "submit-button") %>
     <span id="submit-message" style="display: none;">しばらくお待ちください...</span>
