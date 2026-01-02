@@ -1,0 +1,2 @@
+class GptModelsController < ApplicationController
+end
