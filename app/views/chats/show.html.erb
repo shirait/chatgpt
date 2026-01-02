@@ -7,7 +7,10 @@
         <%= hidden_field_tag("message-#{message.id}", message.content) %>
       </div>
       <div class="copy">
-        <%= link_to("#", onclick: "copyButton('message-#{message.id}'); return false;") do %>
+        <%= link_to(
+          "#",
+          onclick: "copyButton('message-#{message.id}'); return false;"
+          ) do %>
           <i class="fa fa-copy"></i>
           <span>コピー</span>
         <% end %>
@@ -29,39 +32,23 @@
 ) %>
 
 <script>
-  // ページ読み込み時に最下行にスクロール
-  function scrollToBottom() {
-    const mainContent = document.querySelector('.main-content');
-    if (mainContent) {
-      mainContent.scrollTo({
-        top: mainContent.scrollHeight,
-        behavior: 'smooth'
-      });
-    } else {
-      // フォールバック: メインコンテンツが見つからない場合は通常のスクロール
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: 'instant'
-      });
-    }
-  }
-
-  // DOMContentLoadedイベントで実行
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', scrollToBottom);
-  } else {
-    // すでに読み込み済みの場合は即座に実行
-    scrollToBottom();
-  }
-
-  // Turboを使っている場合のイベント
-  document.addEventListener('turbo:load', scrollToBottom);
-
   // コピー実行
   // todo: コピーを実行したら文言を「コピーしました」に変更したい。
   function copyButton(messageId) {
-    const message = document.getElementById(messageId);
-    const text = message.value;
+    const text = $('#' + messageId).val();
     navigator.clipboard.writeText(text);
   }
+
+  $(document).ready(function() {
+    var target = $('#message-<%= @message_thread.messages.last.id %>');
+
+    var last_message = $('.assistant-message:last')
+    var position = last_message.offset().top;
+
+    $("html,body").animate({
+      scrollTop: position - 70
+    }, 100);
+
+    return false;
+  });
 </script>
