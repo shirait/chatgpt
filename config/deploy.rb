@@ -19,7 +19,7 @@ set :rbenv_roles, :all
 
 # linked files and directories
 # たぶん 'config/credentials.yml.enc' は不要。検証のうえ消す。
-append :linked_files, 'config/database.yml', 'config/config.yml', 'config/credentials.yml.enc', 'config/credentials/production.key', 'config/credentials/production.yml.enc'
+append :linked_files, 'config/database.yml', 'config/config.yml', 'config/credentials/production.key', 'config/credentials/production.yml.enc'
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', '.bundle', 'public/system'
 
 # bundle settings
