@@ -12,9 +12,9 @@
           onclick: "copyButton('message-#{message.id}'); return false;"
           ) do %>
           <i class="fa fa-copy"></i>
-          <span>コピー</span>
+          <span><%= t("common.copy") %></span>
         <% end %>
-        <%= content_tag(:span, "コピーしました！", id: "copy-message-#{message.id}", style: "color:red; display: none;") %>
+        <%= content_tag(:span, t("common.copied"), id: "copy-message-#{message.id}", style: "color:red; display: none;") %>
       </div>
     </div>
   </div>
@@ -24,12 +24,12 @@
   <%= render('form', f: f) %>
 <% end %>
 
-<%= link_to('タイトルを編集する', edit_chat_path(@message_thread), class: "button is-primary is-light is-normal mt-1") %><br>
+<%= link_to(t('common.edit_title'), edit_chat_path(@message_thread), class: "button is-primary is-light is-normal mt-1") %><br>
 <%= link_to(
-  '削除する',
+  t("common.delete"),
   chat_path(@message_thread),
   class: 'delete-link button is-danger is-light is-normal mt-1',
-  data: { confirm: '本当に削除しますか？', method: 'delete' }
+  data: { confirm: t("common.delete_confirm"), method: 'delete' }
 ) %>
 
 <script>

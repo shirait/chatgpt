@@ -14,6 +14,8 @@ ja:
       gpt_model:
         name: "名前"
         description: "説明"
+        active: "アクティブ"
+        inactive: "非アクティブ"
       user:
         email: "メールアドレス"
         password: "パスワード"
@@ -26,3 +28,14 @@ ja:
           other: "%{resource}を保存できませんでした。%{count}件のエラーがあります:"
       models:
         attributes:
+
+  common:
+    back: "戻る"
+    new: "新規作成"
+    show: "詳細"
+    edit: "編集"
+    delete: "削除"
+    delete_confirm: "本当に削除しますか？"
+    edit_title: "タイトルを編集する"
+    copy: "コピー"
+    copied: "コピーしました！"
