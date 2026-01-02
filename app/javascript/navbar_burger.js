@@ -1,39 +1,41 @@
-// Bulmaのハンバーガーメニューを制御するJavaScript
+// Bulmaのハンバーガーメニューを制御するJavaScript（jQuery版）
 function setupNavbarBurger() {
-  const navbarBurgers = document.querySelectorAll('.navbar-burger');
+  const $navbarBurgers = $('.navbar-burger');
 
-  if (navbarBurgers.length === 0) {
+  if ($navbarBurgers.length === 0) {
     return;
   }
 
-  navbarBurgers.forEach(function(burger) {
+  $navbarBurgers.each(function() {
+    const $burger = $(this);
+
     // 既にイベントリスナーが設定されている場合はスキップ
-    if (burger.hasAttribute('data-burger-listener')) {
+    if ($burger.data('burger-listener')) {
       return;
     }
-    burger.setAttribute('data-burger-listener', 'true');
+    $burger.data('burger-listener', true);
 
-    burger.addEventListener('click', function() {
+    $burger.on('click', function() {
       // ターゲットメニューのIDを取得
-      const target = burger.dataset.target;
-      const menu = document.getElementById(target);
+      const target = $burger.data('target');
+      const $menu = $('#' + target);
 
       // ハンバーガーアイコンとメニューのis-activeクラスをトグル
-      burger.classList.toggle('is-active');
-      if (menu) {
-        menu.classList.toggle('is-active');
+      $burger.toggleClass('is-active');
+      if ($menu.length > 0) {
+        $menu.toggleClass('is-active');
       }
     });
   });
 }
 
-// 初期読み込み時
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', setupNavbarBurger);
-} else {
+// jQueryのreadyイベントで初期化
+$(function() {
   setupNavbarBurger();
-}
+});
 
 // Turboのページ遷移後にも動作するように
-document.addEventListener('turbo:load', setupNavbarBurger);
+$(document).on('turbo:load', function() {
+  setupNavbarBurger();
+});
 
