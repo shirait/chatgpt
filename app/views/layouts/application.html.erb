@@ -40,7 +40,7 @@
         </div>
       <% end %>
 
-      <div class="column is-9-desktop">
+      <div class="column <%= 'is-9-desktop' if user_signed_in? %>">
         <%# navbarメニュー %>
         <%= render('layouts/navbar_menu') if user_signed_in? %>
 

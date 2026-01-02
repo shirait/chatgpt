@@ -101,3 +101,7 @@ body.has-navbar-fixed-top .column.is-9-desktop {
     padding: 0.75rem;
   }
 }
+
+.login-form {
+  width: 480px;
+}
