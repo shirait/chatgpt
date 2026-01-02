@@ -19,7 +19,7 @@ class Message < ApplicationRecord
       message_thread: message_thread,
       message_type: :user,
       creator_id: creator_id,
-      gpt_model: GptModel.active_model,
+      gpt_model: GptModel.active_gpt_model,
       send_prev_messages_to_openai_api: params[:send_prev_messages_to_openai_api] == "1"
     )
   end

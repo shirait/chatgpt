@@ -12,6 +12,7 @@ class Ability
 
   def admin_abilities(user)
     can :manage, GptModel
+    can :manage, User
   end
 
   def normal_abilities(user)

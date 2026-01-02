@@ -18,9 +18,11 @@
   <div id="navbar-menu" class="navbar-menu">
     <div class="navbar-start">
       <%# モバイル表示時のみ表示されるサイドバーメニュー %>
-      <div class="navbar-item is-hidden-desktop" style="width: 100%;">
-        <%= render('layouts/sidebar') %>
-      </div>
+      <% if show_sidebar? %>
+        <div class="navbar-item is-hidden-desktop" style="width: 100%;">
+          <%= render('layouts/sidebar') %>
+        </div>
+      <% end %>
     </div>
 
     <div class="navbar-end">

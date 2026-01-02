@@ -10,6 +10,6 @@
     <%= f.text_field(:title, placeholder: 'タイトルを入力してください', size: 50, class: "input") %>
   </div>
   <%= f.submit('更新する', class: "button is-info is-normal mt-1") %>
-  <%= link_to('戻る', chat_path(@message_thread), class: "button is-warning is-light is-normal mt-1") %>
+  <%= link_to(t("common.back"), chat_path(@message_thread), class: "button is-warning is-light is-normal mt-1") %>
 <% end %>
 
