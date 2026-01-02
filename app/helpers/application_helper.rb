@@ -45,4 +45,8 @@ module ApplicationHelper
     return [base, "is-light"].join(" ") if light
     base
   end
+
+  def show_sidebar?
+    user_signed_in? && params[:controller] == 'chats'
+  end
 end

@@ -34,7 +34,7 @@
   <body class="m-2 <%= 'has-navbar-fixed-top' if user_signed_in? %>">
     <main class="columns">
       <%# サイドバーメニュー（デスクトップ表示時のみ表示） %>
-      <% if user_signed_in? %>
+      <% if show_sidebar? %>
         <div class="submenu column is-3 is-hidden-touch">
           <%= render('layouts/sidebar') %>
         </div>

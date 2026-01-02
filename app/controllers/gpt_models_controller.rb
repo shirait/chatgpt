@@ -11,7 +11,7 @@ class GptModelsController < ApplicationController
 
   def create
     @gpt_model = GptModel.new(gpt_model_params)
-    if @gpt_model.save
+    if @gpt_model.save && inactive_other_gpt_models
       flash[:notice] = "GPTモデルを作成しました。"
       redirect_to gpt_models_path, notice: "GPTモデルを作成しました。"
     else
@@ -30,7 +30,7 @@ class GptModelsController < ApplicationController
 
   def update
     @gpt_model.assign_attributes(gpt_model_params)
-    if @gpt_model.save
+    if @gpt_model.save && inactive_other_gpt_models
       flash[:notice] = "GPTモデルを更新しました。"
       redirect_to gpt_models_path, notice: "GPTモデルを更新しました。"
     else
@@ -46,15 +46,14 @@ class GptModelsController < ApplicationController
     redirect_to gpt_models_path
   end
 
-  def active_gpt_model
-    @gpt_model = GptModel.find(params[:id])
-    @gpt_model.update(active: true)
-    GptModel.where.not(id: @gpt_model.id).update(active: false)
-    flash[:notice] = "GPTモデル(#{@gpt_model.name})をアクティブにしました。"
-    redirect_to gpt_models_path
-  end
-
   private
+
+  def inactive_other_gpt_models
+    if @gpt_model.active?
+      GptModel.where.not(id: @gpt_model.id).update(active: false)
+    end
+    true
+  end
 
   def gpt_model_params
     params.require(:gpt_model).permit(:name, :description)
