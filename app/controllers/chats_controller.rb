@@ -18,20 +18,20 @@ class ChatsController < ApplicationController
     )
 
     if !(@user_message.save && @message_thread.save)
-      flash.now[:danger] = "入力に問題があります。エラー内容を確認してください。"
+      flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
       load_message_threads
       render :new and return
     end
 
     begin
       OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
-      flash[:success] = "メッセージの送受信に成功しました。"
+      flash[:notice] = "メッセージの送受信に成功しました。"
       redirect_to chat_path(@message_thread) and return
     # 例外処理について、StandardError以外はrescueしないように注意（ https://github.com/shirait/blog_import_sample/issues/9#issuecomment-2142528418 ）
     rescue Faraday::Error => e
-      flash.now[:danger] = faraday_error_message
+      flash.now[:alert] = faraday_error_message
     rescue StandardError => e
-      flash.now[:danger] = unexpected_error_message
+      flash.now[:alert] = unexpected_error_message
     end
     load_message_threads
     render :new
@@ -60,19 +60,19 @@ class ChatsController < ApplicationController
     )
 
     unless @user_message.save
-      flash.now[:danger] = "入力に問題があります。エラー内容を確認してください。"
+      flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
       load_message_threads
       render :show and return
     end
 
     begin
       OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
-      flash[:success] = "メッセージの送受信に成功しました。"
+      flash[:notice] = "メッセージの送受信に成功しました。"
       redirect_to chat_path(@message_thread) and return
     rescue Faraday::Error => e
-      flash.now[:danger] = faraday_error_message
+      flash.now[:alert] = faraday_error_message
     rescue StandardError => e
-      flash.now[:danger] = unexpected_error_message
+      flash.now[:alert] = unexpected_error_message
     end
     load_message_threads
     render :show
@@ -90,10 +90,10 @@ class ChatsController < ApplicationController
 
     @message_thread.assign_attributes(update_message_thread_params)
     if @message_thread.save
-      flash[:success] = "タイトルを更新しました。"
+      flash[:notice] = "タイトルを更新しました。"
       redirect_to chat_path(@message_thread)
     else
-      flash.now[:danger] = @message_thread.errors.full_messages.join(", ")
+      flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
       load_message_threads
       render :edit and return
     end
@@ -103,7 +103,7 @@ class ChatsController < ApplicationController
     @message_thread = MessageThread.find(params[:id])
     authorize!(:destroy, @message_thread)
     @message_thread.destroy!
-    flash[:success] = "削除しました。"
+    flash[:notice] = "削除しました。"
     redirect_to root_path
   end
 

@@ -4,8 +4,8 @@ module ChatsHelper
   end
 
   def message_background_color(message)
-    return "has-background-primary-light" if message.user?
-    "has-background-link-light" if message.assistant?
+    # return "has-background-primary-light" if message.user?
+    # "has-background-link-light" if message.assistant?
   end
 end
 

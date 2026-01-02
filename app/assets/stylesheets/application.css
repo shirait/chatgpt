@@ -44,6 +44,7 @@ body.has-navbar-fixed-top .column.is-9-desktop {
   margin-bottom: 0;
   width: fit-content; /* コンテンツに合わせた幅 */
   margin-right: 6em;
+  background-color: #efefef;
 }
 
 .assistant-message .copy {
@@ -56,6 +57,7 @@ body.has-navbar-fixed-top .column.is-9-desktop {
   width: fit-content; /* コンテンツに合わせた幅 */
   margin-left: 4em;
   margin-right: 1em;
+  background-color: #c3f69d;
 }
 
 .user-message .copy {
