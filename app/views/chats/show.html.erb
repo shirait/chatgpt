@@ -14,6 +14,7 @@
           <i class="fa fa-copy"></i>
           <span>コピー</span>
         <% end %>
+        <%= content_tag(:span, "コピーしました！", id: "copy-message-#{message.id}", style: "color:red; display: none;") %>
       </div>
     </div>
   </div>
@@ -32,13 +33,18 @@
 ) %>
 
 <script>
-  // コピー実行
-  // todo: コピーを実行したら文言を「コピーしました」に変更したい。
   function copyButton(messageId) {
+    // クリップボードにコピーする
     const text = $('#' + messageId).val();
     navigator.clipboard.writeText(text);
+
+    // 「コピーしました！」の文言を表示する。
+    var copy_message = $('#copy-' + messageId);
+    copy_message.show();
+    $(copy_message).fadeOut(2000);
   }
 
+  // ページ読み込み時に最後の回答にスクロール
   $(document).ready(function() {
     var target = $('#message-<%= @message_thread.messages.last.id %>');
 
