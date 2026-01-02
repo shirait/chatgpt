@@ -12,8 +12,8 @@ class GptModelsController < ApplicationController
   def create
     @gpt_model = GptModel.build_gpt_model(gpt_model_params, creator_id: current_user.id)
     if @gpt_model.save && inactive_other_gpt_models
-      flash[:notice] = "GPTモデルを作成しました。"
-      redirect_to gpt_models_path, notice: "GPTモデルを作成しました。"
+      flash[:notice] = "#{@gpt_model.name}を作成しました。"
+      redirect_to gpt_models_path
     else
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
       render :new
@@ -31,8 +31,8 @@ class GptModelsController < ApplicationController
   def update
     @gpt_model.assign_attributes(gpt_model_params)
     if @gpt_model.save && inactive_other_gpt_models
-      flash[:notice] = "GPTモデルを更新しました。"
-      redirect_to gpt_models_path, notice: "GPTモデルを更新しました。"
+      flash[:notice] = "#{@gpt_model.name}を更新しました。"
+      redirect_to gpt_models_path
     else
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
       render :edit
@@ -41,8 +41,13 @@ class GptModelsController < ApplicationController
 
   def destroy
     @gpt_model = GptModel.find(params[:id])
+    if @gpt_model.messages.exists?
+      flash[:alert] = "#{@gpt_model.name}はユーザーがメッセージを作成済みのため、削除できません。"
+      redirect_to gpt_models_path and return
+    end
+
     @gpt_model.destroy!
-    flash[:notice] = "GPTモデルを削除しました。"
+    flash[:notice] = "#{@gpt_model.name}を削除しました。"
     redirect_to gpt_models_path
   end
 
