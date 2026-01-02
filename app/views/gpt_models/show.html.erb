@@ -1,0 +1,8 @@
+<div class="box">
+  <%= @gpt_model.name %>
+  <%= @gpt_model.description %>
+  <%= @gpt_model.active? ? 'アクティブ' : '非アクティブ' %>
+  <%= link_to '編集', edit_gpt_model_path(@gpt_model), class: 'button is-primary is-light is-normal' %>
+  <%= link_to '削除', gpt_model_path(@gpt_model), class: 'button is-danger is-light is-normal', data: { confirm: '本当に削除しますか？', method: 'delete' } %>
+  <%= link_to '戻る', gpt_models_path, class: 'button is-warning is-light is-normal' %>
+</div>

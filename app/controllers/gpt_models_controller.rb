@@ -10,7 +10,7 @@ class GptModelsController < ApplicationController
   end
 
   def create
-    @gpt_model = GptModel.new(gpt_model_params)
+    @gpt_model = GptModel.build_gpt_model(gpt_model_params, creator_id: current_user.id)
     if @gpt_model.save && inactive_other_gpt_models
       flash[:notice] = "GPTモデルを作成しました。"
       redirect_to gpt_models_path, notice: "GPTモデルを作成しました。"
@@ -56,6 +56,6 @@ class GptModelsController < ApplicationController
   end
 
   def gpt_model_params
-    params.require(:gpt_model).permit(:name, :description)
+    params.require(:gpt_model).permit(:name, :description, :active)
   end
 end

@@ -6,8 +6,13 @@ class GptModel < ApplicationRecord
   validates :description, length: { maximum: 255 }
   validates :creator_id, presence: true
 
-  def self.active_model
-    # todo: CRUD画面を作成したら動的に取得できるようにする。
-    self.find(1)
+  def self.active_gpt_model
+    where(active: true).first
+  end
+
+  def self.build_gpt_model(params, creator_id:)
+    gpt_model = new(params)
+    gpt_model.creator_id = creator_id
+    gpt_model
   end
 end
