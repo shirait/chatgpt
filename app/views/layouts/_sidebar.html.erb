@@ -1,5 +1,5 @@
 <aside class="box has-background-white-ter">
-  <div class="sidebar-message-thread-link <%= 'selected' if @message_thread.nil? %>">
+  <div class="sidebar-message-thread-link mb-2 <%= 'selected' if @message_thread.nil? %>">
     <%= link_to(new_chat_path) do %>
       <i class="fa fa-plus"></i>
       <span>新しいチャット</span>
@@ -7,7 +7,7 @@
   </div>
 
   <% @message_threads.each do |message_thread| %>
-    <div class="sidebar-message-thread-link <%= 'selected' if message_thread.id == @message_thread&.id %>">
+    <div class="sidebar-message-thread-link mb-2 <%= 'selected' if message_thread.id == @message_thread&.id %>">
       <%= link_to(message_thread.title, chat_path(message_thread)) %>
     </div>
   <% end %>
