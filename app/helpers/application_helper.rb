@@ -11,16 +11,6 @@ module ApplicationHelper
     params[:action].in?([ "add_message", "show" ])
   end
 
-  # review: スコープを小さくできないか確認（chats_helper.rb に移動できないか確認）
-  def message_type_class(message)
-    "#{message.message_type}-message"
-  end
-
-  def message_background_color(message)
-    return "has-background-primary-light" if message.user?
-    "has-background-link-light"    if message.assistant?
-  end
-
   def markdown_to_html(text)
     render_options = {
       filter_html:         true,  # HTMLタグのフィルタリングを有効にする
