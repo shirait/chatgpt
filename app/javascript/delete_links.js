@@ -1,44 +1,48 @@
-// 削除リンクのconfirm処理（共通化）
+// 削除リンクのconfirm処理（共通化・jQuery版）
 function setupDeleteLinks() {
-  const deleteLinks = document.querySelectorAll('a[data-confirm][data-method="delete"]');
-  deleteLinks.forEach(function(link) {
+  const $deleteLinks = $('a[data-confirm][data-method="delete"]');
+
+  $deleteLinks.each(function() {
+    const $link = $(this);
+
     // 既にイベントリスナーが設定されている場合はスキップ
-    if (link.hasAttribute('data-delete-link-setup')) {
+    if ($link.data('delete-link-setup')) {
       return;
     }
-    link.setAttribute('data-delete-link-setup', 'true');
+    $link.data('delete-link-setup', true);
 
-    link.addEventListener('click', function(e) {
-      const confirmMessage = link.getAttribute('data-confirm');
+    $link.on('click', function(e) {
+      const confirmMessage = $link.data('confirm');
       if (!confirm(confirmMessage)) {
         e.preventDefault();
         return false;
       }
 
       // DELETEリクエストを送信するためのフォームを作成
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = link.href;
+      const $form = $('<form>', {
+        method: 'POST',
+        action: $link.attr('href')
+      });
 
       // CSRFトークンを追加
-      const csrfToken = document.querySelector('meta[name="csrf-token"]');
-      if (csrfToken) {
-        const csrfInput = document.createElement('input');
-        csrfInput.type = 'hidden';
-        csrfInput.name = 'authenticity_token';
-        csrfInput.value = csrfToken.getAttribute('content');
-        form.appendChild(csrfInput);
+      const $csrfToken = $('meta[name="csrf-token"]');
+      if ($csrfToken.length > 0) {
+        $('<input>', {
+          type: 'hidden',
+          name: 'authenticity_token',
+          value: $csrfToken.attr('content')
+        }).appendTo($form);
       }
 
       // method override
-      const methodInput = document.createElement('input');
-      methodInput.type = 'hidden';
-      methodInput.name = '_method';
-      methodInput.value = 'delete';
-      form.appendChild(methodInput);
+      $('<input>', {
+        type: 'hidden',
+        name: '_method',
+        value: 'delete'
+      }).appendTo($form);
 
-      document.body.appendChild(form);
-      form.submit();
+      $form.appendTo('body');
+      $form[0].submit();
 
       e.preventDefault();
       return false;
@@ -46,13 +50,13 @@ function setupDeleteLinks() {
   });
 }
 
-// ページ読み込み時に削除リンクを設定
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', setupDeleteLinks);
-} else {
+// jQueryのreadyイベントで初期化
+$(function() {
   setupDeleteLinks();
-}
+});
 
 // Turboを使っている場合のイベント
-document.addEventListener('turbo:load', setupDeleteLinks);
+$(document).on('turbo:load', function() {
+  setupDeleteLinks();
+});
 

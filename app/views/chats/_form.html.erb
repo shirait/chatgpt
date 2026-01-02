@@ -14,5 +14,16 @@
     </label>
   </div>
   <div>
-    <%= f.submit('送信する', class: "button is-info is-normal mt-1") %>
+    <%= f.submit('送信する', class: "button is-info is-normal mt-1", id: "submit-button") %>
+    <span id="submit-message" style="display: none;">しばらくお待ちください...</span>
   </div>
+
+  <script>
+    $("#submit-button").closest("form").on("submit", function() {
+      const $submitButton = $(this).find("#submit-button");
+      $submitButton.prop("disabled", true);
+      $submitButton.html("送信中...");
+
+      $("#submit-message").show();
+    });
+  </script>
