@@ -45,10 +45,7 @@
         <%= render('layouts/navbar_menu') if user_signed_in? %>
 
         <%# フラッシュメッセージ %>
-        <% if need_toplevel_flash_messages? %>
-          <%# どこに表示するかは別途検討する。 %>
-          <%#= render('layouts/flash_messages') %>
-        <% end %>
+        <%= render('layouts/flash_messages') if user_signed_in? %>
 
         <%# メインコンテンツ %>
         <%= yield %>

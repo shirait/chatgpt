@@ -4,7 +4,7 @@
       <div class="box">
         <%# Flashメッセージの表示 %>
         <% flash.each do |key, value| %>
-          <div class="notification is-<%= key == 'alert' ? 'danger' : key %>">
+          <div class="notification <%=flash_messages_class(key, light: true) %>">
             <%= value %>
           </div>
         <% end %>

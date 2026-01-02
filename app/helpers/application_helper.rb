@@ -3,14 +3,6 @@ module ApplicationHelper
   require "redcarpet"
   require "redcarpet/render_strip"
 
-  def need_toplevel_flash_messages?
-    !not_need_toplevel_flash_messages?
-  end
-
-  def not_need_toplevel_flash_messages?
-    params[:action].in?([ "add_message", "show" ])
-  end
-
   def markdown_to_html(text)
     render_options = {
       filter_html:         true,  # HTMLタグのフィルタリングを有効にする
@@ -38,5 +30,19 @@ module ApplicationHelper
 
     # マークダウンをHTMLに変換し、結果をhtml_safeにする
     Redcarpet::Markdown.new(renderer, extensions).render(text).html_safe
+  end
+
+  def flash_messages_class(key, light: false)
+    base = case key
+      when "alert"
+        "is-danger"
+      when "notice"
+        "is-success"
+      else
+        "is-info"
+      end
+
+    return [base, "is-light"].join(" ") if light
+    base
   end
 end
