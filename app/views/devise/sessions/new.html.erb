@@ -2,10 +2,10 @@
   <div class="columns is-centered">
     <div class="column">
       <div class="box">
-        <%# エラーメッセージの表示 %>
-        <% if flash[:alert] %>
-          <div class="notification is-danger">
-            <%= flash[:alert] %>
+        <%# Flashメッセージの表示 %>
+        <% flash.each do |key, value| %>
+          <div class="notification is-<%= key == 'alert' ? 'danger' : key %>">
+            <%= value %>
           </div>
         <% end %>
 
