@@ -24,8 +24,8 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%# jQueryを先に読み込む（ローカルファイルから読み込む） %>
-    <script src="/jquery-3.7.1.min.js"></script>
+    <% jquery_path = "#{request.script_name}/jquery-3.7.1.min.js" %>
+    <script src="<%= jquery_path %>"></script>
     <%= javascript_importmap_tags %>
   </head>
 
