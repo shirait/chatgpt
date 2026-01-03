@@ -45,6 +45,15 @@
 
 <script type="module">
   import ChatChannel from "channels/chat_channel"
+  import { marked } from "marked"
+
+  // marked.jsの設定（サーバーサイドのredcarpetと同様の設定を目指す）
+  marked.setOptions({
+    breaks: true, // 改行を<br>に変換
+    gfm: true, // GitHub Flavored Markdownを有効化
+    headerIds: false, // ヘッダーIDを無効化（シンプルに）
+    mangle: false
+  })
 
   function copyButton(messageId) {
     // クリップボードにコピーする
@@ -86,15 +95,21 @@
           streamingContent = "";
         }
         streamingContent += chunk;
-        // エスケープして表示（マークダウンは後で処理）
-        streamingMessageContent.textContent = streamingContent;
+        // マークダウンをHTMLに変換して表示
+        try {
+          const html = marked.parse(streamingContent);
+          streamingMessageContent.innerHTML = html;
+        } catch (e) {
+          // マークダウンのパースエラー時はテキストとして表示
+          streamingMessageContent.textContent = streamingContent;
+        }
         // 自動スクロール
         streamingMessageContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
       },
       // onMessageComplete
       () => {
         if (streamingMessageContainer) {
-          // ページをリロードして最終的なメッセージを表示
+          // ページをリロードして最終的なメッセージを表示（サーバーサイドでレンダリングされたもの）
           window.location.reload();
         }
       },
