@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  # ActionCableのマウント
+  mount ActionCable.server => "/cable"
+
   devise_for :users, controllers: {
     # カスタムコントローラー利用設定
     confirmations: "users/confirmations",

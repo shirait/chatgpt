@@ -1,6 +1,6 @@
 <% @message_thread.messages.each do |message| %>
   <% flex_direction = message.user? ? "is-flex-direction-row-reverse" : "" %>
-  <div style="" class="is-flex <%= flex_direction %>">
+  <div style="" class="is-flex <%= flex_direction %>" data-message-id="<%= message.id %>">
     <div class="<%= message_type_class(message) %>">
       <div class="box">
         <%= markdown_to_html(message.content) %>
@@ -20,6 +20,17 @@
   </div>
 <% end %>
 
+<%# リアルタイム表示用のアシスタントメッセージ領域 %>
+<div id="streaming-message-container" style="display: none;">
+  <div class="is-flex">
+    <div class="assistant-message">
+      <div class="box">
+        <div id="streaming-message-content"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <%= form_with(model: @user_message, url: add_message_chat_path(@message_thread), method: :post, html: { class: "new-message-form" }) do |f| %>
   <%= render('form', f: f) %>
 <% end %>
@@ -32,7 +43,9 @@
   data: { confirm: t("common.delete_confirm"), method: 'delete' }
 ) %>
 
-<script>
+<script type="module">
+  import ChatChannel from "channels/chat_channel"
+
   function copyButton(messageId) {
     // クリップボードにコピーする
     const text = $('#' + messageId).val();
@@ -46,15 +59,65 @@
 
   // ページ読み込み時に最後の回答にスクロール
   $(document).ready(function() {
-    var target = $('#message-<%= @message_thread.messages.last.id %>');
+    var target = $('#message-<%= @message_thread.messages.last&.id %>');
+    if (target.length > 0) {
+      var last_message = $('.assistant-message:last')
+      var position = last_message.offset().top;
 
-    var last_message = $('.assistant-message:last')
-    var position = last_message.offset().top;
+      $("html,body").animate({
+        scrollTop: position - 70
+      }, 100);
+    }
 
-    $("html,body").animate({
-      scrollTop: position - 70
-    }, 100);
+    // ActionCable接続
+    const messageThreadId = <%= @message_thread.id %>;
+    let streamingContent = "";
+    let streamingMessageContainer = null;
+    let streamingMessageContent = null;
 
-    return false;
+    const chatChannel = new ChatChannel(
+      messageThreadId,
+      // onMessageChunk
+      (chunk) => {
+        if (!streamingMessageContainer) {
+          streamingMessageContainer = document.getElementById('streaming-message-container');
+          streamingMessageContent = document.getElementById('streaming-message-content');
+          streamingMessageContainer.style.display = 'block';
+          streamingContent = "";
+        }
+        streamingContent += chunk;
+        // エスケープして表示（マークダウンは後で処理）
+        streamingMessageContent.textContent = streamingContent;
+        // 自動スクロール
+        streamingMessageContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      },
+      // onMessageComplete
+      () => {
+        if (streamingMessageContainer) {
+          // ページをリロードして最終的なメッセージを表示
+          window.location.reload();
+        }
+      },
+      // onMessageError
+      (error) => {
+        if (streamingMessageContainer) {
+          streamingMessageContainer.style.display = 'none';
+          alert(error);
+        } else {
+          alert(error);
+        }
+        // エラー時もページをリロード
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }
+    );
+
+    chatChannel.connect();
+
+    // ページ離脱時に切断
+    window.addEventListener('beforeunload', () => {
+      chatChannel.disconnect();
+    });
   });
 </script>

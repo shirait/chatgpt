@@ -23,18 +23,9 @@ class ChatsController < ApplicationController
       render :new and return
     end
 
-    begin
-      OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
-      flash[:notice] = "メッセージの送受信に成功しました。"
-      redirect_to chat_path(@message_thread) and return
-    # 例外処理について、StandardError以外はrescueしないように注意（ https://github.com/shirait/blog_import_sample/issues/9#issuecomment-2142528418 ）
-    rescue Faraday::Error => e
-      flash.now[:alert] = faraday_error_message
-    rescue StandardError => e
-      flash.now[:alert] = unexpected_error_message
-    end
-    load_message_threads
-    render :new
+    # バックグラウンドジョブで非同期処理
+    OpenAiChatJob.perform_later(@message_thread.id, @user_message.id)
+    redirect_to chat_path(@message_thread)
   end
 
   def show
@@ -65,17 +56,9 @@ class ChatsController < ApplicationController
       render :show and return
     end
 
-    begin
-      OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
-      flash[:notice] = "メッセージの送受信に成功しました。"
-      redirect_to chat_path(@message_thread) and return
-    rescue Faraday::Error => e
-      flash.now[:alert] = faraday_error_message
-    rescue StandardError => e
-      flash.now[:alert] = unexpected_error_message
-    end
-    load_message_threads
-    render :show
+    # バックグラウンドジョブで非同期処理
+    OpenAiChatJob.perform_later(@message_thread.id, @user_message.id)
+    redirect_to chat_path(@message_thread)
   end
 
   def edit
