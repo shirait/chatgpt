@@ -40,22 +40,21 @@ class OpenAiChatCaller
         model: message.gpt_model.name,
         messages: OpenAiMessageBuilder.build(message: message),
         temperature: 0.7,
-        stream: true
-      },
-      stream: proc do |chunk, _bytesize|
-        delta = chunk.dig("choices", 0, "delta", "content")
-        if delta
-          full_content += delta
-          # ActionCableでリアルタイム送信
-          ActionCable.server.broadcast(
-            "chat_#{@message_thread.id}",
-            {
-              type: "message_chunk",
-              content: delta
-            }
-          )
+        stream: proc do |chunk, _bytesize|
+          delta = chunk.dig("choices", 0, "delta", "content")
+          if delta
+            full_content += delta
+            # ActionCableでリアルタイム送信
+            ActionCable.server.broadcast(
+              "chat_#{@message_thread.id}",
+              {
+                type: "message_chunk",
+                content: delta
+              }
+            )
+          end
         end
-      end
+      }
     )
 
     full_content

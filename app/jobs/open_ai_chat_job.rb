@@ -15,6 +15,8 @@ class OpenAiChatJob < ApplicationJob
         }
       )
     rescue Faraday::Error => e
+      Rails.logger.error "OpenAiChatJob Faraday::Error: #{e.class} - #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
       # エラー通知を送信
       ActionCable.server.broadcast(
         "chat_#{message_thread_id}",
@@ -24,6 +26,8 @@ class OpenAiChatJob < ApplicationJob
         }
       )
     rescue StandardError => e
+      Rails.logger.error "OpenAiChatJob StandardError: #{e.class} - #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
       # エラー通知を送信
       ActionCable.server.broadcast(
         "chat_#{message_thread_id}",
