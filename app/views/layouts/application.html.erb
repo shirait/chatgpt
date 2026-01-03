@@ -8,6 +8,8 @@
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%# ActionCableのURLを設定（サブディレクトリ対応） %>
+    <%= tag.meta name: "action-cable-url", content: "#{request.script_name}/cable" %>
 
     <%= yield :head %>
 
