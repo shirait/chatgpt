@@ -46,7 +46,7 @@ class ChatsController < ApplicationController
 
   def search
     authorize!(:search, MessageThread)
-    @searched_message_threads = MessageThread.eager_load(:messages).order("messages.id").where("messages.content LIKE ?", "%#{params[:search]}%")
+    @searched_message_threads = MessageThread.eager_load(:messages).accessible_by(current_ability).order("messages.id").where("messages.content LIKE ?", "%#{params[:search]}%")
     load_message_threads
   end
 

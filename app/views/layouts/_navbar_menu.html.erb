@@ -26,26 +26,18 @@
     </div>
 
     <div class="navbar-end">
-      <% if false %>
-      ここにflashメッセージを置くのは一旦諦める。
-      ・太いので、メインメニューのmarginの調整が必要
-      ・画面幅を小さくするとサイドメニューと被る
-      <div class="navbar-item">
-        <div class="">
-          <%= render("layouts/flash_messages") %>
+      <% if chats_controller? %>
+        <div class="navbar-item">
+          <%= form_with(url: search_chats_path, method: :get, class: "field has-addons", id: "search-form") do |f| %>
+            <div class="control">
+              <%= text_field_tag :search, nil, placeholder: '検索', class: "input", value: params[:search] %>
+            </div>
+            <div class="control">
+              <a class="button is-info" onclick="document.getElementById('search-form').submit();"><i class="fa fa-search"></i>検索</a>
+            </div>
+          <% end %>
         </div>
-      </div>
       <% end %>
-      <div class="navbar-item">
-        <%= form_with(url: search_chats_path, method: :get, class: "field has-addons", id: "search-form") do |f| %>
-          <div class="control">
-            <%= text_field_tag :search, nil, placeholder: '検索', class: "input", value: params[:search] %>
-          </div>
-          <div class="control">
-            <a class="button is-info" onclick="document.getElementById('search-form').submit();"><i class="fa fa-search"></i>検索</a>
-          </div>
-        <% end %>
-      </div>
       <div class="navbar-item">
         <%= link_to(
           'ログアウト',
