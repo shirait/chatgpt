@@ -16,13 +16,22 @@
     </div>
   <% end %>
   <div class="field">
-    <label class="file-label">
-      <%= f.file_field(:message_files, multiple: true, class: "file-input") %>
-      <span class="file-cta">
-        <i class="fas fa-upload"></i>
-      </span>
-      <span class="file-label">ファイルを選択してください</span>
-    </label>
+    <div class="file has-name">
+      <label class="file-label">
+        <%= f.file_field(:message_files, multiple: true, class: "file-input") %>
+        <span class="file-cta">
+          <span class="file-icon">
+            <i class="fas fa-upload"></i>
+          </span>
+          <span class="file-label">
+            ファイルを選択してください
+          </span>
+        </span>
+        <span class="file-name" id="file-name">
+          選択されていません
+        </span>
+      </label>
+    </div>
   </div>
   <div>
     <%= f.submit('送信する', class: "button is-info is-normal mt-1", id: "submit-button") %>
@@ -30,6 +39,20 @@
   </div>
 
   <script>
+    // ファイル選択時の処理（画像名を画面表示）
+    $("input[type='file'][name*='message_files']").on("change", function() {
+      const files = this.files;
+      const $fileName = $("#file-name");
+
+      if (files.length > 0) {
+        const fileNames = Array.from(files).map(file => file.name).join(", ");
+        $fileName.text(fileNames);
+      } else {
+        $fileName.text("選択されていません");
+      }
+    });
+
+    // フォーム送信時の処理
     $("#submit-button").closest("form").on("submit", function() {
       const $submitButton = $(this).find("#submit-button");
       $submitButton.prop("disabled", true);

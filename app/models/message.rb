@@ -15,7 +15,7 @@ class Message < ApplicationRecord
   validates :creator_id, presence: true
 
   def self.build_user_message(params:, message_thread:, creator_id:)
-    new(
+    message = new(
       content: params[:content],
       message_thread: message_thread,
       message_type: :user,
@@ -23,6 +23,12 @@ class Message < ApplicationRecord
       gpt_model: GptModel.active_gpt_model,
       send_prev_messages_to_openai_api: params[:send_prev_messages_to_openai_api] == "1"
     )
+
+    if params[:message_files].present?
+      message.message_files.attach(params[:message_files])
+    end
+
+    message
   end
 
   def send_prev_messages_to_openai_api?
