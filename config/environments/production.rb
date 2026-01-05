@@ -8,6 +8,8 @@ Rails.application.configure do
   config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }
   config.active_storage.service = :local
   # config.force_ssl = true
+  # リバースプロキシ経由でHTTPSでアクセスされている場合、X-Forwarded-Protoヘッダーを信頼する
+  config.assume_ssl = true
 
   config.log_tags = [ :request_id ]
   config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
