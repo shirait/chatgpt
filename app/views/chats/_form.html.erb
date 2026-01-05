@@ -16,7 +16,13 @@
     </div>
   <% end %>
   <div class="field">
-    <%= f.file_field(:message_files, multiple: true, class: "file-input") %>
+    <label class="file-label">
+      <%= f.file_field(:message_files, multiple: true, class: "file-input") %>
+      <span class="file-cta">
+        <i class="fas fa-upload"></i>
+      </span>
+      <span class="file-label">ファイルを選択してください</span>
+    </label>
   </div>
   <div>
     <%= f.submit('送信する', class: "button is-info is-normal mt-1", id: "submit-button") %>
