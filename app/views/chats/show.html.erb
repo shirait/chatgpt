@@ -49,17 +49,53 @@
     $(copy_message).fadeOut(2000);
   }
 
-  // ページ読み込み時に最後の回答にスクロール
-  $(document).ready(function() {
-    var target = $('#message-<%= @message_thread.messages.last.id %>');
+  // ページ読み込み時に最後の回答にスクロール（画像の読み込み完了を待つ）
+  function scrollToLastMessage() {
+    var last_message = $('.assistant-message:last');
+    if (last_message.length === 0) {
+      return;
+    }
 
-    var last_message = $('.assistant-message:last')
     var position = last_message.offset().top;
-
     $("html,body").animate({
       scrollTop: position - 70
     }, 100);
+  }
 
-    return false;
+  $(document).ready(function() {
+    var images = $('.message-file');
+    var imagesToLoad = images.length;
+
+    if (imagesToLoad === 0) {
+      // 画像がない場合は即座にスクロール
+      scrollToLastMessage();
+      return;
+    }
+
+    // すべての画像の読み込み完了を待つ
+    var loadedCount = 0;
+    images.on('load', function() {
+      loadedCount++;
+      if (loadedCount === imagesToLoad) {
+        scrollToLastMessage();
+      }
+    }).on('error', function() {
+      // エラー時もカウントに含める
+      loadedCount++;
+      if (loadedCount === imagesToLoad) {
+        scrollToLastMessage();
+      }
+    });
+
+    // 既に読み込まれている画像がある場合のフォールバック
+    images.each(function() {
+      if (this.complete) {
+        loadedCount++;
+      }
+    });
+
+    if (loadedCount === imagesToLoad) {
+      scrollToLastMessage();
+    }
   });
 </script>
