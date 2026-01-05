@@ -1,3 +1,5 @@
+require "base64"
+
 class OpenAiMessageBuilder
   def self.build(message:)
     new(message: message).build
@@ -31,6 +33,31 @@ class OpenAiMessageBuilder
   end
 
   def current_user_message
-    { role: "user", content: @message.content }
+    content = build_content
+    { role: "user", content: content }
+  end
+
+  def build_content
+    unless @message.message_files.attached?
+      return @message.content
+    end
+
+    text = [{ type: "text", text: @message.content || "" }]
+
+    images = @message.message_files.map do |file|
+      content_type = file.content_type || "image/jpeg"
+      {
+        type: "image_url",
+        image_url: {
+          url: "data:#{content_type};base64,#{convert_to_base64(file)}"
+        }
+      }
+    end
+
+    text + images
+  end
+
+  def convert_to_base64(file)
+    Base64.strict_encode64(file.download)
   end
 end

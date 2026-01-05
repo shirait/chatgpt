@@ -2,6 +2,7 @@ class Message < ApplicationRecord
   belongs_to :user, foreign_key: :creator_id
   belongs_to :gpt_model
   belongs_to :message_thread
+  has_many_attached :message_files, dependent: :destroy
 
   enum :message_type, { user: 0, assistant: 1 } # user: ユーザーからのメッセージ, assistant: GPTからのメッセージ
 
@@ -14,7 +15,7 @@ class Message < ApplicationRecord
   validates :creator_id, presence: true
 
   def self.build_user_message(params:, message_thread:, creator_id:)
-    new(
+    message = new(
       content: params[:content],
       message_thread: message_thread,
       message_type: :user,
@@ -22,6 +23,12 @@ class Message < ApplicationRecord
       gpt_model: GptModel.active_gpt_model,
       send_prev_messages_to_openai_api: params[:send_prev_messages_to_openai_api] == "1"
     )
+
+    if params[:message_files].present?
+      message.message_files.attach(params[:message_files])
+    end
+
+    message
   end
 
   def send_prev_messages_to_openai_api?
