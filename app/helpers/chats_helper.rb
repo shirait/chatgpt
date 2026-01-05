@@ -3,4 +3,3 @@ module ChatsHelper
     "#{message.message_type}-message"
   end
 end
-

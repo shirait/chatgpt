@@ -34,15 +34,15 @@ module ApplicationHelper
 
   def flash_messages_class(key, light: false)
     base = case key
-      when "alert"
+    when "alert"
         "is-danger"
-      when "notice"
+    when "notice"
         "is-success"
-      else
+    else
         "is-info"
-      end
+    end
 
-    return [base, "is-light"].join(" ") if light
+    return [ base, "is-light" ].join(" ") if light
     base
   end
 
@@ -51,6 +51,6 @@ module ApplicationHelper
   end
 
   def chats_controller?
-    user_signed_in? && params[:controller] == 'chats'
+    user_signed_in? && params[:controller] == "chats"
   end
 end
