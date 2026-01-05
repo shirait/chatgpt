@@ -38,7 +38,7 @@ class ChatsController < ApplicationController
   end
 
   def show
-    @message_thread = MessageThread.eager_load(:messages).order("messages.id").find(params[:id])
+    @message_thread = MessageThread.eager_load(messages: :message_files_attachments).order("messages.id").find(params[:id])
     authorize!(:read, @message_thread)
     load_message_threads
     @user_message = Message.new(message_thread_id: @message_thread.id, send_prev_messages_to_openai_api: true)
