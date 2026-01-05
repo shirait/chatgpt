@@ -18,7 +18,7 @@
   <div class="field">
     <div class="file has-name">
       <label class="file-label">
-        <%= f.file_field(:message_files, multiple: true, class: "file-input") %>
+        <%= f.file_field(:message_files, multiple: true, class: "file-input", id: "message-files-input") %>
         <span class="file-cta">
           <span class="file-icon">
             <i class="fas fa-upload"></i>
@@ -40,7 +40,7 @@
 
   <script>
     // ファイル選択時の処理（画像名を画面表示）
-    $("input[type='file'][name*='message_files']").on("change", function() {
+    $("#message-files-input").on("change", function() {
       const files = this.files;
       const $fileName = $("#file-name");
 
