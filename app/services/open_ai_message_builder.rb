@@ -38,28 +38,23 @@ class OpenAiMessageBuilder
   end
 
   def build_content
-    if @message.message_files.attached?
-      content_array = []
-
-      # テキストコンテンツを追加（空文字列でも追加）
-      content_array << { type: "text", text: @message.content || "" }
-
-      # 画像をbase64エンコードして追加
-      @message.message_files.each do |file|
-        base64_image = convert_to_base64(file)
-        content_type = file.content_type || "image/jpeg"
-        content_array << {
-          type: "image_url",
-          image_url: {
-            url: "data:#{content_type};base64,#{base64_image}"
-          }
-        }
-      end
-
-      content_array
-    else
-      @message.content
+    unless @message.message_files.attached?
+      return @message.content
     end
+
+    text = [{ type: "text", text: @message.content || "" }]
+
+    images = @message.message_files.map do |file|
+      content_type = file.content_type || "image/jpeg"
+      {
+        type: "image_url",
+        image_url: {
+          url: "data:#{content_type};base64,#{convert_to_base64(file)}"
+        }
+      }
+    end
+
+    text + images
   end
 
   def convert_to_base64(file)
