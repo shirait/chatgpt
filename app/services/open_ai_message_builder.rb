@@ -42,7 +42,7 @@ class OpenAiMessageBuilder
       return @message.content
     end
 
-    text = [{ type: "text", text: @message.content || "" }]
+    text = [ { type: "text", text: @message.content || "" } ]
 
     images = @message.message_files.map do |file|
       content_type = file.content_type || "image/jpeg"

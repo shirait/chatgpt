@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   def root_redirect_path
     return gpt_models_path       if current_user.admin?
     return new_chat_path         if current_user.normal?
-    return new_user_session_path if current_user.blank?
+    new_user_session_path if current_user.blank?
   end
 
   def root_redirect

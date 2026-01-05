@@ -5,5 +5,5 @@ seed_files = [
 
 seed_files.each do |file|
   puts "Loading #{file}..."
-  load(Rails.root.join('db', 'seeds', Rails.env,file))
+  load(Rails.root.join('db', 'seeds', Rails.env, file))
 end
