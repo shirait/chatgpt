@@ -5,6 +5,11 @@
       <div class="box">
         <%= markdown_to_html(message.content) %>
         <%= hidden_field_tag("message-#{message.id}", message.content) %>
+        <% if message.message_files.attached? %>
+          <% message.message_files.each do |message_file| %>
+            <%= image_tag(url_for(message_file), class: "message-file") %>
+          <% end %>
+        <% end %>
       </div>
       <div class="copy">
         <%= link_to(

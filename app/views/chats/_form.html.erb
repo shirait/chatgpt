@@ -15,6 +15,9 @@
       </label>
     </div>
   <% end %>
+  <div class="field">
+    <%= f.file_field(:message_files, multiple: true, class: "file-input") %>
+  </div>
   <div>
     <%= f.submit('送信する', class: "button is-info is-normal mt-1", id: "submit-button") %>
     <span id="submit-message" style="display: none;">しばらくお待ちください...</span>

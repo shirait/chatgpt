@@ -2,6 +2,7 @@ class Message < ApplicationRecord
   belongs_to :user, foreign_key: :creator_id
   belongs_to :gpt_model
   belongs_to :message_thread
+  has_many_attached :message_files, dependent: :destroy
 
   enum :message_type, { user: 0, assistant: 1 } # user: ユーザーからのメッセージ, assistant: GPTからのメッセージ
 

@@ -114,7 +114,7 @@ class ChatsController < ApplicationController
   end
 
   def message_params
-    params.require(:message).permit(:content, :send_prev_messages_to_openai_api)
+    params.require(:message).permit(:content, :send_prev_messages_to_openai_api, message_files: [])
   end
 
   def update_message_thread_params
