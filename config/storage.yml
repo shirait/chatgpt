@@ -1,27 +1,10 @@
-test:
-  service: Disk
-  root: <%= Rails.root.join("tmp/storage") %>
+### Active Storageのファイル保存場所の設定。config/environments/環境名.rb で以下の中から利用するものを選択する。
 
+# 本番環境デプロイの際はconfig/deploy.rbにて「/home/（ユーザー名）/production/shared/storage」にリンクさせる
 local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
-# Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
-# amazon:
-#   service: S3
-#   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
-#   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
-#   region: us-east-1
-#   bucket: your_own_bucket-<%= Rails.env %>
-
-# Remember not to checkin your GCS keyfile to a repository
-# google:
-#   service: GCS
-#   project: your_project
-#   credentials: <%= Rails.root.join("path/to/gcs.keyfile") %>
-#   bucket: your_own_bucket-<%= Rails.env %>
-
-# mirror:
-#   service: Mirror
-#   primary: local
-#   mirrors: [ amazon, google, microsoft ]
+test:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
