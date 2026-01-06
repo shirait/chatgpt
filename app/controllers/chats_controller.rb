@@ -5,7 +5,7 @@ class ChatsController < ApplicationController
   def new
     authorize!(:new, MessageThread)
     @user_message = Message.new(send_prev_messages_to_openai_api: true)
-    load_message_threads
+    load_message_threads_for_sidebar
   end
 
   def create
@@ -22,8 +22,8 @@ class ChatsController < ApplicationController
 
     if !@message_thread.valid? || !@user_message.valid?
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
-      load_message_threads
-      render :new and return
+      load_message_threads_for_sidebar
+      render(:new) and return
     end
 
     @message_thread.save && @user_message.save
@@ -38,21 +38,21 @@ class ChatsController < ApplicationController
     rescue StandardError => e
       flash.now[:alert] = t("common.unexpected_error")
     end
-    load_message_threads
-    render :new
+    load_message_threads_for_sidebar
+    render(:new)
   end
 
   def show
     @message_thread = MessageThread.eager_load(messages: :message_files_attachments).order("messages.id").find(params[:id])
     authorize!(:read, @message_thread)
-    load_message_threads
+    load_message_threads_for_sidebar
     @user_message = Message.new(message_thread_id: @message_thread.id, send_prev_messages_to_openai_api: true)
   end
 
   def search
     authorize!(:search, MessageThread)
     @searched_message_threads = MessageThread.eager_load(:messages).accessible_by(current_ability).order("messages.id").where("messages.content LIKE ?", "%#{params[:search]}%")
-    load_message_threads
+    load_message_threads_for_sidebar
   end
 
   def add_message
@@ -66,8 +66,8 @@ class ChatsController < ApplicationController
 
     unless @user_message.save
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
-      load_message_threads
-      render :show and return
+      load_message_threads_for_sidebar
+      render(:show) and return
     end
 
     begin
@@ -79,14 +79,14 @@ class ChatsController < ApplicationController
     rescue StandardError => e
       flash.now[:alert] = t("common.unexpected_error")
     end
-    load_message_threads
-    render :show
+    load_message_threads_for_sidebar
+    render(:show)
   end
 
   def edit
     @message_thread = MessageThread.find(params[:id])
     authorize!(:edit, @message_thread)
-    load_message_threads
+    load_message_threads_for_sidebar
   end
 
   def update
@@ -96,11 +96,11 @@ class ChatsController < ApplicationController
     @message_thread.assign_attributes(update_message_thread_params)
     if @message_thread.save
       flash[:notice] = "タイトルを更新しました。"
-      redirect_to chat_path(@message_thread)
+      redirect_to(chat_path(@message_thread))
     else
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
-      load_message_threads
-      render :edit and return
+      load_message_threads_for_sidebar
+      render(:edit) and return
     end
   end
 
@@ -109,14 +109,13 @@ class ChatsController < ApplicationController
     authorize!(:destroy, @message_thread)
     @message_thread.destroy!
     flash[:notice] = "削除しました。"
-    redirect_to root_path
+    redirect_to(root_path)
   end
 
   private
 
-  # サイドバーの表示に必要
-  def load_message_threads
-    @message_threads = MessageThread.accessible_by(current_ability).order(id: :asc)
+  def load_message_threads_for_sidebar
+    @message_threads_for_sidebar = MessageThread.accessible_by(current_ability).order(id: :asc)
   end
 
   def message_params
