@@ -67,7 +67,7 @@ class Admin::UsersController < ApplicationController
       @users = @users.where(role: params[:role])
     end
 
-    if params[:active].present? && params[:active].in?(["1", "0"])
+    if params[:active].present? && params[:active].in?([ "1", "0" ])
       @users = @users.where(active: params[:active] == "1")
     end
 
