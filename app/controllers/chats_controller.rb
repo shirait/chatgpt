@@ -17,11 +17,13 @@ class ChatsController < ApplicationController
       creator_id: current_user.id
     )
 
-    if !(@user_message.save && @message_thread.save)
+    if (!@message_thread.valid? || !@user_message.valid?)
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
       load_message_threads
       render :new and return
     end
+
+    @message_thread.save && @user_message.save
 
     begin
       OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
