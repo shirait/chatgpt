@@ -16,15 +16,15 @@ RSpec.describe GptModel, type: :model do
   describe '.active_gpt_model' do
     let(:admin_user) { create(:user, :admin, :self_referential) }
     let!(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
-    let!(:active_model) { create(:gpt_model, :active, creator_id: user.id) }
-    let!(:inactive_model) { create(:gpt_model, active: false, creator_id: user.id) }
+    let!(:active_model) { create(:gpt_model, :active, creator_id: user.id, updater_id: admin_user.id) }
+    let!(:inactive_model) { create(:gpt_model, active: false, creator_id: user.id, updater_id: admin_user.id) }
 
     it 'returns the active GPT model' do
       expect(described_class.active_gpt_model).to eq(active_model)
     end
 
     context 'when there are multiple active models' do
-      let!(:another_active_model) { create(:gpt_model, :active, creator_id: user.id) }
+      let!(:another_active_model) { create(:gpt_model, :active, creator_id: user.id, updater_id: admin_user.id) }
 
       it 'returns the first active model' do
         expect(described_class.active_gpt_model).to eq(active_model)
@@ -77,7 +77,7 @@ RSpec.describe GptModel, type: :model do
 
     context 'when name is blank' do
       it 'is invalid' do
-        gpt_model = build(:gpt_model, name: '', creator_id: user.id)
+        gpt_model = build(:gpt_model, name: '', creator_id: user.id, updater_id: admin_user.id)
         expect(gpt_model).not_to be_valid
         expect(gpt_model.errors[:name]).to be_present
         # i18nを使用している場合、エラーメッセージは翻訳される
@@ -88,7 +88,7 @@ RSpec.describe GptModel, type: :model do
     context 'when name is too long' do
       it 'is invalid' do
         long_name = 'a' * 256
-        gpt_model = build(:gpt_model, name: long_name, creator_id: user.id)
+        gpt_model = build(:gpt_model, name: long_name, creator_id: user.id, updater_id: admin_user.id)
         expect(gpt_model).not_to be_valid
         expect(gpt_model.errors[:name]).to be_present
         # i18nを使用している場合、エラーメッセージは翻訳される
@@ -98,7 +98,7 @@ RSpec.describe GptModel, type: :model do
 
     context 'when name is valid' do
       it 'is valid' do
-        gpt_model = build(:gpt_model, name: 'Valid Name', creator_id: user.id)
+        gpt_model = build(:gpt_model, name: 'Valid Name', creator_id: user.id, updater_id: admin_user.id)
         expect(gpt_model).to be_valid
       end
     end
@@ -111,7 +111,7 @@ RSpec.describe GptModel, type: :model do
     context 'when description is too long' do
       it 'is invalid' do
         long_description = 'a' * 256
-        gpt_model = build(:gpt_model, description: long_description, creator_id: user.id)
+        gpt_model = build(:gpt_model, description: long_description, creator_id: user.id, updater_id: admin_user.id)
         expect(gpt_model).not_to be_valid
         expect(gpt_model.errors[:description]).to be_present
         # i18nを使用している場合、エラーメッセージは翻訳される
@@ -121,14 +121,14 @@ RSpec.describe GptModel, type: :model do
 
     context 'when description is valid' do
       it 'is valid' do
-        gpt_model = build(:gpt_model, description: 'Valid description', creator_id: user.id)
+        gpt_model = build(:gpt_model, description: 'Valid description', creator_id: user.id, updater_id: admin_user.id)
         expect(gpt_model).to be_valid
       end
     end
 
     context 'when description is nil' do
       it 'is valid' do
-        gpt_model = build(:gpt_model, description: nil, creator_id: user.id)
+        gpt_model = build(:gpt_model, description: nil, creator_id: user.id, updater_id: admin_user.id)
         expect(gpt_model).to be_valid
       end
     end
@@ -146,15 +146,26 @@ RSpec.describe GptModel, type: :model do
     end
   end
 
+  describe 'validations - updater_id' do
+    context 'when updater_id is blank' do
+      it 'is invalid' do
+        gpt_model = build(:gpt_model, updater_id: nil)
+        expect(gpt_model).not_to be_valid
+        expect(gpt_model.errors[:updater_id]).to be_present
+        expect(gpt_model.errors[:updater_id].first).to match(/入力してください/)
+      end
+    end
+  end
+
   describe 'dependent: :restrict_with_error' do
     let(:admin_user) { create(:user, :admin, :self_referential) }
     let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
-    let(:gpt_model) { create(:gpt_model, creator_id: user.id) }
+    let(:gpt_model) { create(:gpt_model, creator_id: user.id, updater_id: admin_user.id) }
 
     context 'when messages exist' do
       before do
         message_thread = create(:message_thread, creator_id: user.id)
-        create(:message, gpt_model: gpt_model, message_thread: message_thread, creator_id: user.id)
+        create(:message, gpt_model: gpt_model, message_thread: message_thread, creator_id: admin_user.id)
       end
 
       it 'prevents deletion with destroy' do
