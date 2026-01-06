@@ -17,8 +17,11 @@
     </div>
   </div>
   <div class="field">
-    <%= f.check_box(:active, class: "checkbox", checked: params.keys.exclude?(:active) || params[:active] == "1") %>
-    <%= f.label(:active, t("activerecord.attributes.user.active"), class: "label") %>
+    <%= f.label(:active, class: "label") do %>
+      <% # debugger %>
+      <%= f.check_box(:active, { class: "checkbox", checked: params[:active] == "1" || params[:active].blank? }, "1", "0") %>
+      <%= t("activerecord.attributes.user.active") %>
+    <% end %>
   </div>
   <%= f.submit("検索", class: "button is-primary is-light is-normal") %>
 <% end %>

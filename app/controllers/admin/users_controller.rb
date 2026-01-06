@@ -67,9 +67,8 @@ class Admin::UsersController < ApplicationController
       @users = @users.where(role: params[:role])
     end
 
-    if params[:active].present?
-      @users = @users.where(active: params[:active])
-    end
+    active = params[:active] == "1"
+    @users = @users.where(active: active)
 
     render :index
   end
