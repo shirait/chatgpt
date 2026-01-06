@@ -13,6 +13,8 @@ class Admin::UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    @user.creator_id = current_user.id
+    @user.updater_id = current_user.id
     if @user.save
       flash[:notice] = "#{@user.email}を作成しました。"
       redirect_to admin_users_path
@@ -32,13 +34,14 @@ class Admin::UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    update_params = user_params
     # パスワードが空の場合はパスワード関連のパラメータを削除
     if update_params[:password].blank?
       update_params.delete(:password)
       update_params.delete(:password_confirmation)
     end
-    if @user.update(update_params)
+    @user.assign_attributes(user_params)
+    @user.updater_id = current_user.id
+    if @user.save
       flash[:notice] = "#{@user.email}を更新しました。"
       redirect_to admin_users_path
     else

@@ -1,4 +1,5 @@
 class GptModel < ApplicationRecord
+  # todo: updater_idを追加する。
   belongs_to :user, foreign_key: :creator_id
   has_many :messages, dependent: :restrict_with_error
 
