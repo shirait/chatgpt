@@ -1,3 +1,9 @@
+# 既存データを削除
+if Rails.env.development?
+  User.destroy_all
+  GptModel.destroy_all
+end
+
 seed_files = [
   "users.rb",
   "gpt_models.rb"
