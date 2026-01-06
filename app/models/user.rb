@@ -23,7 +23,7 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6, maximum: 128 }, confirmation: true, if: :password_validation_required?
   validates :password_confirmation, presence: true, length: { minimum: 6, maximum: 128 }, if: :password_validation_required?
   validates :role, presence: true, inclusion: { in: roles.keys }
-  validates :active, inclusion: { in: [true, false] }, allow_blank: true
+  validates :active, inclusion: { in: [ true, false ] }, allow_blank: true
   validates :creator_id, presence: true
   validates :updater_id, presence: true
 
