@@ -49,3 +49,5 @@ ja:
     user_management: "ユーザー管理"
     gpt_model_management: "GPTモデル管理"
     no_data: "データがありません。"
+    unexpected_error: "想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。"
+    faraday_error: "OpenAI APIの利用でエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。"

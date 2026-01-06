@@ -1,4 +1,7 @@
 class ChatsController < ApplicationController
+  # メインで扱うモデル名が Chat ではないので load_and_authorize_resource を使用しない。
+  # 権限チェックは各アクションで authorize! を実行すること。
+
   def new
     authorize!(:new, MessageThread)
     @user_message = Message.new(send_prev_messages_to_openai_api: true)
@@ -31,9 +34,9 @@ class ChatsController < ApplicationController
       redirect_to chat_path(@message_thread) and return
     # 例外処理について、StandardError以外はrescueしないように注意（ https://github.com/shirait/blog_import_sample/issues/9#issuecomment-2142528418 ）
     rescue Faraday::Error => e
-      flash.now[:alert] = faraday_error_message
+      flash.now[:alert] = t("common.faraday_error")
     rescue StandardError => e
-      flash.now[:alert] = unexpected_error_message
+      flash.now[:alert] = t("common.unexpected_error")
     end
     load_message_threads
     render :new
@@ -72,9 +75,9 @@ class ChatsController < ApplicationController
       flash[:notice] = "メッセージの送受信に成功しました。"
       redirect_to chat_path(@message_thread) and return
     rescue Faraday::Error => e
-      flash.now[:alert] = faraday_error_message
+      flash.now[:alert] = t("common.faraday_error")
     rescue StandardError => e
-      flash.now[:alert] = unexpected_error_message
+      flash.now[:alert] = t("common.unexpected_error")
     end
     load_message_threads
     render :show
@@ -111,6 +114,7 @@ class ChatsController < ApplicationController
 
   private
 
+  # サイドバーの表示に必要
   def load_message_threads
     @message_threads = MessageThread.accessible_by(current_ability).order(id: :asc)
   end
@@ -121,13 +125,5 @@ class ChatsController < ApplicationController
 
   def update_message_thread_params
     params.require(:message_thread).permit(:title)
-  end
-
-  def faraday_error_message
-    "OpenAI APIの利用でエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。"
-  end
-
-  def unexpected_error_message
-    "想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。"
   end
 end
