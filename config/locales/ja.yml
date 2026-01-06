@@ -24,6 +24,7 @@ ja:
         admin: "管理者"
         normal: "一般"
         active: "アクティブ"
+        inactive: "非アクティブ"
         name: "名前"
     errors:
       messages:
@@ -43,3 +44,5 @@ ja:
     edit_title: "タイトルを編集する"
     copy: "コピー"
     copied: "コピーしました！"
+    all: "すべて"
+    search: "検索"

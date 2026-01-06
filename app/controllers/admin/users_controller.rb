@@ -63,12 +63,13 @@ class Admin::UsersController < ApplicationController
       @users = @users.where("email LIKE ?", "%#{params[:email]}%")
     end
 
-    if params[:role].present?
+    if params[:role].present? && params[:role].in?(User.roles.keys)
       @users = @users.where(role: params[:role])
     end
 
-    active = params[:active] == "1"
-    @users = @users.where(active: active)
+    if params[:active].present? && params[:active].in?(["1", "0"])
+      @users = @users.where(active: params[:active] == "1")
+    end
 
     render :index
   end

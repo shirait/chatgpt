@@ -2,32 +2,29 @@
 
 <%= form_with(url: search_admin_users_path, method: :get, local: true, class: "box mb-4") do |f| %>
   <% # todo: 見た目をもっとコンパクトに %>
-  <div class="field">
-    <%= f.label(:name, t("activerecord.attributes.user.name"), class: "label") %>
-    <%= f.text_field(:name, class: "input", placeholder: "名前", value: params[:name]) %>
-  </div>
-  <div class="field">
-    <%= f.label(:email, t("activerecord.attributes.user.email"), class: "label") %>
-    <%= f.text_field(:email, class: "input", placeholder: "メールアドレス", value: params[:email]) %>
+  <div class="field is-grouped">
+    <div class="control is-expanded">
+      <%= f.label(:name, t("activerecord.attributes.user.name"), class: "label") %>
+      <%= f.text_field(:name, class: "input", placeholder: "名前", value: params[:name]) %>
+    </div>
+    <div class="control is-expanded">
+      <%= f.label(:email, t("activerecord.attributes.user.email"), class: "label") %>
+      <%= f.text_field(:email, class: "input", placeholder: "メールアドレス", value: params[:email]) %>
+    </div>
   </div>
   <div class="field">
     <%= f.label(:role, t("activerecord.attributes.user.role"), class: "label") %>
     <div class="select">
-      <%= f.select(:role, User.roles.keys.map { |k| [t("activerecord.attributes.user.#{k}"), k] }, {}, { class: "select", value: params[:role] }) %>
+      <%= f.select(:role, User.roles.keys.map { |k| [t("activerecord.attributes.user.#{k}"), k] }, { include_blank: true }, { class: "select" }) %>
     </div>
   </div>
   <div class="field">
-    <%= f.label(:active, class: "label") do %>
-      <% # debugger %>
-      <%= f.check_box(:active, { class: "checkbox", checked: params[:active] == "1" || params[:active].blank? }, "1", "0") %>
-      <%= t("activerecord.attributes.user.active") %>
-    <% end %>
+    <%= f.label(:active, t("activerecord.attributes.user.active"), class: "label") %>
+    <div class="select">
+      <%= f.select(:active, { t("activerecord.attributes.user.active") => "1", t("activerecord.attributes.user.inactive") => "0" }, { include_blank: true }, { class: "select" }) %>
+    </div>
   </div>
-  <%= f.submit("検索", class: "button is-primary is-light is-normal") %>
+  <%= f.submit(t("common.search"), class: "button is-primary is-light is-normal") %>
 <% end %>
 
-<% if @users.empty? %>
-  <p class="is-size-6">データがありません。</p>
-<% else %>
-  <%= render("index_table", users: @users) %>
-<% end %>
+<%= render("index_table", users: @users) %>
