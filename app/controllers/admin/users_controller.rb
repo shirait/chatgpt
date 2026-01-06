@@ -53,6 +53,27 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  def search
+    @users = User.all
+    if params[:name].present?
+      @users = @users.where("name LIKE ?", "%#{params[:name]}%")
+    end
+
+    if params[:email].present?
+      @users = @users.where("email LIKE ?", "%#{params[:email]}%")
+    end
+
+    if params[:role].present?
+      @users = @users.where(role: params[:role])
+    end
+
+    if params[:active].present?
+      @users = @users.where(active: params[:active])
+    end
+
+    render :index
+  end
+
   private
 
   def ensure_admin

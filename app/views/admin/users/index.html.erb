@@ -1,38 +1,30 @@
-<%= link_to '新規作成', new_admin_user_path, class: 'button is-primary is-light is-normal' %>
+<%= link_to '新規作成', new_admin_user_path, class: 'button is-primary is-light is-normal mb-4' %>
+
+<%= form_with(url: search_admin_users_path, method: :get, local: true, class: "box mb-4") do |f| %>
+  <% # todo: 見た目をもっとコンパクトに %>
+  <div class="field">
+    <%= f.label(:name, t("activerecord.attributes.user.name"), class: "label") %>
+    <%= f.text_field(:name, class: "input", placeholder: "名前", value: params[:name]) %>
+  </div>
+  <div class="field">
+    <%= f.label(:email, t("activerecord.attributes.user.email"), class: "label") %>
+    <%= f.text_field(:email, class: "input", placeholder: "メールアドレス", value: params[:email]) %>
+  </div>
+  <div class="field">
+    <%= f.label(:role, t("activerecord.attributes.user.role"), class: "label") %>
+    <div class="select">
+      <%= f.select(:role, User.roles.keys.map { |k| [t("activerecord.attributes.user.#{k}"), k] }, {}, { class: "select", value: params[:role] }) %>
+    </div>
+  </div>
+  <div class="field">
+    <%= f.check_box(:active, class: "checkbox", checked: params.keys.exclude?(:active) || params[:active] == "1") %>
+    <%= f.label(:active, t("activerecord.attributes.user.active"), class: "label") %>
+  </div>
+  <%= f.submit("検索", class: "button is-primary is-light is-normal") %>
+<% end %>
 
 <% if @users.empty? %>
   <p class="is-size-6">データがありません。</p>
+<% else %>
+  <%= render("index_table", users: @users) %>
 <% end %>
-
-<div class="table-container">
-  <table class="table is-bordered is-hoverable is-narrow">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>名前</th>
-        <th>メールアドレス</th>
-        <th>権限</th>
-        <th>アクティブ</th>
-        <th>操作</th>
-      </tr>
-    </thead>
-    <tbody>
-
-    <tfoot>
-      <% @users.each do |user| %>
-        <tr>
-          <td><%= user.id %></td>
-          <td><%= user.name %></td>
-          <td><%= user.email %></td>
-          <td><%= user.role %></td>
-          <td><%= user.active? ? 'アクティブ' : '非アクティブ' %></td>
-          <td>
-            <%= link_to(t("common.show"), admin_user_path(user), class: 'button is-info is-light is-normal') %>
-            <%= link_to(t("common.edit"), edit_admin_user_path(user), class: 'button is-primary is-light is-normal') %>
-            <%= link_to(t("common.delete"), admin_user_path(user), class: 'button is-danger is-light is-normal', data: { confirm: '本当に削除しますか？', method: 'delete' }) %>
-          </td>
-        </tr>
-      <% end %>
-    </tfoot>
-  </table>
-</div>
