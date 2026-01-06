@@ -1,7 +1,6 @@
 <%= link_to '新規作成', new_admin_user_path, class: 'button is-primary is-light is-normal mb-4' %>
 
 <%= form_with(url: search_admin_users_path, method: :get, local: true, class: "box mb-4") do |f| %>
-  <% # todo: 見た目をもっとコンパクトに %>
   <div class="field is-grouped">
     <div class="control is-expanded">
       <%= f.label(:name, t("activerecord.attributes.user.name"), class: "label") %>
@@ -12,16 +11,18 @@
       <%= f.text_field(:email, class: "input", placeholder: "メールアドレス", value: params[:email]) %>
     </div>
   </div>
-  <div class="field">
-    <%= f.label(:role, t("activerecord.attributes.user.role"), class: "label") %>
-    <div class="select">
-      <%= f.select(:role, User.roles.keys.map { |k| [t("activerecord.attributes.user.#{k}"), k] }, { include_blank: true, selected: params[:role] }, { class: "select" }) %>
+  <div class="field is-grouped">
+    <div class="control is-expanded">
+      <%= f.label(:role, t("activerecord.attributes.user.role"), class: "label") %>
+      <div class="select">
+        <%= f.select(:role, User.roles.keys.map { |k| [t("activerecord.attributes.user.#{k}"), k] }, { include_blank: true, selected: params[:role] }, { class: "select" }) %>
+      </div>
     </div>
-  </div>
-  <div class="field">
-    <%= f.label(:active, t("activerecord.attributes.user.active"), class: "label") %>
-    <div class="select">
-      <%= f.select(:active, { t("activerecord.attributes.user.active") => "1", t("activerecord.attributes.user.inactive") => "0" }, { include_blank: true, selected: params[:active] }, { class: "select" }) %>
+    <div class="control is-expanded">
+      <%= f.label(:active, t("activerecord.attributes.user.active"), class: "label") %>
+      <div class="select">
+        <%= f.select(:active, { t("activerecord.attributes.user.active") => "1", t("activerecord.attributes.user.inactive") => "0" }, { include_blank: true, selected: params[:active] }, { class: "select" }) %>
+      </div>
     </div>
   </div>
   <%= f.submit(t("common.search"), class: "button is-primary is-light is-normal") %>
