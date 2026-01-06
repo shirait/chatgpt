@@ -48,3 +48,4 @@ ja:
     search: "検索"
     user_management: "ユーザー管理"
     gpt_model_management: "GPTモデル管理"
+    no_data: "データがありません。"

@@ -24,8 +24,8 @@
       <% end %>
     </div>
 
-    <div class="sidebar-gpt-model-link mb-2 <%= 'selected' if params[:controller] == "gpt_models" %>">
-      <%= link_to(gpt_models_path) do %>
+    <div class="sidebar-gpt-model-link mb-2 <%= 'selected' if params[:controller] == "admin/gpt_models" %>">
+      <%= link_to(admin_gpt_models_path) do %>
         <i class="fa fa-robot"></i>
         <span><%= t("common.gpt_model_management") %></span>
       <% end %>
