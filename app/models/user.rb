@@ -15,5 +15,5 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6, maximum: 128 }, on: :create
   validates :password_confirmation, presence: true, length: { minimum: 6, maximum: 128 }, on: :create
   validates :role, presence: true, inclusion: { in: roles.keys }
-  validates :active, presence: true, inclusion: { in: [true, false] }
+  validates :active, inclusion: { in: [true, false] }, allow_blank: true
 end
