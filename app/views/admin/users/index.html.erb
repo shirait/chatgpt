@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="control is-expanded">
-      <%= f.label(:active, t("activerecord.attributes.user.active"), class: "label") %>
+      <%= f.label(:active, t("activerecord.attributes.user.status"), class: "label") %>
       <div class="select">
         <%= f.select(:active, { t("activerecord.attributes.user.active") => "1", t("activerecord.attributes.user.inactive") => "0" }, { include_blank: true, selected: params[:active] }, { class: "select" }) %>
       </div>

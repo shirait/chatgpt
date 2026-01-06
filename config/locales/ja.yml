@@ -14,8 +14,9 @@ ja:
       gpt_model:
         name: "名前"
         description: "説明"
-        active: "アクティブ"
-        inactive: "非アクティブ"
+        status: "ステータス"
+        active: "有効"
+        inactive: "無効"
       user:
         email: "メールアドレス"
         password: "パスワード"
@@ -23,8 +24,9 @@ ja:
         role: "権限"
         admin: "管理者"
         normal: "一般"
-        active: "アクティブ"
-        inactive: "非アクティブ"
+        status: "ステータス"
+        active: "有効"
+        inactive: "無効"
         name: "名前"
     errors:
       messages:
@@ -41,6 +43,7 @@ ja:
     edit: "編集"
     delete: "削除"
     delete_confirm: "本当に削除しますか？"
+    operation: "操作"
     edit_title: "タイトルを編集する"
     copy: "コピー"
     copied: "コピーしました！"
