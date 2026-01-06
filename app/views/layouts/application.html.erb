@@ -11,43 +11,43 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+    <% # Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <% #= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
-    <%# ファビコン（サブディレクトリ対応） %>
+    <% # ファビコン（サブディレクトリ対応） %>
     <link rel="icon" href="<%= "#{request.script_name}/icon.png" %>" type="image/png">
     <link rel="icon" href="<%= "#{request.script_name}/icon.svg" %>" type="image/svg+xml">
     <link rel="apple-touch-icon" href="<%= "#{request.script_name}/icon.png" %>">
 
-    <%# bulma css and font awesome %>
+    <% # bulma css and font awesome %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <% # Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <% jquery_path = "#{request.script_name}/jquery-3.7.1.min.js" %>
     <script src="<%= jquery_path %>"></script>
     <%= javascript_importmap_tags %>
   </head>
 
-  <%# bulmaのデフォルトのnavbarを固定表示にする場合、bodyにもhas-navbar-fixed-topクラスを追加する。 %>
+  <% # bulmaのデフォルトのnavbarを固定表示にする場合、bodyにもhas-navbar-fixed-topクラスを追加する。 %>
   <body class="m-2 <%= 'has-navbar-fixed-top' if user_signed_in? %>">
     <main class="columns">
-      <%# サイドバーメニュー（デスクトップ表示時のみ表示） %>
-      <% if show_sidebar? %>
+      <% # サイドバーメニュー（デスクトップ表示時のみ表示） %>
+      <% if user_signed_in? %>
         <div class="submenu column is-3 is-hidden-touch">
           <%= render('layouts/sidebar') %>
         </div>
       <% end %>
 
-      <div class="column <%= 'is-9-desktop' if user_signed_in? && chats_controller? %>">
-        <%# navbarメニュー %>
+      <div class="column <%= 'is-9-desktop' if user_signed_in? %>">
+        <% # navbarメニュー %>
         <%= render('layouts/navbar_menu') if user_signed_in? %>
 
-        <%# フラッシュメッセージ %>
+        <% # フラッシュメッセージ %>
         <%= render('layouts/flash_messages') if user_signed_in? %>
 
-        <%# メインコンテンツ %>
+        <% # メインコンテンツ %>
         <%= yield %>
       </div>
     </main>

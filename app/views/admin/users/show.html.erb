@@ -1,0 +1,44 @@
+<div class="content">
+  <h1 class="title">ユーザー詳細</h1>
+
+  <div class="field">
+    <label class="label">ID</label>
+    <div class="control">
+      <p><%= @user.id %></p>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">名前</label>
+    <div class="control">
+      <p><%= @user.name %></p>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">メールアドレス</label>
+    <div class="control">
+      <p><%= @user.email %></p>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">権限</label>
+    <div class="control">
+      <p><%= t("activerecord.attributes.user.role.#{@user.role}") %></p>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">アクティブ</label>
+    <div class="control">
+      <p><%= @user.active? ? 'アクティブ' : '非アクティブ' %></p>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= link_to(t("common.edit"), edit_admin_user_path(@user), class: 'button is-primary is-light is-normal') %>
+    <%= link_to(t("common.back"), admin_users_path, class: 'button is-warning is-light is-normal') %>
+  </div>
+</div>
+

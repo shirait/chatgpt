@@ -13,7 +13,8 @@ RSpec.describe MessageThread, type: :model do
   end
 
   describe '.build_message_thread' do
-    let(:user) { create(:user) }
+    let(:admin_user) { create(:user, :admin, :self_referential) }
+    let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
     let(:params) do
       {
         content: "First line\nSecond line\nThird line"
@@ -87,7 +88,8 @@ RSpec.describe MessageThread, type: :model do
   end
 
   describe 'validations - title' do
-    let(:user) { create(:user) }
+    let(:admin_user) { create(:user, :admin, :self_referential) }
+    let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
 
     context 'when title is blank' do
       it 'is invalid' do
@@ -136,7 +138,8 @@ RSpec.describe MessageThread, type: :model do
   end
 
   describe 'dependent: :destroy' do
-    let(:user) { create(:user) }
+    let(:admin_user) { create(:user, :admin, :self_referential) }
+    let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
     let(:gpt_model) { create(:gpt_model, creator_id: user.id) }
     let(:message_thread) { create(:message_thread, creator_id: user.id) }
 

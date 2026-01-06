@@ -1,4 +1,4 @@
-class GptModelsController < ApplicationController
+class Admin::GptModelsController < ApplicationController
   load_and_authorize_resource
 
   def index
@@ -13,9 +13,9 @@ class GptModelsController < ApplicationController
     @gpt_model = GptModel.build_gpt_model(gpt_model_params, creator_id: current_user.id)
     if @gpt_model.save && inactive_other_gpt_models
       flash[:notice] = "#{@gpt_model.name}を作成しました。"
-      redirect_to gpt_models_path
+      redirect_to admin_gpt_model_path(@gpt_model)
     else
-      flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
+      flash.now[:alert] = t("errors.messages.not_saved", resource: t("activerecord.models.gpt_model"))
       render :new
     end
   end
@@ -32,7 +32,7 @@ class GptModelsController < ApplicationController
     @gpt_model.assign_attributes(gpt_model_params)
     if @gpt_model.save && inactive_other_gpt_models
       flash[:notice] = "#{@gpt_model.name}を更新しました。"
-      redirect_to gpt_models_path
+      redirect_to admin_gpt_model_path(@gpt_model)
     else
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
       render :edit
@@ -43,12 +43,12 @@ class GptModelsController < ApplicationController
     @gpt_model = GptModel.find(params[:id])
     if @gpt_model.messages.exists?
       flash[:alert] = "#{@gpt_model.name}はユーザーがメッセージを作成済みのため、削除できません。"
-      redirect_to gpt_models_path and return
+      redirect_to admin_gpt_models_path and return
     end
 
     @gpt_model.destroy!
     flash[:notice] = "#{@gpt_model.name}を削除しました。"
-    redirect_to gpt_models_path
+    redirect_to admin_gpt_models_path
   end
 
   private

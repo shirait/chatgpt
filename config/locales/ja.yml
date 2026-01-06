@@ -21,6 +21,11 @@ ja:
         password: "パスワード"
         password_confirmation: "パスワード確認"
         role: "権限"
+        admin: "管理者"
+        normal: "一般"
+        active: "アクティブ"
+        inactive: "非アクティブ"
+        name: "名前"
     errors:
       messages:
         not_saved:
@@ -39,3 +44,8 @@ ja:
     edit_title: "タイトルを編集する"
     copy: "コピー"
     copied: "コピーしました！"
+    all: "すべて"
+    search: "検索"
+    user_management: "ユーザー管理"
+    gpt_model_management: "GPTモデル管理"
+    no_data: "データがありません。"

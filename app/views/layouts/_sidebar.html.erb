@@ -1,14 +1,34 @@
-<aside class="box has-background-white-ter">
-  <div class="sidebar-message-thread-link mb-2 <%= 'selected' if @message_thread.nil? %>">
-    <%= link_to(new_chat_path) do %>
-      <i class="fa fa-plus"></i>
-      <span>新しいチャット</span>
-    <% end %>
-  </div>
-
-  <% @message_threads.each do |message_thread| %>
-    <div class="sidebar-message-thread-link mb-2 <%= 'selected' if message_thread.id == @message_thread&.id %>">
-      <%= link_to(message_thread.title, chat_path(message_thread)) %>
+<% if current_user.normal? %>
+  <aside class="box has-background-white-ter">
+    <div class="sidebar-message-thread-link mb-2 <%= 'selected' if @message_thread.nil? %>">
+      <%= link_to(new_chat_path) do %>
+        <i class="fa fa-plus"></i>
+        <span>新しいチャット</span>
+      <% end %>
     </div>
-  <% end %>
-</aside>
+
+    <% @message_threads.each do |message_thread| %>
+      <div class="sidebar-message-thread-link mb-2 <%= 'selected' if message_thread.id == @message_thread&.id %>">
+        <%= link_to(message_thread.title, chat_path(message_thread)) %>
+      </div>
+    <% end %>
+  </aside>
+<% end %>
+
+<% if current_user.admin? %>
+  <aside class="box has-background-white-ter">
+    <div class="sidebar-user-link mb-2 <%= 'selected' if params[:controller] == "admin/users" %>">
+      <%= link_to(admin_users_path) do %>
+        <i class="fa fa-users"></i>
+        <span><%= t("common.user_management") %></span>
+      <% end %>
+    </div>
+
+    <div class="sidebar-gpt-model-link mb-2 <%= 'selected' if params[:controller] == "admin/gpt_models" %>">
+      <%= link_to(admin_gpt_models_path) do %>
+        <i class="fa fa-robot"></i>
+        <span><%= t("common.gpt_model_management") %></span>
+      <% end %>
+    </div>
+  </aside>
+<% end %>

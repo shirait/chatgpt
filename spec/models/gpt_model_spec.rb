@@ -14,7 +14,8 @@ RSpec.describe GptModel, type: :model do
   end
 
   describe '.active_gpt_model' do
-    let!(:user) { create(:user) }
+    let(:admin_user) { create(:user, :admin, :self_referential) }
+    let!(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
     let!(:active_model) { create(:gpt_model, :active, creator_id: user.id) }
     let!(:inactive_model) { create(:gpt_model, active: false, creator_id: user.id) }
 
@@ -42,7 +43,8 @@ RSpec.describe GptModel, type: :model do
   end
 
   describe '.build_gpt_model' do
-    let(:user) { create(:user) }
+    let(:admin_user) { create(:user, :admin, :self_referential) }
+    let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
     let(:params) do
       {
         name: 'GPT-3.5',
@@ -70,7 +72,8 @@ RSpec.describe GptModel, type: :model do
   end
 
   describe 'validations - name' do
-    let(:user) { create(:user) }
+    let(:admin_user) { create(:user, :admin, :self_referential) }
+    let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
 
     context 'when name is blank' do
       it 'is invalid' do
@@ -102,7 +105,8 @@ RSpec.describe GptModel, type: :model do
   end
 
   describe 'validations - description' do
-    let(:user) { create(:user) }
+    let(:admin_user) { create(:user, :admin, :self_referential) }
+    let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
 
     context 'when description is too long' do
       it 'is invalid' do
@@ -143,7 +147,8 @@ RSpec.describe GptModel, type: :model do
   end
 
   describe 'dependent: :restrict_with_error' do
-    let(:user) { create(:user) }
+    let(:admin_user) { create(:user, :admin, :self_referential) }
+    let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
     let(:gpt_model) { create(:gpt_model, creator_id: user.id) }
 
     context 'when messages exist' do

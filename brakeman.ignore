@@ -1,0 +1,26 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "ff90bb2168d585040b40c213dc3dd2891513601a9e72f94e3655e92d51cd9f40",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/admin/users_controller.rb",
+      "line": 84,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:user).permit(:name, :email, :password, :password_confirmation, :role, :active)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::UsersController",
+        "method": "user_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "note": "Admin画面でのユーザー管理用。Strong Parameters を使用しており、Devise の一般的な実装範囲と判断して無視する。"
+    }
+  ]
+}
+
+
