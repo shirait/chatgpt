@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     end
   end
 
+  # todo: gpt_modelsをadminに移行する。
   resources :gpt_models
 
   namespace :admin do

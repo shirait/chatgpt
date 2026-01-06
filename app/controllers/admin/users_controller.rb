@@ -32,7 +32,13 @@ class Admin::UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    if @user.update(user_params)
+    update_params = user_params
+    # パスワードが空の場合はパスワード関連のパラメータを削除
+    if update_params[:password].blank?
+      update_params.delete(:password)
+      update_params.delete(:password_confirmation)
+    end
+    if @user.update(update_params)
       flash[:notice] = "#{@user.email}を更新しました。"
       redirect_to admin_users_path
     else

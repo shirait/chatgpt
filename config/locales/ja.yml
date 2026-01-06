@@ -21,6 +21,10 @@ ja:
         password: "パスワード"
         password_confirmation: "パスワード確認"
         role: "権限"
+        admin: "管理者"
+        normal: "一般"
+        active: "アクティブ"
+        name: "名前"
     errors:
       messages:
         not_saved:
