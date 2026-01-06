@@ -1,4 +1,4 @@
-<div class="content">
+<div class="box">
   <h1 class="title">ユーザー詳細</h1>
 
   <div class="field">
@@ -31,9 +31,7 @@
 
   <div class="field">
     <label class="label">アクティブ</label>
-    <div class="control">
-      <p><%= @user.active? ? 'アクティブ' : '非アクティブ' %></p>
-    </div>
+    <div class="control"><%= active_icon(@user) %></div>
   </div>
 
   <div class="field">
