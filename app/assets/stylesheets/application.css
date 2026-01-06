@@ -115,3 +115,8 @@ body.has-navbar-fixed-top .column.is-9-desktop {
 .login-form {
   width: 480px;
 }
+
+.scrollable-sidebar {
+  max-height: 100vh;
+  overflow-y: auto;
+}
