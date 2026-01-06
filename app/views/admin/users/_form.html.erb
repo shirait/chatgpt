@@ -47,7 +47,7 @@
 <div class="field">
   <%= f.label(:role, class: "label") %>
   <div class="select">
-    <%= f.select(:role, User.roles.keys.map { |k| [t("activerecord.attributes.user.#{k}"), k] }, {}, { class: "select" }) %>
+    <%= f.select(:role, user_role_select_options, {}, { class: "select" }) %>
   </div>
   <% if @user.errors[:role].present? %>
     <p class="help is-danger"><%= @user.errors[:role].join(", ") %></p>

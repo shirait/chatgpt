@@ -15,7 +15,7 @@
     <div class="control is-expanded">
       <%= f.label(:role, t("activerecord.attributes.user.role"), class: "label") %>
       <div class="select">
-        <%= f.select(:role, User.roles.keys.map { |k| [t("activerecord.attributes.user.#{k}"), k] }, { include_blank: true, selected: params[:role] }, { class: "select" }) %>
+        <%= f.select(:role, user_role_select_options, { include_blank: true, selected: params[:role] }, { class: "select" }) %>
       </div>
     </div>
     <div class="control is-expanded">
