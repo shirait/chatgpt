@@ -7,7 +7,6 @@ class Message < ApplicationRecord
   enum :message_type, { user: 0, assistant: 1 } # user: ユーザーからのメッセージ, assistant: GPTからのメッセージ
 
   attr_accessor :send_prev_messages_to_openai_api
-  attr_accessor :thread_title
 
   validates :message_type, presence: true, inclusion: { in: message_types.keys }
   validates :gpt_model, presence: true
@@ -23,8 +22,7 @@ class Message < ApplicationRecord
       message_type: :user,
       creator_id: creator_id,
       gpt_model: GptModel.active_gpt_model,
-      send_prev_messages_to_openai_api: params[:send_prev_messages_to_openai_api] == "1",
-      thread_title: message_thread.title
+      send_prev_messages_to_openai_api: params[:send_prev_messages_to_openai_api] == "1"
     )
 
     if params[:message_files].present?
@@ -49,6 +47,7 @@ class Message < ApplicationRecord
 
   def thread_title_length
     return if persisted?
+    thread_title = message_thread.title
     return if thread_title.blank?
 
     if thread_title.length > 255
