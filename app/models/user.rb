@@ -8,7 +8,7 @@ class User < ApplicationRecord
   # 管理者のリレーション
   has_many :created_users, class_name: "User", foreign_key: :creator_id, dependent: :restrict_with_error
   has_many :updated_users, class_name: "User", foreign_key: :updater_id, dependent: :restrict_with_error
-  has_many :gpt_models,                        foreign_key: :creator_id, dependent: :restrict_with_error
+  has_many :gpt_models,    foreign_key: :creator_id, dependent: :restrict_with_error
 
   # 一般ユーザーのリレーション
   has_many :message_threads, foreign_key: :creator_id, dependent: :destroy
