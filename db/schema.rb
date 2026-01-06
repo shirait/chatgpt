@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_05_090837) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_06_014018) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -73,6 +73,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_05_090837) do
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "current_sign_in_at"
     t.string "current_sign_in_ip"
@@ -82,12 +83,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_05_090837) do
     t.datetime "last_sign_in_at"
     t.string "last_sign_in_ip"
     t.datetime "locked_at"
+    t.string "name"
     t.datetime "remember_created_at"
     t.integer "role", default: 1, null: false
     t.integer "sign_in_count", default: 0, null: false
     t.string "unlock_token"
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["name"], name: "index_users_on_name"
     t.index ["role"], name: "index_users_on_role"
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
