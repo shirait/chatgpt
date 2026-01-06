@@ -15,7 +15,7 @@ class Admin::UsersController < ApplicationController
     @user = User.build_user(user_params, creator_id: current_user.id)
     if @user.save
       flash[:notice] = "#{@user.email}を作成しました。"
-      redirect_to admin_users_path
+      redirect_to admin_user_path(@user)
     else
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
       render :new
@@ -35,7 +35,7 @@ class Admin::UsersController < ApplicationController
     @user.assign_update_attributes(user_params, updater_id: current_user.id)
     if @user.save
       flash[:notice] = "#{@user.email}を更新しました。"
-      redirect_to admin_users_path
+      redirect_to admin_user_path(@user)
     else
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
       render :edit
