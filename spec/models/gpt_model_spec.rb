@@ -76,7 +76,9 @@ RSpec.describe GptModel, type: :model do
       it 'is invalid' do
         gpt_model = build(:gpt_model, name: '', creator_id: user.id)
         expect(gpt_model).not_to be_valid
-        expect(gpt_model.errors[:name]).to include("can't be blank")
+        expect(gpt_model.errors[:name]).to be_present
+        # i18nを使用している場合、エラーメッセージは翻訳される
+        expect(gpt_model.errors[:name].first).to match(/入力してください/)
       end
     end
 
@@ -85,7 +87,9 @@ RSpec.describe GptModel, type: :model do
         long_name = 'a' * 256
         gpt_model = build(:gpt_model, name: long_name, creator_id: user.id)
         expect(gpt_model).not_to be_valid
-        expect(gpt_model.errors[:name]).to include('is too long (maximum is 255 characters)')
+        expect(gpt_model.errors[:name]).to be_present
+        # i18nを使用している場合、エラーメッセージは翻訳される
+        expect(gpt_model.errors[:name].first).to match(/255文字以内/)
       end
     end
 
@@ -105,7 +109,9 @@ RSpec.describe GptModel, type: :model do
         long_description = 'a' * 256
         gpt_model = build(:gpt_model, description: long_description, creator_id: user.id)
         expect(gpt_model).not_to be_valid
-        expect(gpt_model.errors[:description]).to include('is too long (maximum is 255 characters)')
+        expect(gpt_model.errors[:description]).to be_present
+        # i18nを使用している場合、エラーメッセージは翻訳される
+        expect(gpt_model.errors[:description].first).to match(/255文字以内/)
       end
     end
 
@@ -129,7 +135,9 @@ RSpec.describe GptModel, type: :model do
       it 'is invalid' do
         gpt_model = build(:gpt_model, creator_id: nil)
         expect(gpt_model).not_to be_valid
-        expect(gpt_model.errors[:creator_id]).to include("can't be blank")
+        expect(gpt_model.errors[:creator_id]).to be_present
+        # i18nを使用している場合、エラーメッセージは翻訳される
+        expect(gpt_model.errors[:creator_id].first).to match(/入力してください/)
       end
     end
   end
@@ -144,14 +152,21 @@ RSpec.describe GptModel, type: :model do
         create(:message, gpt_model: gpt_model, message_thread: message_thread, creator_id: user.id)
       end
 
-      it 'prevents deletion' do
-        expect { gpt_model.destroy }.to raise_error(ActiveRecord::DeleteRestrictionError)
+      it 'prevents deletion with destroy' do
+        expect(gpt_model.destroy).to be false
+        expect(gpt_model.errors[:base]).to be_present
+      end
+
+      it 'raises error with destroy!' do
+        expect { gpt_model.destroy! }.to raise_error(ActiveRecord::RecordNotDestroyed)
       end
     end
 
     context 'when no messages exist' do
       it 'allows deletion' do
-        expect { gpt_model.destroy }.to change { described_class.count }.by(-1)
+        destroyed_model = gpt_model.destroy
+        expect(destroyed_model.destroyed?).to be true
+        expect(described_class.find_by(id: gpt_model.id)).to be_nil
       end
     end
   end
