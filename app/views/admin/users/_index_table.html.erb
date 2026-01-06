@@ -2,12 +2,12 @@
   <table class="table is-bordered is-hoverable is-narrow">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>名前</th>
-        <th>メールアドレス</th>
-        <th>権限</th>
-        <th>アクティブ</th>
-        <th>操作</th>
+        <th class="has-text-centered">ID</th>
+        <th class="has-text-centered">名前</th>
+        <th class="has-text-centered">メールアドレス</th>
+        <th class="has-text-centered">権限</th>
+        <th class="has-text-centered">アクティブ</th>
+        <th class="has-text-centered">操作</th>
       </tr>
     </thead>
     <tbody>
@@ -19,7 +19,7 @@
           <td><%= user.name %></td>
           <td><%= user.email %></td>
           <td><%= user.role %></td>
-          <td><%= user.active? ? 'アクティブ' : '非アクティブ' %></td>
+          <td class="has-text-centered"><%= active_icon(user) %></td>
           <td>
             <%= link_to(t("common.show"), admin_user_path(user), class: 'button is-info is-light is-normal') %>
             <%= link_to(t("common.edit"), edit_admin_user_path(user), class: 'button is-primary is-light is-normal') %>

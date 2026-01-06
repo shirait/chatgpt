@@ -49,4 +49,23 @@ module ApplicationHelper
   def chats_controller?
     user_signed_in? && params[:controller] == "chats"
   end
+
+  def active_icon(model_class)
+    return active_icon_html if model_class.active?
+    inactive_icon_html
+  end
+
+  def active_icon_html
+    content_tag(:span, class: "tag is-success is-light", title: t("activerecord.attributes.user.active")) do
+      content_tag(:span, class: "fa fa-check-circle") do
+      end
+    end
+  end
+
+  def inactive_icon_html
+    content_tag(:span, class: "tag is-danger is-light", title: t("activerecord.attributes.user.inactive")) do
+      content_tag(:span, class: "fa fa-times-circle") do
+      end
+    end
+  end
 end
