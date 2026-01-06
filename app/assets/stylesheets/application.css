@@ -79,6 +79,14 @@ body.has-navbar-fixed-top .column.is-9-desktop {
   font-weight: bold;
 }
 
+.sidebar-user-link.selected {
+  font-weight: bold;
+}
+
+.sidebar-gpt-model-link.selected {
+  font-weight: bold;
+}
+
 /* モバイル表示時のナビゲーションメニューのスタイル */
 @media screen and (max-width: 1023px) {
   /* モバイル表示時、navbar-menuはデフォルトで非表示（is-activeクラスがある場合のみ表示） */
