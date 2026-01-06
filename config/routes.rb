@@ -21,4 +21,6 @@ Rails.application.routes.draw do
   end
 
   resources :gpt_models
+
+  resoueces :users
 end
