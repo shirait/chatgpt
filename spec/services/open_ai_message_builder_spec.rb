@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe OpenAiMessageBuilder, type: :service do
   describe '.build' do
-    let(:user) { create(:user) }
+    let(:admin_user) { create(:user, :admin, :self_referential) }
+    let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
     let(:gpt_model) { create(:gpt_model, creator_id: user.id) }
     let(:message_thread) { create(:message_thread, creator_id: user.id) }
     let(:message) { create(:message, message_thread: message_thread, gpt_model: gpt_model, creator_id: user.id) }
@@ -19,7 +20,8 @@ RSpec.describe OpenAiMessageBuilder, type: :service do
   end
 
   describe '#build' do
-    let(:user) { create(:user) }
+    let(:admin_user) { create(:user, :admin, :self_referential) }
+    let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
     let(:gpt_model) { create(:gpt_model, creator_id: user.id) }
     let(:message_thread) { create(:message_thread, creator_id: user.id) }
 
