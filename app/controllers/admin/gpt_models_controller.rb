@@ -29,7 +29,7 @@ class Admin::GptModelsController < ApplicationController
   end
 
   def update
-    @gpt_model.assign_attributes(gpt_model_params)
+    @gpt_model.assign_update_attributes(gpt_model_params, updater_id: current_user.id)
     if @gpt_model.save && inactive_other_gpt_models
       flash[:notice] = "#{@gpt_model.name}を更新しました。"
       redirect_to admin_gpt_model_path(@gpt_model)
