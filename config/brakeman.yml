@@ -1,6 +1,9 @@
+#
+# Brakeman 設定ファイル
+#
+# 特定のチェックを無効化する設定。
+# `CheckPermitAttributes` は Strong Parameters 利用前提の admin 画面でのみ
+# password/password_confirmation を permit しているため、意図的にスキップする。
 skip_checks:
-  # `PermitAttributes` の警告が出る件の対処。 users_controller#user_params のpassword, password_confirmation で引っかかるが、通常の実装でアリ、Adminメニューであるため問題ないものとする。
-  # PermitAttributes は全てスキップされるが、このプロジェクトでは問題ないものと判断する。
-  - PermitAttributes
-
+  - CheckPermitAttributes
 
