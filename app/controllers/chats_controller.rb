@@ -1,8 +1,11 @@
 class ChatsController < ApplicationController
+  # メインで扱うモデル名が Chat ではないので load_and_authorize_resource を使用しない。
+  # 権限チェックは各アクションで authorize! を実行すること。
+
   def new
     authorize!(:new, MessageThread)
     @user_message = Message.new(send_prev_messages_to_openai_api: true)
-    load_message_threads
+    load_message_threads_for_sidebar
   end
 
   def create
@@ -19,8 +22,8 @@ class ChatsController < ApplicationController
 
     if !@message_thread.valid? || !@user_message.valid?
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
-      load_message_threads
-      render :new and return
+      load_message_threads_for_sidebar
+      render(:new) and return
     end
 
     @message_thread.save && @user_message.save
@@ -31,25 +34,25 @@ class ChatsController < ApplicationController
       redirect_to chat_path(@message_thread) and return
     # 例外処理について、StandardError以外はrescueしないように注意（ https://github.com/shirait/blog_import_sample/issues/9#issuecomment-2142528418 ）
     rescue Faraday::Error => e
-      flash.now[:alert] = faraday_error_message
+      flash.now[:alert] = t("common.faraday_error")
     rescue StandardError => e
-      flash.now[:alert] = unexpected_error_message
+      flash.now[:alert] = t("common.unexpected_error")
     end
-    load_message_threads
-    render :new
+    load_message_threads_for_sidebar
+    render(:new)
   end
 
   def show
     @message_thread = MessageThread.eager_load(messages: :message_files_attachments).order("messages.id").find(params[:id])
     authorize!(:read, @message_thread)
-    load_message_threads
+    load_message_threads_for_sidebar
     @user_message = Message.new(message_thread_id: @message_thread.id, send_prev_messages_to_openai_api: true)
   end
 
   def search
     authorize!(:search, MessageThread)
     @searched_message_threads = MessageThread.eager_load(:messages).accessible_by(current_ability).order("messages.id").where("messages.content LIKE ?", "%#{params[:search]}%")
-    load_message_threads
+    load_message_threads_for_sidebar
   end
 
   def add_message
@@ -63,8 +66,8 @@ class ChatsController < ApplicationController
 
     unless @user_message.save
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
-      load_message_threads
-      render :show and return
+      load_message_threads_for_sidebar
+      render(:show) and return
     end
 
     begin
@@ -72,18 +75,18 @@ class ChatsController < ApplicationController
       flash[:notice] = "メッセージの送受信に成功しました。"
       redirect_to chat_path(@message_thread) and return
     rescue Faraday::Error => e
-      flash.now[:alert] = faraday_error_message
+      flash.now[:alert] = t("common.faraday_error")
     rescue StandardError => e
-      flash.now[:alert] = unexpected_error_message
+      flash.now[:alert] = t("common.unexpected_error")
     end
-    load_message_threads
-    render :show
+    load_message_threads_for_sidebar
+    render(:show)
   end
 
   def edit
     @message_thread = MessageThread.find(params[:id])
     authorize!(:edit, @message_thread)
-    load_message_threads
+    load_message_threads_for_sidebar
   end
 
   def update
@@ -93,11 +96,11 @@ class ChatsController < ApplicationController
     @message_thread.assign_attributes(update_message_thread_params)
     if @message_thread.save
       flash[:notice] = "タイトルを更新しました。"
-      redirect_to chat_path(@message_thread)
+      redirect_to(chat_path(@message_thread))
     else
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
-      load_message_threads
-      render :edit and return
+      load_message_threads_for_sidebar
+      render(:edit) and return
     end
   end
 
@@ -106,13 +109,13 @@ class ChatsController < ApplicationController
     authorize!(:destroy, @message_thread)
     @message_thread.destroy!
     flash[:notice] = "削除しました。"
-    redirect_to root_path
+    redirect_to(root_path)
   end
 
   private
 
-  def load_message_threads
-    @message_threads = MessageThread.accessible_by(current_ability).order(id: :asc)
+  def load_message_threads_for_sidebar
+    @message_threads_for_sidebar = MessageThread.accessible_by(current_ability).order(id: :asc)
   end
 
   def message_params
@@ -121,13 +124,5 @@ class ChatsController < ApplicationController
 
   def update_message_thread_params
     params.require(:message_thread).permit(:title)
-  end
-
-  def faraday_error_message
-    "OpenAI APIの利用でエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。"
-  end
-
-  def unexpected_error_message
-    "想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。"
   end
 end

@@ -1,4 +1,4 @@
-<div class="content">
+<div class="box">
   <h1 class="title">ユーザー詳細</h1>
 
   <div class="field">
@@ -9,31 +9,29 @@
   </div>
 
   <div class="field">
-    <label class="label">名前</label>
+    <label class="label"><%= t("activerecord.attributes.user.name") %></label>
     <div class="control">
       <p><%= @user.name %></p>
     </div>
   </div>
 
   <div class="field">
-    <label class="label">メールアドレス</label>
+    <label class="label"><%= t("activerecord.attributes.user.email") %></label>
     <div class="control">
       <p><%= @user.email %></p>
     </div>
   </div>
 
   <div class="field">
-    <label class="label">権限</label>
+    <label class="label"><%= t("activerecord.attributes.user.role") %></label>
     <div class="control">
       <p><%= t("activerecord.attributes.user.role.#{@user.role}") %></p>
     </div>
   </div>
 
   <div class="field">
-    <label class="label">アクティブ</label>
-    <div class="control">
-      <p><%= @user.active? ? 'アクティブ' : '非アクティブ' %></p>
-    </div>
+    <label class="label"><%= t("activerecord.attributes.user.status") %></label>
+    <div class="control"><%= active_icon(@user) %></div>
   </div>
 
   <div class="field">

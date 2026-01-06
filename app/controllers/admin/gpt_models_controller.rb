@@ -11,7 +11,7 @@ class Admin::GptModelsController < ApplicationController
 
   def create
     @gpt_model = GptModel.build_gpt_model(gpt_model_params, creator_id: current_user.id)
-    if @gpt_model.save && inactive_other_gpt_models
+    if @gpt_model.save_with_inactive_other_gpt_models
       flash[:notice] = "#{@gpt_model.name}を作成しました。"
       redirect_to admin_gpt_model_path(@gpt_model)
     else
@@ -30,7 +30,7 @@ class Admin::GptModelsController < ApplicationController
 
   def update
     @gpt_model.assign_update_attributes(gpt_model_params, updater_id: current_user.id)
-    if @gpt_model.save && inactive_other_gpt_models
+    if @gpt_model.save_with_inactive_other_gpt_models
       flash[:notice] = "#{@gpt_model.name}を更新しました。"
       redirect_to admin_gpt_model_path(@gpt_model)
     else
@@ -52,13 +52,6 @@ class Admin::GptModelsController < ApplicationController
   end
 
   private
-
-  def inactive_other_gpt_models
-    if @gpt_model.active?
-      GptModel.where.not(id: @gpt_model.id).update(active: false)
-    end
-    true
-  end
 
   def gpt_model_params
     params.require(:gpt_model).permit(:name, :description, :active)

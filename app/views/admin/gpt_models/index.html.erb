@@ -2,16 +2,7 @@
 
 <% if @gpt_models.empty? %>
   <p class="is-size-6"><%= t("common.no_data") %></p>
-<% end %>
-
-<% @gpt_models.each do |gpt_model| %>
-  <div class="box">
-    <h2 class="title is-4"><%= gpt_model.name %></h2>
-    <p class="subtitle is-6"><%= gpt_model.description %></p>
-    <p class="is-size-6"><%= gpt_model.active? ? t("activerecord.attributes.gpt_model.active") : t("activerecord.attributes.gpt_model.inactive") %></p>
-    <%= link_to(t("common.show"), admin_gpt_model_path(gpt_model), class: 'button is-info is-light is-normal') %>
-    <%= link_to(t("common.edit"), edit_admin_gpt_model_path(gpt_model), class: 'button is-primary is-light is-normal') %>
-    <%= link_to(t("common.delete"), admin_gpt_model_path(gpt_model), class: 'button is-danger is-light is-normal', data: { confirm: '本当に削除しますか？', method: 'delete' }) %>
-  </div>
+<% else %>
+  <%= render("index_table", gpt_models: @gpt_models) %>
 <% end %>
 

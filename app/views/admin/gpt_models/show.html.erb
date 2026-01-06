@@ -5,8 +5,8 @@
   <div class="subtitle is-6">
     <%= @gpt_model.description %>
   </div>
-  <div class="is-size-6">
-    <%= @gpt_model.active? ? t("activerecord.attributes.gpt_model.active") : t("activerecord.attributes.gpt_model.inactive") %>
+  <div class="is-size-6 mb-4">
+    <%= t("activerecord.attributes.gpt_model.status") %>：<%= active_icon(@gpt_model) %>
   </div>
 
   <div>

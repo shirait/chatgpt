@@ -1,6 +1,4 @@
 class Admin::UsersController < ApplicationController
-  before_action :ensure_admin
-
   load_and_authorize_resource
 
   def index
@@ -75,10 +73,6 @@ class Admin::UsersController < ApplicationController
   end
 
   private
-
-  def ensure_admin
-    redirect_to root_path, alert: "アクセス権限がありません。" unless current_user&.admin?
-  end
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :role, :active)
