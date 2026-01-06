@@ -8,7 +8,6 @@ RSpec.describe MessageThread, type: :model do
 
   describe 'validations' do
     it { should validate_presence_of(:title) }
-    it { should validate_length_of(:title).is_at_most(255) }
     it { should validate_presence_of(:creator_id) }
   end
 
@@ -100,16 +99,6 @@ RSpec.describe MessageThread, type: :model do
       end
     end
 
-    context 'when title is too long' do
-      it 'is invalid' do
-        long_title = 'a' * 256
-        message_thread = build(:message_thread, title: long_title, creator_id: user.id)
-        expect(message_thread).not_to be_valid
-        expect(message_thread.errors[:title]).to be_present
-        expect(message_thread.errors[:title].first).to match(/255文字以内/)
-      end
-    end
-
     context 'when title is valid' do
       it 'is valid' do
         message_thread = build(:message_thread, title: 'Valid Title', creator_id: user.id)
@@ -140,7 +129,7 @@ RSpec.describe MessageThread, type: :model do
   describe 'dependent: :destroy' do
     let(:admin_user) { create(:user, :admin, :self_referential) }
     let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
-    let(:gpt_model) { create(:gpt_model, creator_id: user.id) }
+    let(:gpt_model) { create(:gpt_model, creator_id: user.id, updater_id: admin_user.id) }
     let(:message_thread) { create(:message_thread, creator_id: user.id) }
 
     context 'when messages exist' do

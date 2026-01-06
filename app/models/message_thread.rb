@@ -7,7 +7,7 @@ class MessageThread < ApplicationRecord
 
   def self.build_message_thread(params:, creator_id:)
     new(
-      title: params[:content].split("\n").select(&:present?).first.chomp,
+      title: params[:content].split("\n").select(&:present?).first.try(:chomp),
       creator_id: creator_id
     )
   end
