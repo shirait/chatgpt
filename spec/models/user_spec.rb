@@ -239,17 +239,20 @@ RSpec.describe User, type: :model do
       let(:message_thread) { create(:message_thread, creator_id: user.id) }
 
       before do
-        create(:message, message_thread: message_thread, gpt_model: gpt_model, creator_id: user.id)
-        create(:message, message_thread: message_thread, gpt_model: gpt_model, creator_id: user.id)
+        create(:message, message_thread: message_thread, gpt_model: gpt_model, message_type: :user, creator_id: user.id)
+        create(:message, message_thread: message_thread, gpt_model: gpt_model, message_type: :assistant, creator_id: user.id)
       end
 
       it 'destroys associated messages when user is destroyed' do
         # message_threadが削除されると、message_thread.messagesのdependent: :destroyによりmessagesも削除される
         # また、データベースの外部キー制約（on_delete: :cascade）によりmessagesも削除される
         # user.messagesのdependent: :destroyも実行されるが、既に削除されているため何も起こらない
-        expect {
-          user.destroy
-        }.to change { Message.count }.by(-2)
+
+        message_count_before_destroy = Message.count
+        user.destroy
+        message_count_after_destroy = Message.count
+        expect(message_count_before_destroy).to eq(2)
+        expect(message_count_after_destroy).to eq(0)
       end
     end
 
