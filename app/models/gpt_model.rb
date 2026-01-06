@@ -23,4 +23,17 @@ class GptModel < ApplicationRecord
     assign_attributes(params)
     self.updater_id = updater_id
   end
+
+  def save_with_inactive_other_gpt_models
+    save && update_inactive_other_gpt_models
+  end
+
+  private
+
+  def update_inactive_other_gpt_models
+    return true unless active?
+
+    GptModel.where.not(id: id).update(active: false)
+    true
+  end
 end
