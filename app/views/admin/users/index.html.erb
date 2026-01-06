@@ -15,13 +15,13 @@
   <div class="field">
     <%= f.label(:role, t("activerecord.attributes.user.role"), class: "label") %>
     <div class="select">
-      <%= f.select(:role, User.roles.keys.map { |k| [t("activerecord.attributes.user.#{k}"), k] }, { include_blank: true }, { class: "select" }) %>
+      <%= f.select(:role, User.roles.keys.map { |k| [t("activerecord.attributes.user.#{k}"), k] }, { include_blank: true, selected: params[:role] }, { class: "select" }) %>
     </div>
   </div>
   <div class="field">
     <%= f.label(:active, t("activerecord.attributes.user.active"), class: "label") %>
     <div class="select">
-      <%= f.select(:active, { t("activerecord.attributes.user.active") => "1", t("activerecord.attributes.user.inactive") => "0" }, { include_blank: true }, { class: "select" }) %>
+      <%= f.select(:active, { t("activerecord.attributes.user.active") => "1", t("activerecord.attributes.user.inactive") => "0" }, { include_blank: true, selected: params[:active] }, { class: "select" }) %>
     </div>
   </div>
   <%= f.submit(t("common.search"), class: "button is-primary is-light is-normal") %>
