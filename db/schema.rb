@@ -73,7 +73,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_06_014018) do
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.boolean "active", default: true
+    t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "current_sign_in_at"
     t.string "current_sign_in_ip"
@@ -83,7 +83,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_06_014018) do
     t.datetime "last_sign_in_at"
     t.string "last_sign_in_ip"
     t.datetime "locked_at"
-    t.string "name"
+    t.string "name", null: false
     t.datetime "remember_created_at"
     t.integer "role", default: 1, null: false
     t.integer "sign_in_count", default: 0, null: false
