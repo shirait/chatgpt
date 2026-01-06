@@ -9,9 +9,9 @@ class User < ApplicationRecord
   has_many :messages,        dependent: :destroy, foreign_key: :creator_id
   has_many :gpt_models,      dependent: :destroy, foreign_key: :creator_id
 
-  validates :email, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }, length: { maximum: 255 }
   # on: :createはCRUD画面を作成したら追加する。
-  validates :password, presence: true, length: { minimum: 6 }# , on: :create
-  validates :password_confirmation, presence: true# , on: :create
+  validates :password, presence: true, length: { minimum: 6, maximum: 128 }# , on: :create
+  validates :password_confirmation, presence: true, length: { minimum: 6, maximum: 128 }# , on: :create
   validates :role, presence: true, inclusion: { in: roles.keys }
 end
