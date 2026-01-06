@@ -1,0 +1,38 @@
+<%= link_to '新規作成', new_admin_user_path, class: 'button is-primary is-light is-normal' %>
+
+<% if @users.empty? %>
+  <p class="is-size-6">データがありません。</p>
+<% end %>
+
+<div class="table-container">
+  <table class="table is-bordered is-hoverable is-narrow">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>名前</th>
+        <th>メールアドレス</th>
+        <th>権限</th>
+        <th>アクティブ</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    <tfoot>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td><%= user.role %></td>
+          <td><%= user.active? ? 'アクティブ' : '非アクティブ' %></td>
+          <td>
+            <%= link_to(t("common.show"), admin_user_path(user), class: 'button is-info is-light is-normal') %>
+            <%= link_to(t("common.edit"), edit_admin_user_path(user), class: 'button is-primary is-light is-normal') %>
+            <%= link_to(t("common.delete"), admin_user_path(user), class: 'button is-danger is-light is-normal', data: { confirm: '本当に削除しますか？', method: 'delete' }) %>
+          </td>
+        </tr>
+      <% end %>
+    </tfoot>
+  </table>
+</div>

@@ -22,5 +22,7 @@ Rails.application.routes.draw do
 
   resources :gpt_models
 
-  resoueces :users
+  namespace :admin do
+    resources :users
+  end
 end
