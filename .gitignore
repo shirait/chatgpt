@@ -39,3 +39,5 @@
 /config/credentials.yml.enc
 /config/master.key
 
+# Ignore spec files
+spec/examples.txt
