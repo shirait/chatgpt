@@ -22,7 +22,7 @@ RSpec.describe Message, type: :model do
   describe '.build_user_message' do
     let(:admin_user) { create(:user, :admin, :self_referential) }
     let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
-    let(:gpt_model) { create(:gpt_model, :active, creator_id: admin_user.id) }
+    let(:gpt_model) { create(:gpt_model, :active, creator_id: admin_user.id, updater_id: admin_user.id) }
     let(:message_thread) { create(:message_thread, creator_id: user.id) }
     let(:params) do
       {
@@ -141,7 +141,7 @@ RSpec.describe Message, type: :model do
   describe 'scope :prev_messages' do
     let(:admin_user) { create(:user, :admin, :self_referential) }
     let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
-    let(:gpt_model) { create(:gpt_model, creator_id: admin_user.id) }
+    let(:gpt_model) { create(:gpt_model, creator_id: admin_user.id, updater_id: admin_user.id) }
     let(:message_thread) { create(:message_thread, creator_id: user.id) }
     let!(:message1) { create(:message, message_thread: message_thread, gpt_model: gpt_model, creator_id: user.id) }
     let!(:message2) { create(:message, message_thread: message_thread, gpt_model: gpt_model, creator_id: user.id) }
@@ -183,7 +183,7 @@ RSpec.describe Message, type: :model do
   describe 'validations - message_type' do
     let(:admin_user) { create(:user, :admin, :self_referential) }
     let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
-    let(:gpt_model) { create(:gpt_model, creator_id: admin_user.id) }
+    let(:gpt_model) { create(:gpt_model, creator_id: admin_user.id, updater_id: admin_user.id) }
     let(:message_thread) { create(:message_thread, creator_id: user.id) }
 
     context 'when message_type is blank' do
@@ -213,7 +213,7 @@ RSpec.describe Message, type: :model do
   describe 'validations - content' do
     let(:admin_user) { create(:user, :admin, :self_referential) }
     let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
-    let(:gpt_model) { create(:gpt_model, creator_id: admin_user.id) }
+    let(:gpt_model) { create(:gpt_model, creator_id: admin_user.id, updater_id: admin_user.id) }
     let(:message_thread) { create(:message_thread, creator_id: user.id) }
 
     context 'when content is blank' do
@@ -250,7 +250,7 @@ RSpec.describe Message, type: :model do
   describe 'validations - message_thread' do
     let(:admin_user) { create(:user, :admin, :self_referential) }
     let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
-    let(:gpt_model) { create(:gpt_model, creator_id: admin_user.id) }
+    let(:gpt_model) { create(:gpt_model, creator_id: admin_user.id, updater_id: admin_user.id) }
 
     context 'when message_thread is nil' do
       it 'is invalid' do
@@ -264,7 +264,7 @@ RSpec.describe Message, type: :model do
   describe 'validations - creator_id' do
     let(:admin_user) { create(:user, :admin, :self_referential) }
     let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
-    let(:gpt_model) { create(:gpt_model, creator_id: admin_user.id) }
+    let(:gpt_model) { create(:gpt_model, creator_id: admin_user.id, updater_id: admin_user.id) }
     let(:message_thread) { create(:message_thread, creator_id: user.id) }
 
     context 'when creator_id is blank' do

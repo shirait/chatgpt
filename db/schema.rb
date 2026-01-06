@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_06_023028) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_06_102845) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -46,8 +46,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_06_023028) do
     t.string "description"
     t.string "name", null: false
     t.datetime "updated_at", null: false
+    t.integer "updater_id", null: false
     t.index ["creator_id"], name: "index_gpt_models_on_creator_id"
     t.index ["name"], name: "index_gpt_models_on_name"
+    t.index ["updater_id"], name: "index_gpt_models_on_updater_id"
   end
 
   create_table "message_threads", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|

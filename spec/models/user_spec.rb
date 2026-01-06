@@ -235,7 +235,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'when messages exist' do
-      let(:gpt_model) { create(:gpt_model, creator_id: admin_user.id) }
+      let(:gpt_model) { create(:gpt_model, creator_id: admin_user.id, updater_id: admin_user.id) }
       let(:message_thread) { create(:message_thread, creator_id: user.id) }
 
       before do
@@ -252,8 +252,8 @@ RSpec.describe User, type: :model do
 
     context 'when gpt_models exist' do
       before do
-        create(:gpt_model, creator_id: user.id)
-        create(:gpt_model, creator_id: user.id)
+        create(:gpt_model, creator_id: user.id, updater_id: admin_user.id)
+        create(:gpt_model, creator_id: user.id, updater_id: admin_user.id)
       end
 
       it 'raises error when trying to destroy user with associated gpt_models' do

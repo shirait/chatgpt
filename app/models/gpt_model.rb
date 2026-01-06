@@ -6,6 +6,7 @@ class GptModel < ApplicationRecord
   validates :name, presence: true, length: { maximum: 255 }
   validates :description, length: { maximum: 255 }
   validates :creator_id, presence: true
+  validates :updater_id, presence: true
 
   def self.active_gpt_model
     where(active: true).first
@@ -14,6 +15,12 @@ class GptModel < ApplicationRecord
   def self.build_gpt_model(params, creator_id:)
     gpt_model = new(params)
     gpt_model.creator_id = creator_id
+    gpt_model.updater_id = creator_id
     gpt_model
+  end
+
+  def assign_update_attributes(params, updater_id:)
+    assign_attributes(params)
+    self.updater_id = updater_id
   end
 end

@@ -1,7 +1,7 @@
 class Message < ApplicationRecord
-  belongs_to :user, foreign_key: :creator_id
-  belongs_to :gpt_model
-  belongs_to :message_thread
+  belongs_to :user, foreign_key: :creator_id, optional: false
+  belongs_to :gpt_model, optional: false
+  belongs_to :message_thread, optional: false
   has_many_attached :message_files, dependent: :destroy
 
   enum :message_type, { user: 0, assistant: 1 } # user: ユーザーからのメッセージ, assistant: GPTからのメッセージ
@@ -47,6 +47,7 @@ class Message < ApplicationRecord
 
   def thread_title_length
     return if persisted?
+    return if message_thread.nil?
     thread_title = message_thread.title
     return if thread_title.blank?
 
