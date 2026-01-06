@@ -1,0 +1,6 @@
+ignore_checks:
+  # `PermitAttributes` の警告が出る件の対処。 users_controller#user_params のpassword, password_confirmation で引っかかるが、通常の実装でアリ、Adminメニューであるため問題ないものとする。
+  #　PermitAttributesは全て無視されるが、ここでは問題ないものとする。
+  - PermitAttributes
+
+
