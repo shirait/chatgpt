@@ -244,14 +244,12 @@ RSpec.describe User, type: :model do
       end
 
       it 'destroys associated messages when user is destroyed' do
-        # message_threadが削除されると、データベースの外部キー制約によりmessagesも削除される（on_delete: :cascade）
-        # また、user.messagesもdependent: :destroyで削除される
-        message_count_before = Message.count
-        user.destroy
-        # message_threadが削除されると、messagesも削除される
-        # ただし、user.messagesのdependent: :destroyは、message_threadの削除によって既に削除されたmessagesを再度削除しようとするため、
-        # 実際にはmessage_threadの削除によってmessagesが削除される
-        expect(Message.count).to eq(message_count_before - 2)
+        # message_threadが削除されると、message_thread.messagesのdependent: :destroyによりmessagesも削除される
+        # また、データベースの外部キー制約（on_delete: :cascade）によりmessagesも削除される
+        # user.messagesのdependent: :destroyも実行されるが、既に削除されているため何も起こらない
+        expect {
+          user.destroy
+        }.to change { Message.count }.by(-2)
       end
     end
 
