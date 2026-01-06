@@ -162,4 +162,3 @@ RSpec.describe MessageThread, type: :model do
     end
   end
 end
-

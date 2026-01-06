@@ -148,4 +148,3 @@ RSpec.describe OpenAiMessageBuilder, type: :service do
     end
   end
 end
-

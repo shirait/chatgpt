@@ -171,4 +171,3 @@ RSpec.describe GptModel, type: :model do
     end
   end
 end
-

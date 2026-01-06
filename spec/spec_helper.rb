@@ -92,4 +92,3 @@ RSpec.configure do |config|
   # as the trigger that resulted in that failure.
   Kernel.srand config.seed
 end
-

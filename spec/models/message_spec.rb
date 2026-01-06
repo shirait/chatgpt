@@ -76,7 +76,7 @@ RSpec.describe Message, type: :model do
       let(:file) { fixture_file_upload('spec/fixtures/test.txt', 'text/plain') }
 
       before do
-        params[:message_files] = [file]
+        params[:message_files] = [ file ]
       end
 
       it 'attaches message files' do
@@ -150,7 +150,7 @@ RSpec.describe Message, type: :model do
     it 'returns previous messages in descending order' do
       prev_messages = described_class.prev_messages(current_message, 3)
 
-      expect(prev_messages).to eq([message3, message2, message1])
+      expect(prev_messages).to eq([ message3, message2, message1 ])
     end
 
     it 'excludes the current message' do
@@ -163,7 +163,7 @@ RSpec.describe Message, type: :model do
       prev_messages = described_class.prev_messages(current_message, 2)
 
       expect(prev_messages.count).to eq(2)
-      expect(prev_messages).to eq([message3, message2])
+      expect(prev_messages).to eq([ message3, message2 ])
     end
 
     context 'when there are messages in different threads' do
@@ -270,4 +270,3 @@ RSpec.describe Message, type: :model do
     end
   end
 end
-

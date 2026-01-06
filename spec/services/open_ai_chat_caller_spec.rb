@@ -75,7 +75,7 @@ RSpec.describe OpenAiChatCaller, type: :service do
         allow(Rails.configuration.static_config).to receive(:openai_key).and_return('test-key')
         allow(OpenAI::Client).to receive(:new).with(access_token: 'test-key').and_return(mock_client)
         allow(mock_client).to receive(:chat).and_return(mock_response)
-        allow(OpenAiMessageBuilder).to receive(:build).and_return([{ role: "user", content: "Test message" }])
+        allow(OpenAiMessageBuilder).to receive(:build).and_return([ { role: "user", content: "Test message" } ])
       end
 
       it 'calls OpenAI API and creates message with response content' do
@@ -86,7 +86,7 @@ RSpec.describe OpenAiChatCaller, type: :service do
         expect(mock_client).to have_received(:chat).with(
           parameters: {
             model: gpt_model.name,
-            messages: [{ role: "user", content: "Test message" }],
+            messages: [ { role: "user", content: "Test message" } ],
             temperature: 0.7
           }
         )
@@ -114,4 +114,3 @@ RSpec.describe OpenAiChatCaller, type: :service do
     end
   end
 end
-
