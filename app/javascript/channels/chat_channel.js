@@ -13,3 +13,22 @@ consumer.subscriptions.create("ChatChannel", {
     // Called when there's incoming data on the websocket for this channel
   }
 });
+
+const log = (s) => {
+  const el = document.getElementById("log")
+  el.textContent += s + "\n"
+}
+
+const channel = consumer.subscriptions.create("ChatChannel", {
+  received(data) {
+    log("received: " + JSON.stringify(data))
+  }
+})
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("send").addEventListener("click", async () => {
+    const msg = document.getElementById("msg").value
+    // 送信はHTTPでブロードキャストするのが簡単（後述）
+    await fetch("/broadcast?msg=" + encodeURIComponent(msg))
+  })
+})

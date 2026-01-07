@@ -10,7 +10,10 @@ Rails.application.routes.draw do
     sessions: "users/sessions"
   }
 
-  root "application#root_redirect"
+  # root "application#root_redirect"
+  # ws setting
+  root "home#index"
+  get "/broadcast", to: "home#broadcast"
 
   resources :chats, only: [ :new, :create, :show, :edit, :update, :destroy ] do
     member do
