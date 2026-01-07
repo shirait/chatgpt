@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "home/index"
   devise_for :users, controllers: {
     # カスタムコントローラー利用設定
     confirmations: "users/confirmations",
