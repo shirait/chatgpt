@@ -25,4 +25,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.active_record.attributes_for_inspect = [ :id ]
+
+  # WebSocket接続先
+  config.action_cable.url = "ws://192.168.10.105/cable"
 end
