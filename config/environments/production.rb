@@ -26,6 +26,11 @@ Rails.application.configure do
 
   config.active_record.attributes_for_inspect = [ :id ]
 
-  # WebSocket接続先
-  config.action_cable.url = "ws://192.168.10.105/cable"
+  # Action Cable設定
+  # Apache+Passengerでは相対パスを使用（JavaScript側で自動的に正しいURLが生成される）
+  # HTTPSを使用している場合は、Apache側でWebSocketプロキシの設定が必要
+  config.action_cable.mount_path = "/cable"
+  # リバースプロキシ経由でアクセスされる場合、オリジンを許可する必要がある
+  # より具体的なオリジン指定も可能: [/https:\/\/www\.terupaki\.shop/]
+  config.action_cable.allowed_request_origins = [/http:\/\/.*/, /https:\/\/.*/]
 end
