@@ -7,7 +7,14 @@
         <%= hidden_field_tag("message-#{message.id}", message.content) %>
         <% if message.message_files.attached? %>
           <% message.message_files.each do |message_file| %>
-            <%= image_tag(url_for(message_file), class: "message-file") %>
+            <% if message_file.content_type&.start_with?("image/") %>
+              <%= image_tag(url_for(message_file), class: "message-file") %>
+            <% else %>
+              <%= link_to message_file.filename.to_s,
+                          url_for(message_file),
+                          target: "_blank",
+                          rel: "noopener" %>
+            <% end %>
           <% end %>
         <% end %>
       </div>

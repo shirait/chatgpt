@@ -42,19 +42,31 @@ class OpenAiMessageBuilder
       return @message.content
     end
 
-    text = [ { type: "text", text: @message.content || "" } ]
+    contents = []
 
-    images = @message.message_files.map do |file|
-      content_type = file.content_type || "image/jpeg"
-      {
-        type: "image_url",
-        image_url: {
-          url: "data:#{content_type};base64,#{convert_to_base64(file)}"
+    # メッセージ本文
+    contents << { type: "text", text: @message.content || "" }
+
+    # 添付ファイル（画像は image_url、その他は text として送信）
+    @message.message_files.each do |file|
+      if file.content_type&.start_with?("image/")
+        content_type = file.content_type || "image/jpeg"
+        contents << {
+          type: "image_url",
+          image_url: {
+            url: "data:#{content_type};base64,#{convert_to_base64(file)}"
+          }
         }
-      }
+      else
+        # 画像以外（例: docx, pdf 等）はテキスト要素として通知
+        contents << {
+          type: "text",
+          text: "User attached file: #{file.filename}"
+        }
+      end
     end
 
-    text + images
+    contents
   end
 
   def convert_to_base64(file)
