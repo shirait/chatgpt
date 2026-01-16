@@ -1,0 +1,59 @@
+# Apache WebSocket設定例
+# このファイルの内容をApacheの設定ファイル（例: /etc/apache2/sites-available/chatgpt.conf）に追加してください
+
+# 1. 必要なモジュールを有効化（通常は既に有効になっているはず）
+# sudo a2enmod proxy
+# sudo a2enmod proxy_http
+# sudo a2enmod proxy_wstunnel
+# sudo a2enmod rewrite
+# sudo a2enmod headers
+
+<VirtualHost *:80>
+    ServerName 192.168.10.105
+    # または ServerName your-domain.com
+
+    # アプリケーションのルートディレクトリ
+    DocumentRoot /home/chatgpt/websocket_test/chatgpt/public
+
+    # Passengerの設定
+    PassengerAppRoot /home/chatgpt/websocket_test/chatgpt
+    PassengerBaseURI /web_socket
+    PassengerAppEnv production
+    PassengerRuby /usr/local/rbenv/versions/3.4.8/bin/ruby
+
+    # WebSocket接続のプロキシ設定
+    # ActionCableのエンドポイント（/web_socket/cable）をPassengerにプロキシ
+    RewriteEngine On
+
+    # WebSocket接続の判定（Upgradeヘッダーがある場合）
+    RewriteCond %{HTTP:Upgrade} =websocket [NC]
+    RewriteCond %{HTTP:Connection} upgrade [NC]
+    RewriteRule ^/web_socket/cable$ ws://127.0.0.1:$(PassengerPort)/cable [P,L]
+
+    # 通常のHTTPリクエストはPassengerに渡す（既存の設定）
+    <Directory /home/chatgpt/websocket_test/chatgpt/public>
+        AllowOverride all
+        Require all granted
+        Options -MultiViews
+    </Directory>
+
+    # WebSocket接続のヘッダー設定
+    <Location /web_socket/cable>
+        ProxyPass ws://127.0.0.1:$(PassengerPort)/cable
+        ProxyPassReverse ws://127.0.0.1:$(PassengerPort)/cable
+
+        # WebSocketのアップグレードを許可
+        RewriteEngine on
+        RewriteCond %{HTTP:Upgrade} websocket [NC]
+        RewriteCond %{HTTP:Connection} upgrade [NC]
+        RewriteRule .* ws://127.0.0.1:$(PassengerPort)%{REQUEST_URI} [P,L]
+
+        # ヘッダーの設定
+        Header set Upgrade "websocket"
+        Header set Connection "Upgrade"
+    </Location>
+</VirtualHost>
+
+# 注意: $(PassengerPort) は動的に解決されますが、固定ポートを使う場合は
+# 実際のポート番号に置き換えてください（例: ws://127.0.0.1:3000/cable）
+

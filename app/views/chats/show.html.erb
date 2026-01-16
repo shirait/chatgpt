@@ -1,6 +1,6 @@
 <% @message_thread.messages.each do |message| %>
   <% flex_direction = message.user? ? "is-flex-direction-row-reverse" : "" %>
-  <div style="" class="is-flex <%= flex_direction %>">
+  <div style="" class="is-flex <%= flex_direction %>" data-message-id="<%= message.id %>">
     <div class="<%= message_type_class(message) %>">
       <div class="box">
         <%= markdown_to_html(message.content) %>
@@ -32,6 +32,17 @@
   </div>
 <% end %>
 
+<%# リアルタイム表示用のアシスタントメッセージ領域 %>
+<div id="streaming-message-container" style="display: none;">
+  <div class="is-flex">
+    <div class="assistant-message">
+      <div class="box">
+        <div id="streaming-message-content"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <%= form_with(model: @user_message, url: add_message_chat_path(@message_thread), method: :post, html: { class: "new-message-form" }) do |f| %>
   <%= render('form', f: f) %>
 <% end %>
@@ -44,7 +55,18 @@
   data: { confirm: t("common.delete_confirm"), method: 'delete' }
 ) %>
 
-<script>
+<script type="module">
+  import ChatChannel from "channels/chat_channel"
+  import { marked } from "marked"
+
+  // marked.jsの設定（サーバーサイドのredcarpetと同様の設定を目指す）
+  marked.setOptions({
+    breaks: true, // 改行を<br>に変換
+    gfm: true, // GitHub Flavored Markdownを有効化
+    headerIds: false, // ヘッダーIDを無効化（シンプルに）
+    mangle: false
+  })
+
   function copyButton(messageId) {
     // クリップボードにコピーする
     const text = $('#' + messageId).val();
@@ -69,40 +91,139 @@
     }, 100);
   }
 
-  $(document).ready(function() {
-    var images = $('.message-file');
-    var imagesToLoad = images.length;
+  <% if use_http_call? %>
+    $(document).ready(function() {
+      var images = $('.message-file');
+      var imagesToLoad = images.length;
 
-    if (imagesToLoad === 0) {
-      // 画像がない場合は即座にスクロール
-      scrollToLastMessage();
-      return;
-    }
-
-    // すべての画像の読み込み完了を待つ
-    var loadedCount = 0;
-    images.on('load', function() {
-      loadedCount++;
-      if (loadedCount === imagesToLoad) {
+      if (imagesToLoad === 0) {
+        // 画像がない場合は即座にスクロール
         scrollToLastMessage();
+        return;
       }
-    }).on('error', function() {
-      // エラー時もカウントに含める
-      loadedCount++;
-      if (loadedCount === imagesToLoad) {
-        scrollToLastMessage();
-      }
-    });
 
-    // 既に読み込まれている画像がある場合のフォールバック
-    images.each(function() {
-      if (this.complete) {
+      // すべての画像の読み込み完了を待つ
+      var loadedCount = 0;
+      images.on('load', function() {
         loadedCount++;
+        if (loadedCount === imagesToLoad) {
+          scrollToLastMessage();
+        }
+      }).on('error', function() {
+        // エラー時もカウントに含める
+        loadedCount++;
+        if (loadedCount === imagesToLoad) {
+          scrollToLastMessage();
+        }
+      });
+
+      // 既に読み込まれている画像がある場合のフォールバック
+      images.each(function() {
+        if (this.complete) {
+          loadedCount++;
+        }
+      });
+
+      if (loadedCount === imagesToLoad) {
+        scrollToLastMessage();
       }
     });
+  <% else %>
+    // ページ読み込み時に最後の回答にスクロール
+    function scrollToLastMessage() {
+      // 最後のアシスタントメッセージを取得（data-message-id属性を持つ要素から探す）
+      const assistantMessages = document.querySelectorAll('[data-message-id]');
+      let lastAssistantMessage = null;
 
-    if (loadedCount === imagesToLoad) {
-      scrollToLastMessage();
+      // 後ろから順に探して、最初に見つかったアシスタントメッセージを取得
+      for (let i = assistantMessages.length - 1; i >= 0; i--) {
+        const messageDiv = assistantMessages[i];
+        const messageTypeDiv = messageDiv.querySelector('.assistant-message');
+        if (messageTypeDiv) {
+          lastAssistantMessage = messageTypeDiv;
+          break;
+        }
+      }
+
+      if (lastAssistantMessage) {
+        // 要素の位置を取得
+        const rect = lastAssistantMessage.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const targetPosition = rect.top + scrollTop - 70; // 70pxのオフセット
+
+        // スムーズにスクロール
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      }
     }
-  });
+
+    // DOM読み込み完了後、少し遅延してスクロール（画像読み込みを待つ）
+    $(document).ready(function() {
+      // 即座に実行
+      setTimeout(scrollToLastMessage, 100);
+      // 画像読み込み完了後にも実行（念のため）
+      $(window).on('load', function() {
+        setTimeout(scrollToLastMessage, 50);
+      });
+
+      // ActionCable接続
+      const messageThreadId = <%= @message_thread.id %>;
+      let streamingContent = "";
+      let streamingMessageContainer = null;
+      let streamingMessageContent = null;
+
+      const chatChannel = new ChatChannel(
+        messageThreadId,
+        // onMessageChunk
+        (chunk) => {
+          if (!streamingMessageContainer) {
+            streamingMessageContainer = document.getElementById('streaming-message-container');
+            streamingMessageContent = document.getElementById('streaming-message-content');
+            streamingMessageContainer.style.display = 'block';
+            streamingContent = "";
+          }
+          streamingContent += chunk;
+          // マークダウンをHTMLに変換して表示
+          try {
+            const html = marked.parse(streamingContent);
+            streamingMessageContent.innerHTML = html;
+          } catch (e) {
+            // マークダウンのパースエラー時はテキストとして表示
+            streamingMessageContent.textContent = streamingContent;
+          }
+          // 自動スクロール
+          streamingMessageContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        },
+        // onMessageComplete
+        () => {
+          if (streamingMessageContainer) {
+            // ページをリロードして最終的なメッセージを表示（サーバーサイドでレンダリングされたもの）
+            window.location.reload();
+          }
+        },
+        // onMessageError
+        (error) => {
+          if (streamingMessageContainer) {
+            streamingMessageContainer.style.display = 'none';
+            alert(error);
+          } else {
+            alert(error);
+          }
+          // エラー時もページをリロード
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        }
+      );
+
+      chatChannel.connect();
+
+      // ページ離脱時に切断
+      window.addEventListener('beforeunload', () => {
+        chatChannel.disconnect();
+      });
+    });
+  <% end %>
 </script>

@@ -28,18 +28,29 @@ class ChatsController < ApplicationController
 
     @message_thread.save && @user_message.save
 
-    begin
-      OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
-      flash[:notice] = "メッセージの送受信に成功しました。"
-      redirect_to chat_path(@message_thread) and return
-    # 例外処理について、StandardError以外はrescueしないように注意（ https://github.com/shirait/blog_import_sample/issues/9#issuecomment-2142528418 ）
-    rescue Faraday::Error => e
-      flash.now[:alert] = t("common.faraday_error")
-    rescue StandardError => e
-      flash.now[:alert] = t("common.unexpected_error")
+    if use_http_call?
+      begin
+        OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
+        flash[:notice] = "メッセージの送受信に成功しました。"
+        redirect_to chat_path(@message_thread) and return
+      # 例外処理について、StandardError以外はrescueしないように注意（ https://github.com/shirait/blog_import_sample/issues/9#issuecomment-2142528418 ）
+      rescue Faraday::Error => e
+        flash.now[:alert] = t("common.faraday_error")
+      rescue StandardError => e
+        flash.now[:alert] = t("common.unexpected_error")
+      end
+      load_message_threads_for_sidebar
+      render(:new)
+    else
+      # バックグラウンドジョブで非同期処理
+      OpenAiChatJob.perform_later(@message_thread.id, @user_message.id)
+      redirect_to chat_path(@message_thread)
     end
-    load_message_threads_for_sidebar
-    render(:new)
+  end
+
+  def use_http_call?
+    Rails.configuration.static_config.use_http_call == true ||
+    ENV["USE_HTTP_CALL"] == "true"
   end
 
   def show
@@ -70,17 +81,23 @@ class ChatsController < ApplicationController
       render(:show) and return
     end
 
-    begin
-      OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
-      flash[:notice] = "メッセージの送受信に成功しました。"
-      redirect_to chat_path(@message_thread) and return
-    rescue Faraday::Error => e
-      flash.now[:alert] = t("common.faraday_error")
-    rescue StandardError => e
-      flash.now[:alert] = t("common.unexpected_error")
+    if use_http_call?
+      begin
+        OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
+        flash[:notice] = "メッセージの送受信に成功しました。"
+        redirect_to chat_path(@message_thread) and return
+      rescue Faraday::Error => e
+        flash.now[:alert] = t("common.faraday_error")
+      rescue StandardError => e
+        flash.now[:alert] = t("common.unexpected_error")
+      end
+      load_message_threads_for_sidebar
+      render(:show)
+    else
+      # バックグラウンドジョブで非同期処理
+      OpenAiChatJob.perform_later(@message_thread.id, @user_message.id)
+      redirect_to chat_path(@message_thread)
     end
-    load_message_threads_for_sidebar
-    render(:show)
   end
 
   def edit
