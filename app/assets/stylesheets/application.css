@@ -110,6 +110,12 @@ body.has-navbar-fixed-top .column.is-9-desktop {
     margin: 0;
     padding: 0.75rem;
   }
+
+  /* ハンバーガーメニュー内ではスクロールせず全表示 */
+  .navbar-menu .scrollable-sidebar {
+    max-height: none;
+    overflow: visible;
+  }
 }
 
 .login-form {
@@ -117,7 +123,7 @@ body.has-navbar-fixed-top .column.is-9-desktop {
 }
 
 .scrollable-sidebar {
-  max-height: 100vh;
+  max-height: 90vh;
   overflow-y: auto;
 }
 
