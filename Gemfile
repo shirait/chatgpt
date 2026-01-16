@@ -94,3 +94,6 @@ gem "capistrano-passenger", require: false
 gem "capistrano-bundler", require: false
 
 gem "bullet"
+
+# ActionCableを利用する場合、 passenger をスタンドアローンで起動する必要あり。
+gem "passenger"
