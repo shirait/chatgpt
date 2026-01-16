@@ -1,20 +1,13 @@
 <% @message_thread.messages.each do |message| %>
   <% flex_direction = message.user? ? "is-flex-direction-row-reverse" : "" %>
-  <div style="" class="is-flex <%= flex_direction %>">
+  <div style="" class="is-flex <%= flex_direction %>" data-message-id="<%= message.id %>">
     <div class="<%= message_type_class(message) %>">
       <div class="box">
         <%= markdown_to_html(message.content) %>
         <%= hidden_field_tag("message-#{message.id}", message.content) %>
         <% if message.message_files.attached? %>
           <% message.message_files.each do |message_file| %>
-            <% if message_file.content_type&.start_with?("image/") %>
-              <%= image_tag(url_for(message_file), class: "message-file") %>
-            <% else %>
-              <%= link_to message_file.filename.to_s,
-                          url_for(message_file),
-                          target: "_blank",
-                          rel: "noopener" %>
-            <% end %>
+            <%= link_message_file(message_file) %><br>
           <% end %>
         <% end %>
       </div>
@@ -32,6 +25,17 @@
   </div>
 <% end %>
 
+<%# リアルタイム表示用のアシスタントメッセージ領域 %>
+<div id="streaming-message-container" style="display: none;">
+  <div class="is-flex">
+    <div class="assistant-message">
+      <div class="box">
+        <div id="streaming-message-content"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <%= form_with(model: @user_message, url: add_message_chat_path(@message_thread), method: :post, html: { class: "new-message-form" }) do |f| %>
   <%= render('form', f: f) %>
 <% end %>
@@ -44,65 +48,11 @@
   data: { confirm: t("common.delete_confirm"), method: 'delete' }
 ) %>
 
-<script>
-  function copyButton(messageId) {
-    // クリップボードにコピーする
-    const text = $('#' + messageId).val();
-    navigator.clipboard.writeText(text);
-
-    // 「コピーしました！」の文言を表示する。
-    var copy_message = $('#copy-' + messageId);
-    copy_message.show();
-    $(copy_message).fadeOut(2000);
-  }
-
-  // ページ読み込み時に最後の回答にスクロール（画像の読み込み完了を待つ）
-  function scrollToLastMessage() {
-    var last_message = $('.assistant-message:last');
-    if (last_message.length === 0) {
-      return;
-    }
-
-    var position = last_message.offset().top;
-    $("html,body").animate({
-      scrollTop: position - 70
-    }, 100);
-  }
-
-  $(document).ready(function() {
-    var images = $('.message-file');
-    var imagesToLoad = images.length;
-
-    if (imagesToLoad === 0) {
-      // 画像がない場合は即座にスクロール
-      scrollToLastMessage();
-      return;
-    }
-
-    // すべての画像の読み込み完了を待つ
-    var loadedCount = 0;
-    images.on('load', function() {
-      loadedCount++;
-      if (loadedCount === imagesToLoad) {
-        scrollToLastMessage();
-      }
-    }).on('error', function() {
-      // エラー時もカウントに含める
-      loadedCount++;
-      if (loadedCount === imagesToLoad) {
-        scrollToLastMessage();
-      }
-    });
-
-    // 既に読み込まれている画像がある場合のフォールバック
-    images.each(function() {
-      if (this.complete) {
-        loadedCount++;
-      }
-    });
-
-    if (loadedCount === imagesToLoad) {
-      scrollToLastMessage();
-    }
-  });
+<script type="module">
+  <%= render partial: "chats/show", formats: :js %>
+  <% if use_http_call? %>
+    <%= render partial: "chats/http_call", formats: :js %>
+  <% elsif use_websocket? %>
+    <%= render partial: "chats/websocket", formats: :js %>
+  <% end %>
 </script>

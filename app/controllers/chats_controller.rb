@@ -1,4 +1,5 @@
 class ChatsController < ApplicationController
+  include ConfigSwitches
   # メインで扱うモデル名が Chat ではないので load_and_authorize_resource を使用しない。
   # 権限チェックは各アクションで authorize! を実行すること。
 
@@ -28,18 +29,11 @@ class ChatsController < ApplicationController
 
     @message_thread.save && @user_message.save
 
-    begin
-      OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
-      flash[:notice] = "メッセージの送受信に成功しました。"
-      redirect_to chat_path(@message_thread) and return
-    # 例外処理について、StandardError以外はrescueしないように注意（ https://github.com/shirait/blog_import_sample/issues/9#issuecomment-2142528418 ）
-    rescue Faraday::Error => e
-      flash.now[:alert] = t("common.faraday_error")
-    rescue StandardError => e
-      flash.now[:alert] = t("common.unexpected_error")
+    if use_http_call?
+      call_openai_api_with_http(:new)
+    elsif use_websocket?
+      call_openai_api_with_websocket
     end
-    load_message_threads_for_sidebar
-    render(:new)
   end
 
   def show
@@ -70,17 +64,11 @@ class ChatsController < ApplicationController
       render(:show) and return
     end
 
-    begin
-      OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
-      flash[:notice] = "メッセージの送受信に成功しました。"
-      redirect_to chat_path(@message_thread) and return
-    rescue Faraday::Error => e
-      flash.now[:alert] = t("common.faraday_error")
-    rescue StandardError => e
-      flash.now[:alert] = t("common.unexpected_error")
+    if use_http_call?
+      call_openai_api_with_http(:show)
+    elsif use_websocket?
+      call_openai_api_with_websocket
     end
-    load_message_threads_for_sidebar
-    render(:show)
   end
 
   def edit
@@ -124,5 +112,26 @@ class ChatsController < ApplicationController
 
   def update_message_thread_params
     params.require(:message_thread).permit(:title)
+  end
+
+  def call_openai_api_with_http(render_path)
+    begin
+      OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
+      flash[:notice] = "メッセージの送受信に成功しました。"
+      redirect_to chat_path(@message_thread) and return
+    # 例外処理について、StandardError以外はrescueしないように注意（ https://github.com/shirait/blog_import_sample/issues/9#issuecomment-2142528418 ）
+    rescue Faraday::Error => e
+      flash.now[:alert] = t("common.faraday_error")
+    rescue StandardError => e
+      flash.now[:alert] = t("common.unexpected_error")
+    end
+    load_message_threads_for_sidebar
+    render(render_path)
+  end
+
+  def call_openai_api_with_websocket
+    # バックグラウンドジョブで非同期処理
+    OpenAiChatJob.perform_later(@message_thread.id, @user_message.id)
+    redirect_to chat_path(@message_thread)
   end
 end

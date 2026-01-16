@@ -112,14 +112,12 @@ RSpec.describe OpenAiMessageBuilder, type: :service do
         message.message_files.attach(file)
       end
 
-      it 'returns content as array with text and image_url' do
+      it 'returns content as array with text and file text' do
         result = described_class.new(message: message).build
 
         expect(result.first[:content]).to be_an(Array)
         expect(result.first[:content].first).to include(type: "text", text: "Test content")
-        expect(result.first[:content].last).to include(type: "image_url")
-        expect(result.first[:content].last[:image_url]).to have_key(:url)
-        expect(result.first[:content].last[:image_url][:url]).to match(/^data:text\/plain;base64,/)
+        expect(result.first[:content].last).to include(type: "text", text: "User attached file: test.txt")
       end
     end
 

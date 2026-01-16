@@ -1,0 +1,77 @@
+import ChatChannel from "channels/chat_channel"
+import { marked } from "marked"
+
+// marked.jsの設定（サーバーサイドのredcarpetと同様の設定を目指す）
+marked.setOptions({
+  breaks: true, // 改行を<br>に変換
+  gfm: true, // GitHub Flavored Markdownを有効化
+  headerIds: false, // ヘッダーIDを無効化（シンプルに）
+  mangle: false
+})
+
+// DOM読み込み完了後、少し遅延してスクロール（画像読み込みを待つ）
+$(document).ready(function() {
+  // 即座に実行
+  setTimeout(scrollToLastMessage, 100);
+  // 画像読み込み完了後にも実行（念のため）
+  $(window).on('load', function() {
+    setTimeout(scrollToLastMessage, 50);
+  });
+
+  // ActionCable接続
+  const messageThreadId = <%= @message_thread.id %>;
+  let streamingContent = "";
+  let streamingMessageContainer = null;
+  let streamingMessageContent = null;
+
+  const chatChannel = new ChatChannel(
+    messageThreadId,  // 第一引数。スレッドID。
+    // onMessageChunk 第二引数。途中の文字列を受診したときの処理
+    (chunk) => {
+      if (!streamingMessageContainer) {
+        streamingMessageContainer = document.getElementById('streaming-message-container');
+        streamingMessageContent = document.getElementById('streaming-message-content');
+        streamingMessageContainer.style.display = 'block';
+        streamingContent = "";
+      }
+      streamingContent += chunk;
+      // マークダウンをHTMLに変換して表示
+      try {
+        const html = marked.parse(streamingContent);
+        streamingMessageContent.innerHTML = html;
+      } catch (e) {
+        // マークダウンのパースエラー時はテキストとして表示
+        streamingMessageContent.textContent = streamingContent;
+      }
+      // 自動スクロール
+      streamingMessageContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    },
+    // onMessageComplete 第三引数。完了通知が来た時の処理
+    () => {
+      if (streamingMessageContainer) {
+        // ページをリロードして最終的なメッセージを表示（サーバーサイドでレンダリングされたもの）
+        window.location.reload();
+      }
+    },
+    // onMessageError 第四引数。エラー通知が来た時の処理
+    (error) => {
+      if (streamingMessageContainer) {
+        streamingMessageContainer.style.display = 'none';
+        alert(error);
+      } else {
+        alert(error);
+      }
+      // エラー時もページをリロード
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+  );
+
+  chatChannel.connect();
+
+  // ページ離脱時に切断
+  window.addEventListener('beforeunload', () => {
+    chatChannel.disconnect();
+  });
+});

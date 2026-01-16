@@ -9,6 +9,12 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <% if use_websocket? %>
+      <% # ActionCableのURLを設定（サブディレクトリ対応） %>
+      <% # hack: 本番環境の proxy 設定次第でルートディレクトリに変更するかもしれない。 %>
+      <%= tag.meta name: "action-cable-url", content: "#{request.script_name}/cable" %>
+    <% end %>
+
     <%= yield :head %>
 
     <% # Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
