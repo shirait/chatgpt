@@ -25,4 +25,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.active_record.attributes_for_inspect = [ :id ]
+
+  config.action_cable.mount_path = "#{request.script_name}/cable"
+  config.action_cable.allowed_request_origins = [/http:\/\/.*/, /https:\/\/.*/]
 end
