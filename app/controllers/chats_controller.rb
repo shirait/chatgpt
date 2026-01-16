@@ -131,7 +131,11 @@ class ChatsController < ApplicationController
 
   def call_openai_api_with_websocket
     # バックグラウンドジョブで非同期処理
-    OpenAiChatJob.perform_later(@message_thread.id, @user_message.id)
+    OpenAiChatJob.perform_later(
+      @message_thread.id,
+      @user_message.id,
+      @user_message.send_prev_messages_to_openai_api?
+    )
     redirect_to chat_path(@message_thread)
   end
 end

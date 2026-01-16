@@ -1,9 +1,11 @@
 class OpenAiChatJob < ApplicationJob
   queue_as :default
 
-  def perform(message_thread_id, user_message_id)
+  def perform(message_thread_id, user_message_id, send_prev_messages_to_openai_api = false)
     message_thread = MessageThread.find(message_thread_id)
     user_message = Message.find(user_message_id)
+    # WebSocket経路ではジョブ内で再取得するため、チェック状態を引き継ぐ
+    user_message.send_prev_messages_to_openai_api = send_prev_messages_to_openai_api
 
     begin
       OpenAiChatCaller.new(message_thread: message_thread, user_message: user_message).call!
