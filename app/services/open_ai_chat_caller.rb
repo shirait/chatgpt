@@ -7,21 +7,18 @@ class OpenAiChatCaller
     @user_message = user_message
   end
 
-  def call!
-    full_content = ""
-
+  def full_content
     if Rails.env.development? && use_stub?
-      full_content = stub_response(@user_message)
-      # スタブの場合もストリーミング風に送信
-      stub_stream_response(full_content) unless use_http_call?
-    else
-      full_content = case
-        when use_http_call?
-          request_to_openai_api_with_http(@user_message)
-        else
-          request_to_openai_api_with_streaming(@user_message)
-        end
+      stub_response_content = stub_response(@user_message)
+      return stub_response_content if use_http_call?
+      return stub_stream_response(stub_response_content) if use_websocket?
     end
+
+    return request_to_openai_api_with_http(@user_message) if use_http_call?
+    return request_to_openai_api_with_streaming(@user_message) if use_websocket?
+  end
+
+  def call!
 
     # 最終的なメッセージを保存
     Message.create!(
@@ -89,6 +86,10 @@ class OpenAiChatCaller
 
   def use_http_call?
     Rails.configuration.static_config.use_http_call == true
+  end
+
+  def use_websocket?
+    !use_http_call?
   end
 
   def stub_response(message)

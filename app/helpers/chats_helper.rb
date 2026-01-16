@@ -7,6 +7,10 @@ module ChatsHelper
     Rails.configuration.static_config.use_http_call == true
   end
 
+  def use_websocket?
+    !use_http_call?
+  end
+
   def link_message_file(message_file)
     if message_file.content_type&.start_with?("image/")
       image_tag(url_for(message_file), class: "message-file")

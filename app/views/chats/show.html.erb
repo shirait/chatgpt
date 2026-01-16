@@ -52,7 +52,7 @@
   <%= render partial: "chats/show", formats: :js %>
   <% if use_http_call? %>
     <%= render partial: "chats/http_call", formats: :js %>
-  <% else %>
+  <% elsif use_websocket? %>
     <%= render partial: "chats/websocket", formats: :js %>
   <% end %>
 </script>

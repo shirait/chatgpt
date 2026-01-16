@@ -29,9 +29,9 @@ class ChatsController < ApplicationController
     @message_thread.save && @user_message.save
 
     if use_http_call?
-      call_openai_api(:new)
-    else
-      call_background_job
+      call_openai_api_with_http(:new)
+    elsif use_websocket?
+      call_openai_api_with_websocket
     end
   end
 
@@ -64,9 +64,9 @@ class ChatsController < ApplicationController
     end
 
     if use_http_call?
-      call_openai_api(:show)
-    else
-      call_background_job
+      call_openai_api_with_http(:show)
+    elsif use_websocket?
+      call_openai_api_with_websocket
     end
   end
 
@@ -113,7 +113,7 @@ class ChatsController < ApplicationController
     params.require(:message_thread).permit(:title)
   end
 
-  def call_openai_api(render_path)
+  def call_openai_api_with_http(render_path)
     begin
       OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
       flash[:notice] = "メッセージの送受信に成功しました。"
@@ -128,7 +128,7 @@ class ChatsController < ApplicationController
     render(render_path)
   end
 
-  def call_background_job
+  def call_openai_api_with_websocket
     # バックグラウンドジョブで非同期処理
     OpenAiChatJob.perform_later(@message_thread.id, @user_message.id)
     redirect_to chat_path(@message_thread)
@@ -136,5 +136,9 @@ class ChatsController < ApplicationController
 
   def use_http_call?
     Rails.configuration.static_config.use_http_call == true
+  end
+
+  def use_websocket?
+    !use_http_call?
   end
 end
