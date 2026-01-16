@@ -49,7 +49,7 @@ class OpenAiMessageBuilder
 
     # 添付ファイル（画像は image_url、その他は text として送信）
     @message.message_files.each do |file|
-      if file.content_type&.start_with?("image/")
+      if file.content_type.nil? || file.content_type.start_with?("image/")
         content_type = file.content_type || "image/jpeg"
         contents << {
           type: "image_url",
