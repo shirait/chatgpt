@@ -7,14 +7,7 @@
         <%= hidden_field_tag("message-#{message.id}", message.content) %>
         <% if message.message_files.attached? %>
           <% message.message_files.each do |message_file| %>
-            <% if message_file.content_type&.start_with?("image/") %>
-              <%= image_tag(url_for(message_file), class: "message-file") %>
-            <% else %>
-              <%= link_to message_file.filename.to_s,
-                          url_for(message_file),
-                          target: "_blank",
-                          rel: "noopener" %>
-            <% end %>
+            <%= link_message_file(message_file) %><br>
           <% end %>
         <% end %>
       </div>
@@ -56,17 +49,6 @@
 ) %>
 
 <script type="module">
-  import ChatChannel from "channels/chat_channel"
-  import { marked } from "marked"
-
-  // marked.jsの設定（サーバーサイドのredcarpetと同様の設定を目指す）
-  marked.setOptions({
-    breaks: true, // 改行を<br>に変換
-    gfm: true, // GitHub Flavored Markdownを有効化
-    headerIds: false, // ヘッダーIDを無効化（シンプルに）
-    mangle: false
-  })
-
   window.copyButton = function copyButton(messageId) {
     // クリップボードにコピーする
     const text = $('#' + messageId).val();
@@ -129,6 +111,17 @@
       }
     });
   <% else %>
+    import ChatChannel from "channels/chat_channel"
+    import { marked } from "marked"
+
+    // marked.jsの設定（サーバーサイドのredcarpetと同様の設定を目指す）
+    marked.setOptions({
+      breaks: true, // 改行を<br>に変換
+      gfm: true, // GitHub Flavored Markdownを有効化
+      headerIds: false, // ヘッダーIDを無効化（シンプルに）
+      mangle: false
+    })
+
     // DOM読み込み完了後、少し遅延してスクロール（画像読み込みを待つ）
     $(document).ready(function() {
       // 即座に実行
