@@ -9,18 +9,16 @@ class OpenAiChatCaller
 
   def full_content
     if Rails.env.development? && use_stub?
-      stub_response_content = stub_response(@user_message)
-      return stub_response_content if use_http_call?
-      return stub_stream_response(stub_response_content) if use_websocket?
+      stub_http_response_content = stub_http_response(@user_message)
+      return stub_http_response_content if use_http_call?
+      return stub_websocket_response(stub_http_response_content) if use_websocket?
     end
 
     return request_to_openai_api_with_http(@user_message) if use_http_call?
-    return request_to_openai_api_with_streaming(@user_message) if use_websocket?
+    return request_to_openai_api_with_websocket(@user_message) if use_websocket?
   end
 
   def call!
-
-    # 最終的なメッセージを保存
     Message.create!(
       message_thread_id: @message_thread.id,
       gpt_model_id: @user_message.gpt_model.id,
@@ -34,7 +32,7 @@ class OpenAiChatCaller
 
   # 注意。client.chatメソッド実行でエラーになっても、機密情報漏洩を避けるため、例外の情報はログに残らない。
   # (https://github.com/alexrudall/ruby-openai?tab=readme-ov-file#errors)
-  def request_to_openai_api_with_streaming(message)
+  def request_to_openai_api_with_websocket(message)
     access_token = Rails.configuration.static_config.openai_key
     client = OpenAI::Client.new(access_token: access_token)
     full_content = ""
@@ -92,11 +90,11 @@ class OpenAiChatCaller
     !use_http_call?
   end
 
-  def stub_response(message)
+  def stub_http_response(message)
     "Hello, world!(stub message for: #{message.content[0..50]}...)"
   end
 
-  def stub_stream_response(content)
+  def stub_websocket_response(content)
     # スタブの場合もストリーミング風に送信（文字ごとに送信）
     content.each_char do |char|
       ActionCable.server.broadcast(
