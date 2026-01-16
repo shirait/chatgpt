@@ -80,7 +80,7 @@
 
   // ページ読み込み時に最後の回答にスクロール（画像の読み込み完了を待つ）
   function scrollToLastMessage() {
-    var last_message = $('.assistant-message:last');
+    var last_message = $('[data-message-id] .assistant-message').last();
     if (last_message.length === 0) {
       return;
     }
