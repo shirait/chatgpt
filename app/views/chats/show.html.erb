@@ -129,36 +129,6 @@
       }
     });
   <% else %>
-    // ページ読み込み時に最後の回答にスクロール
-    function scrollToLastMessage() {
-      // 最後のアシスタントメッセージを取得（data-message-id属性を持つ要素から探す）
-      const assistantMessages = document.querySelectorAll('[data-message-id]');
-      let lastAssistantMessage = null;
-
-      // 後ろから順に探して、最初に見つかったアシスタントメッセージを取得
-      for (let i = assistantMessages.length - 1; i >= 0; i--) {
-        const messageDiv = assistantMessages[i];
-        const messageTypeDiv = messageDiv.querySelector('.assistant-message');
-        if (messageTypeDiv) {
-          lastAssistantMessage = messageTypeDiv;
-          break;
-        }
-      }
-
-      if (lastAssistantMessage) {
-        // 要素の位置を取得
-        const rect = lastAssistantMessage.getBoundingClientRect();
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const targetPosition = rect.top + scrollTop - 70; // 70pxのオフセット
-
-        // スムーズにスクロール
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
-      }
-    }
-
     // DOM読み込み完了後、少し遅延してスクロール（画像読み込みを待つ）
     $(document).ready(function() {
       // 即座に実行
