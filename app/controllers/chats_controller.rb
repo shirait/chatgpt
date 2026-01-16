@@ -135,7 +135,6 @@ class ChatsController < ApplicationController
   end
 
   def use_http_call?
-    Rails.configuration.static_config.use_http_call == true ||
-    ENV["USE_HTTP_CALL"] == "true"
+    Rails.configuration.static_config.use_http_call == true
   end
 end

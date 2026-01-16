@@ -1,5 +1,7 @@
 # OpenAI APIを呼び出してアシスタントメッセージを作成するサービスクラス
 class OpenAiChatCaller
+  TEMPERATURE = 0.7
+
   def initialize(message_thread:, user_message:)
     @message_thread = message_thread
     @user_message = user_message
@@ -11,9 +13,14 @@ class OpenAiChatCaller
     if Rails.env.development? && use_stub?
       full_content = stub_response(@user_message)
       # スタブの場合もストリーミング風に送信
-      stub_stream_response(full_content)
+      stub_stream_response(full_content) unless use_http_call?
     else
-      full_content = request_to_openai_api_with_streaming(@user_message)
+      full_content = case
+        when use_http_call?
+          request_to_openai_api_with_http(@user_message)
+        else
+          request_to_openai_api_with_streaming(@user_message)
+        end
     end
 
     # 最終的なメッセージを保存
@@ -39,7 +46,7 @@ class OpenAiChatCaller
       parameters: {
         model: message.gpt_model.name,
         messages: OpenAiMessageBuilder.build(message: message),
-        temperature: 0.7,
+        temperature: TEMPERATURE,
         stream: proc do |chunk, _bytesize|
           delta = chunk.dig("choices", 0, "delta", "content")
           if delta
@@ -60,9 +67,28 @@ class OpenAiChatCaller
     full_content
   end
 
+  def request_to_openai_api_with_http(message)
+    access_token = Rails.configuration.static_config.openai_key
+    client = OpenAI::Client.new(access_token: access_token)
+
+    response = client.chat(
+      parameters: {
+        model: message.gpt_model.name,
+        messages: OpenAiMessageBuilder.build(message: message),
+        temperature: TEMPERATURE
+      }
+    )
+
+    response.dig("choices", 0, "message", "content").to_s
+  end
+
   def use_stub?
     Rails.configuration.static_config.use_openai_stub == true ||
     ENV["USE_OPENAI_STUB"] == "true"
+  end
+
+  def use_http_call?
+    Rails.configuration.static_config.use_http_call == true
   end
 
   def stub_response(message)
