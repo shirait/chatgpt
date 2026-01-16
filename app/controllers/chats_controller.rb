@@ -134,5 +134,4 @@ class ChatsController < ApplicationController
     OpenAiChatJob.perform_later(@message_thread.id, @user_message.id)
     redirect_to chat_path(@message_thread)
   end
-
 end

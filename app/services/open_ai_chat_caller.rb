@@ -16,7 +16,7 @@ class OpenAiChatCaller
     end
 
     return request_to_openai_api_with_http(@user_message) if use_http_call?
-    return request_to_openai_api_with_websocket(@user_message) if use_websocket?
+    request_to_openai_api_with_websocket(@user_message) if use_websocket?
   end
 
   def call!

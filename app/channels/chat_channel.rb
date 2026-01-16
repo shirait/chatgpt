@@ -18,4 +18,3 @@ class ChatChannel < ApplicationCable::Channel
     raise CanCan::AccessDenied unless ability.can?(action, resource)
   end
 end
-

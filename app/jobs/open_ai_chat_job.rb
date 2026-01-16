@@ -40,4 +40,3 @@ class OpenAiChatJob < ApplicationJob
     end
   end
 end
-
