@@ -1,4 +1,5 @@
 class ChatsController < ApplicationController
+  include ConfigSwitches
   # メインで扱うモデル名が Chat ではないので load_and_authorize_resource を使用しない。
   # 権限チェックは各アクションで authorize! を実行すること。
 
@@ -134,11 +135,4 @@ class ChatsController < ApplicationController
     redirect_to chat_path(@message_thread)
   end
 
-  def use_http_call?
-    Rails.configuration.static_config.use_http_call == true
-  end
-
-  def use_websocket?
-    !use_http_call?
-  end
 end

@@ -1,5 +1,6 @@
 # OpenAI APIを呼び出してアシスタントメッセージを作成するサービスクラス
 class OpenAiChatCaller
+  include ConfigSwitches
   TEMPERATURE = 0.7
 
   def initialize(message_thread:, user_message:)
@@ -80,14 +81,6 @@ class OpenAiChatCaller
   def use_stub?
     Rails.configuration.static_config.use_openai_stub == true ||
     ENV["USE_OPENAI_STUB"] == "true"
-  end
-
-  def use_http_call?
-    Rails.configuration.static_config.use_http_call == true
-  end
-
-  def use_websocket?
-    !use_http_call?
   end
 
   def stub_http_response(message)
