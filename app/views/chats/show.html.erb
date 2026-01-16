@@ -67,7 +67,7 @@
     mangle: false
   })
 
-  function copyButton(messageId) {
+  window.copyButton = function copyButton(messageId) {
     // クリップボードにコピーする
     const text = $('#' + messageId).val();
     navigator.clipboard.writeText(text);
