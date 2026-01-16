@@ -8,6 +8,7 @@ class OpenAiChatJob < ApplicationJob
     begin
       OpenAiChatCaller.new(message_thread: message_thread, user_message: user_message).call!
       # 完了通知を送信
+      # ※「ストリーム」を用いてコンテンツ（ブロードキャスト）をサブスクライバに配信している。（Railsガイド参照）
       ActionCable.server.broadcast(
         "chat_#{message_thread_id}",
         {
