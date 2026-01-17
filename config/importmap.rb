@@ -4,7 +4,7 @@
 # 全ページで読み込むものは application.js で読み込む。
 # それ以外は <script type="module"> で, 「import」 で読み込む。（例： _websocket.js.erb ）
 pin "application"
-pin "delete_links", to: "delete_links.js"
+pin "@hotwired/turbo-rails", to: "turbo.min.js"
 pin "navbar_burger", to: "navbar_burger.js"
 pin "@rails/actioncable", to: "actioncable.esm.js"
 pin "channels/chat_channel", to: "channels/chat_channel.js"

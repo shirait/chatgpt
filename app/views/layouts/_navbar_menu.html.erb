@@ -43,7 +43,7 @@
           'ログアウト',
           destroy_user_session_path,
           class: 'navbar-item button delete-link fa fa-door-open',
-          data: { confirm: 'ログアウトしますか？', method: 'delete' }
+          data: { turbo_method: :delete, turbo_confirm: 'ログアウトしますか？' }
         ) %>
       </div>
     </div>

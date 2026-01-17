@@ -45,7 +45,7 @@
   t("common.delete"),
   chat_path(@message_thread),
   class: 'delete-link button is-danger is-light is-normal mt-1',
-  data: { confirm: t("common.delete_confirm"), method: 'delete' }
+  data: { turbo_method: :delete, turbo_confirm: t("common.delete_confirm") }
 ) %><br>
 <%= open_hide_link %>
 
