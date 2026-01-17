@@ -24,7 +24,7 @@ class ChatsController < ApplicationController
     if !@message_thread.valid? || !@user_message.valid?
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
       load_message_threads_for_sidebar
-      render(:new) and return
+      render(:new, status: :unprocessable_entity) and return
     end
 
     @message_thread.save && @user_message.save
@@ -61,7 +61,7 @@ class ChatsController < ApplicationController
     unless @user_message.save
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
       load_message_threads_for_sidebar
-      render(:show) and return
+      render(:show, status: :unprocessable_entity) and return
     end
 
     if use_http_call?
@@ -142,7 +142,7 @@ class ChatsController < ApplicationController
       flash.now[:alert] = t("common.unexpected_error")
     end
     load_message_threads_for_sidebar
-    render(render_path)
+    render(render_path, status: :unprocessable_entity)
   end
 
   def call_openai_api_with_websocket

@@ -16,7 +16,7 @@ class Admin::UsersController < ApplicationController
       redirect_to admin_user_path(@user)
     else
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
-      render :new
+      render(:new, status: :unprocessable_entity)
     end
   end
 
@@ -33,10 +33,10 @@ class Admin::UsersController < ApplicationController
     @user.assign_update_attributes(user_params, updater_id: current_user.id)
     if @user.save
       flash[:notice] = "#{@user.email}を更新しました。"
-      redirect_to admin_user_path(@user)
+      redirect_to(admin_user_path(@user))
     else
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
-      render :edit
+      render(:edit, status: :unprocessable_entity)
     end
   end
 
@@ -44,10 +44,10 @@ class Admin::UsersController < ApplicationController
     @user = User.find(params[:id])
     if @user.destroy
       flash[:notice] = "#{@user.email}を削除しました。"
-      redirect_to admin_users_path
+      redirect_to(admin_users_path)
     else
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
-      render :edit
+      render(:show, status: :unprocessable_entity)
     end
   end
 
