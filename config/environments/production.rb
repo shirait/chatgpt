@@ -27,5 +27,5 @@ Rails.application.configure do
   config.active_record.attributes_for_inspect = [ :id ]
 
   config.action_cable.mount_path = "/chatgpt/cable"
-  config.action_cable.allowed_request_origins = [/http:\/\/.*/, /https:\/\/.*/]
+  config.action_cable.allowed_request_origins = [ /http:\/\/.*/, /https:\/\/.*/ ]
 end
