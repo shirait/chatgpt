@@ -4,8 +4,7 @@ let consumer = null
 
 function getConsumer() {
   if (!consumer) {
-    // サブディレクトリで動作している場合のURLを取得
-    const cableUrl = document.querySelector('meta[name="action-cable-url"]')?.content || '/cable'
+    const cableUrl = '/cable'
     consumer = createConsumer(cableUrl)
   }
   return consumer

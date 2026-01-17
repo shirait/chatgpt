@@ -10,9 +10,8 @@
     <%= csp_meta_tag %>
 
     <% if use_websocket? %>
-      <% # ActionCableのURLを設定（サブディレクトリ対応） %>
-      <% # hack: 本番環境の proxy 設定次第でルートディレクトリに変更するかもしれない。 %>
-      <%= tag.meta name: "action-cable-url", content: "#{request.script_name}/cable" %>
+      <% # ActionCableのURL設定 %>
+      <%= tag.meta name: "action-cable-url", content: "/cable" %>
     <% end %>
 
     <%= yield :head %>
@@ -21,9 +20,9 @@
     <% #= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
     <% # ファビコン（サブディレクトリ対応） %>
-    <link rel="icon" href="<%= "#{request.script_name}/icon.png" %>" type="image/png">
-    <link rel="icon" href="<%= "#{request.script_name}/icon.svg" %>" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="<%= "#{request.script_name}/icon.png" %>">
+    <link rel="icon" href="<%= "/icon.png" %>" type="image/png">
+    <link rel="icon" href="<%= "/icon.svg" %>" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="<%= "/icon.png" %>">
 
     <% # bulma css and font awesome %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
@@ -31,7 +30,7 @@
 
     <% # Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <% jquery_path = "#{request.script_name}/jquery-3.7.1.min.js" %>
+    <% jquery_path = "/jquery-3.7.1.min.js" %>
     <script src="<%= jquery_path %>"></script>
     <%= javascript_importmap_tags %>
   </head>
