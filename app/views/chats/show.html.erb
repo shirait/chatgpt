@@ -46,7 +46,8 @@
   chat_path(@message_thread),
   class: 'delete-link button is-danger is-light is-normal mt-1',
   data: { confirm: t("common.delete_confirm"), method: 'delete' }
-) %>
+) %><br>
+<%= open_hide_link %>
 
 <script type="module">
   <%= render partial: "chats/show", formats: :js %>

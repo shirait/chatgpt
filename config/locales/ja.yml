@@ -54,3 +54,7 @@ ja:
     no_data: "データがありません。"
     unexpected_error: "想定外のエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。"
     faraday_error: "OpenAI APIの利用でエラーが発生しました。繰り返し発生する場合はサーバ管理者に連絡してください。"
+    hide: "非表示にする"
+    open: "表示する"
+    open_confirm: "本当に表示しますか？"
+    hide_confirm: "本当に非表示にしますか？"

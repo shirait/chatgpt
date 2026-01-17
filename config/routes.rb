@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   resources :chats, only: [ :new, :create, :show, :edit, :update, :destroy ] do
     member do
       post :add_message
+      post :hide
+      post :open
     end
     collection do
       get :search

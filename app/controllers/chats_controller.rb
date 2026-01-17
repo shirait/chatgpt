@@ -100,10 +100,26 @@ class ChatsController < ApplicationController
     redirect_to(root_path)
   end
 
+  def hide
+    @message_thread = MessageThread.find(params[:id])
+    authorize!(:hide, @message_thread)
+    @message_thread.update!(active: false)
+    flash[:notice] = "非表示にしました。"
+    redirect_to(chat_path(@message_thread))
+  end
+
+  def open
+    @message_thread = MessageThread.find(params[:id])
+    authorize!(:open, @message_thread)
+    @message_thread.update!(active: true)
+    flash[:notice] = "表示にしました。"
+    redirect_to(chat_path(@message_thread))
+  end
+
   private
 
   def load_message_threads_for_sidebar
-    @message_threads_for_sidebar = MessageThread.accessible_by(current_ability).order(id: :asc)
+    @message_threads_for_sidebar = MessageThread.accessible_by(current_ability).where(active: true).order(id: :asc)
   end
 
   def message_params
