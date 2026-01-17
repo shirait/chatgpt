@@ -38,6 +38,8 @@ class OpenAiChatCaller
     client = OpenAI::Client.new(access_token: access_token)
     full_content = ""
 
+    chunk_index = 0
+
     client.chat(
       parameters: {
         model: message.gpt_model.name,
@@ -52,9 +54,11 @@ class OpenAiChatCaller
               "chat_#{@message_thread.id}",
               {
                 type: "message_chunk",
-                content: delta
+                content: delta,
+                index: chunk_index
               }
             )
+            chunk_index += 1
           end
         end
       }
@@ -89,14 +93,17 @@ class OpenAiChatCaller
 
   def stub_websocket_response(content)
     # スタブの場合もストリーミング風に送信（文字ごとに送信）
+    chunk_index = 0
     content.each_char do |char|
       ActionCable.server.broadcast(
         "chat_#{@message_thread.id}",
         {
           type: "message_chunk",
-          content: char
+          content: char,
+          index: chunk_index
         }
       )
+      chunk_index += 1
       sleep(0.01) # リアルタイム感を出すため少し待機
     end
   end

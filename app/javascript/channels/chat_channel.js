@@ -35,7 +35,7 @@ export default class ChatChannel {
         },
         received: (data) => {
           if (data.type === "message_chunk") {
-            this.onMessageChunk(data.content)
+            this.onMessageChunk(data.content, data.index)
           } else if (data.type === "message_complete") {
             this.onMessageComplete()
           } else if (data.type === "message_error") {

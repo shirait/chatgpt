@@ -21,20 +21,33 @@ $(document).ready(function() {
   // ActionCable接続
   const messageThreadId = <%= @message_thread.id %>;
   let streamingContent = "";
+  let expectedChunkIndex = 0;
+  const chunkBuffer = new Map();
   let streamingMessageContainer = null;
   let streamingMessageContent = null;
 
   const chatChannel = new ChatChannel(
     messageThreadId,  // 第一引数。スレッドID。
     // onMessageChunk 第二引数。途中の文字列を受診したときの処理
-    (chunk) => {
+    (chunk, index) => {
       if (!streamingMessageContainer) {
         streamingMessageContainer = document.getElementById('streaming-message-container');
         streamingMessageContent = document.getElementById('streaming-message-content');
         streamingMessageContainer.style.display = 'block';
         streamingContent = "";
+        expectedChunkIndex = 0;
+        chunkBuffer.clear();
       }
-      streamingContent += chunk;
+      if (typeof index !== 'number') {
+        streamingContent += chunk;
+      } else {
+        chunkBuffer.set(index, chunk);
+        while (chunkBuffer.has(expectedChunkIndex)) {
+          streamingContent += chunkBuffer.get(expectedChunkIndex);
+          chunkBuffer.delete(expectedChunkIndex);
+          expectedChunkIndex += 1;
+        }
+      }
       // マークダウンをHTMLに変換して表示
       try {
         const html = marked.parse(streamingContent);
