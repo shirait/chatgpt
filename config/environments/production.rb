@@ -28,4 +28,12 @@ Rails.application.configure do
 
   # ActionCableのパスはapplication.html.erbで設定済み。
   # config.action_cable.mount_path = "/cable"
+
+  # ActionCableのリクエスト元ホストの許可リスト（カンマ区切りで指定）。
+  # 例: ACTION_CABLE_ALLOWED_ORIGINS="https://example.com,https://www.example.com"
+  allowed_origins = ENV.fetch("ACTION_CABLE_ALLOWED_ORIGINS", "")
+                          .split(",")
+                          .map(&:strip)
+                          .reject(&:empty?)
+  config.action_cable.allowed_request_origins = allowed_origins
 end
