@@ -28,3 +28,4 @@ set :bundle_flags, "--deployment --quiet"
 
 # puma (systemd)
 set :puma_service_unit_name, "puma_chatgpt"
+set :puma_systemctl_user, :system
