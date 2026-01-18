@@ -25,3 +25,6 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bund
 # bundle settings
 set :bundle_path, -> { shared_path.join("vendor/bundle") }
 set :bundle_flags, "--deployment --quiet"
+
+# puma (systemd)
+set :puma_service_unit_name, "puma_chatgpt"

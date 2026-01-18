@@ -10,12 +10,14 @@ set :ssh_options, { port: 22 }
 # role :db,  %w{deploy@example.com}
 
 namespace :deploy do
+=begin
   desc "passenger restart"
   task :restart_app do
     on roles(:app) do
       execute("touch /home/chatgpt/production/current/tmp/restart.txt")
     end
   end
+=end
 
   desc "setup bundle config"
   task :setup_bundle_config do
@@ -32,5 +34,8 @@ end
 # https://github.com/shirait/programs/issues/39 の対処で追加したが、いらないかもしれない。
 before "bundler:install", "deploy:setup_bundle_config"
 
+# デプロイ後にPumaを再起動
+after "deploy:published", "puma:restart"
+
 # デプロイ後、passenger再起動ファイルを配置。
-after "deploy:published", "deploy:restart_app"
+# after "deploy:published", "deploy:restart_app"
