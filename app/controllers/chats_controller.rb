@@ -45,8 +45,16 @@ class ChatsController < ApplicationController
 
   def search
     authorize!(:search, MessageThread)
-    @searched_message_threads = MessageThread.eager_load(:messages).accessible_by(current_ability).order("messages.id").where("messages.content LIKE ?", "%#{params[:search]}%")
     load_message_threads_for_sidebar
+
+    @tags_for_search = Tag.accessible_by(current_ability).order(name: :asc)
+    @searched_message_threads = MessageThread.
+      eager_load(:tags).
+      accessible_by(current_ability).
+      content_like_search(params[:search]).
+      tags_search(params[:tag_id]).
+      active_search(params[:active]).
+      order(id: :asc)
   end
 
   def add_message
@@ -116,10 +124,27 @@ class ChatsController < ApplicationController
     redirect_to(chat_path(@message_thread))
   end
 
+  def edit_tag_message_thread
+    @message_thread = MessageThread.eager_load(:tags).find(params[:id])
+    authorize!(:link_tag, @message_thread)
+    @tags = Tag.accessible_by(current_ability).order(id: :asc)
+    load_message_threads_for_sidebar
+  end
+
+  def update_tag_message_thread
+    @message_thread = MessageThread.find(params[:id])
+    authorize!(:link_tag, @message_thread)
+
+    @link_tags = Tag.accessible_by(current_ability).where(id: params[:message_thread][:tag_ids])
+    @message_thread.tag_ids = @link_tags.pluck(:id)
+    flash[:notice] = "タグを更新しました。"
+    redirect_to(chat_path(@message_thread))
+  end
+
   private
 
   def load_message_threads_for_sidebar
-    @message_threads_for_sidebar = MessageThread.accessible_by(current_ability).where(active: true).order(id: :asc)
+    @message_threads_for_sidebar = MessageThread.preload(:tags).accessible_by(current_ability).where(active: true).order(id: :asc)
   end
 
   def message_params

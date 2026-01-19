@@ -37,5 +37,11 @@ module Chatgpt
 
     # app/servicesディレクトリを自動読み込みパスに追加
     config.autoload_paths += %W[#{config.root}/app/services]
+
+    # rails g でminitestを生成しない＆rspecを生成する
+    config.generators do |g|
+      g.test_framework :rspec
+      g.system_tests = nil
+    end
   end
 end

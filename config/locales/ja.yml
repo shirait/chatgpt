@@ -5,6 +5,7 @@ ja:
       message: "メッセージ"
       gpt_model: "GPTモデル"
       user: "ユーザー"
+      tag: "タグ"
     attributes:
       message_thread:
         title: "タイトル"
@@ -28,6 +29,8 @@ ja:
         active: "有効"
         inactive: "無効"
         name: "名前"
+      tag:
+        name: "名前"
     errors:
       messages:
         not_saved:
@@ -42,6 +45,8 @@ ja:
     show: "詳細"
     edit: "編集"
     delete: "削除"
+    create: "作成"
+    update: "更新"
     delete_confirm: "本当に削除しますか？"
     operation: "操作"
     edit_title: "タイトルを編集する"
@@ -58,3 +63,4 @@ ja:
     open: "一覧に表示する"
     open_confirm: "本当に表示しますか？"
     hide_confirm: "本当に非表示にしますか？"
+    edit_tag: "タグを編集する"

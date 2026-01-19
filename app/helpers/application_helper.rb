@@ -50,6 +50,10 @@ module ApplicationHelper
     user_signed_in? && params[:controller] == "chats"
   end
 
+  def tags_controller?
+    user_signed_in? && params[:controller] == "tags"
+  end
+
   def active_icon(model_class)
     return active_icon_html if model_class.active?
     inactive_icon_html

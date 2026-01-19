@@ -41,6 +41,7 @@
 <% end %>
 
 <%= link_to(t('common.edit_title'), edit_chat_path(@message_thread), class: "button is-primary is-light is-normal mt-1") %><br>
+<%= link_to(t('common.edit_tag'), edit_tag_message_thread_chat_path(@message_thread), class: "button is-primary is-light is-normal mt-1") %><br>
 <%= link_to(
   t("common.delete"),
   chat_path(@message_thread),

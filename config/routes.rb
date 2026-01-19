@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   # ActionCableのマウント
   mount ActionCable.server => "/cable"
 
-  devise_for :users, controllers: {
+  devise_for(:users, controllers: {
     # カスタムコントローラー利用設定
     confirmations: "users/confirmations",
     # omniauth_callbacks: 'users/omniauth_callbacks', # user.rb で :omniauthableを有効にしたら指定する。
@@ -10,29 +10,32 @@ Rails.application.routes.draw do
     registrations: "users/registrations",
     unlocks: "users/unlocks",
     sessions: "users/sessions"
-  }
+  })
 
-  root "application#root_redirect"
+  root("application#root_redirect")
 
-  resources :chats, only: [ :new, :create, :show, :edit, :update, :destroy ] do
+  resources(:chats, only: [ :new, :create, :show, :edit, :update, :destroy ]) do
     member do
-      post :add_message
-      post :hide
-      post :open
+      post(:add_message)
+      get(:edit_tag_message_thread)
+      post(:update_tag_message_thread)
+      post(:hide)
+      post(:open)
     end
     collection do
-      get :search
+      get(:search)
     end
   end
 
+  resources(:tags)
 
-  namespace :admin do
-    resources :users do
+  namespace(:admin) do
+    resources(:users) do
       collection do
-        get :search
+        get(:search)
       end
     end
 
-    resources :gpt_models
+    resources(:gpt_models)
   end
 end

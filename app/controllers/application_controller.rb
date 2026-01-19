@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
   # 認証していないユーザーでアクセスした場合、ログイン画面にリダイレクト
   before_action :authenticate_user!
 
+  around_action :collect_sql_queries, if: -> { Rails.env.development? }
+
   # 認可されていないアクションを実行した場合の処理を定義
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to(root_path, alert: "アクセス権限がありません。")
@@ -33,5 +35,28 @@ class ApplicationController < ActionController::Base
   # ログアウト後のリダイレクト先
   def after_sign_out_path_for(resource_or_scope)
     new_user_session_path
+  end
+
+  private
+
+  def collect_sql_queries
+    @executed_sql = []
+    callback = lambda do |_name, _start, _finish, _id, payload|
+      return if payload[:name] == "SCHEMA"
+      return if payload[:name] == "TRANSACTION"
+
+      sql = payload[:sql].to_s.squish
+      caller_line = Rails.backtrace_cleaner.clean(caller).find { |line| line.start_with?("app/") }
+      @executed_sql << {
+        sql: sql,
+        name: payload[:name],
+        cached: payload[:cached],
+        caller: caller_line
+      }
+    end
+
+    ActiveSupport::Notifications.subscribed(callback, "sql.active_record") do
+      yield
+    end
   end
 end

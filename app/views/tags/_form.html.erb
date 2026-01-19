@@ -1,0 +1,7 @@
+<div class="field">
+  <%= f.label(:name, class: "label") %>
+  <%= f.text_field(:name, class: "input") %>
+  <% if @tag.errors[:name].present? %>
+    <p class="help is-danger"><%= @tag.errors[:name].join(", ") %></p>
+  <% end %>
+</div>
