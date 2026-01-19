@@ -18,6 +18,7 @@
   <div class="field">
     <%= link_to(t("common.edit"), edit_tag_path(@tag), class: 'button is-primary is-light is-normal') %>
     <%= link_to(t("common.back"), tags_path, class: 'button is-warning is-light is-normal') %>
+    <%= link_to(t("common.delete"), tag_path(@tag), method: :delete, data: { turbo_method: :delete, turbo_confirm: t("common.delete_confirm") }, class: 'button is-danger is-light is-normal') %>
   </div>
 </div>
 
