@@ -100,6 +100,10 @@ body.has-navbar-fixed-top .column.is-9-desktop {
 
   .navbar-menu.is-active {
     display: block;
+    max-height: calc(100dvh - 3.25rem);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 0.75rem);
   }
 
   /* モバイル表示時、サイドバーを非表示（ハンバーガーメニューに表示されるため） */
