@@ -18,13 +18,13 @@ class MessageThread < ApplicationRecord
   scope :content_like_search, ->(param) {
     return all if param.blank?
 
-    left_joins(:messages).where("messages.content LIKE ?", "%#{param}%")
+    where("messages.content LIKE ?", "%#{param}%")
   }
 
   scope :tags_search, ->(tag_id) {
     return all if tag_id.blank?
 
-    joins(:tags).where(tags: { id: tag_id })
+    where(tags: { id: tag_id })
   }
 
   scope :active_search, ->(active) {
