@@ -10,27 +10,20 @@
   </div>
 
   <div class="field">
-    <%= f.submit("検索", class: "button is-primary is-normal mt-4") %>
+    <%= f.submit("検索", class: "button is-primary is-light is-normal mt-4") %>
   </div>
 <% end %>
 
 <br>
-<% if @searched_message_threads.present? %>
-  <% if @searched_tag.present? %>
-    「<%= @searched_tag.name %>」のタグが付いたチャットは以下になります。
-  <% else %>
-    検索にヒットしたチャットは以下になります。
-  <% end %>
 
-  <% @searched_message_threads.each do |message_thread| %>
-    <div>
-      <%= link_to(message_thread.title, chat_path(message_thread)) %>
-    </div>
-  <% end %>
-<% else %>
-  <% if @searched_tag.present? %>
-    「<%= @searched_tag.name %>」のタグが付いたチャットはありませんでした。
-  <% else %>
-    検索にヒットしたチャットはありませんでした。
-  <% end %>
+<% if @searched_message_threads.present? %>
+  検索にヒットしたチャットは以下になります。
+<% elsif [params[:search], params[:tag_id]].all?(&:blank?) %>
+  検索条件を指定してください。
+<% end %>
+
+<% @searched_message_threads.each do |message_thread| %>
+  <div>
+    <%= link_to(message_thread.title, chat_path(message_thread)) %>
+  </div>
 <% end %>
