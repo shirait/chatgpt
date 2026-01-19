@@ -8,7 +8,6 @@
         </div>
       </div>
     </div>
-
     <div class="column is-12-mobile is-6-desktop">
       <div class="field">
         <%= f.label(:tag_id, "タグで絞り込み", class: "label") %>
@@ -22,18 +21,17 @@
   </div>
 
   <div class="field">
-    <%= f.submit("検索", class: "button is-primary is-light is-normal") %>
+    <%= f.label(:active, "表示状態", class: "label") %>
+    <div class="control">
+      <div class="select">
+        <%= f.select(:active, options_for_select([["表示中のみ", "1"], ["非表示のみ", "0"], ["すべて", ""]], params[:active].presence || "1")) %>
+      </div>
+    </div>
   </div>
-<% end %>
 
-<br>
-
-<% if @searched_message_threads.present? %>
-  検索にヒットしたチャットは以下になります。
-<% elsif [params[:search], params[:tag_id]].all?(&:blank?) %>
-  検索条件を指定してください。
-<% else %>
-  検索にヒットしたチャットはありませんでした。
+  <div class="field">
+    <%= f.submit("検索", class: "button is-primary is-light is-normal mt-4") %>
+  </div>
 <% end %>
 
 <% @searched_message_threads.each do |message_thread| %>

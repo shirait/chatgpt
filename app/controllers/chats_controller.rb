@@ -53,7 +53,7 @@ class ChatsController < ApplicationController
       accessible_by(current_ability).
       content_like_search(params[:search]).
       tags_search(params[:tag_id]).
-      where(active: true).
+      active_search(params[:active]).
       order(id: :asc)
   end
 
