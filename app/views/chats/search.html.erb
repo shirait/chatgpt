@@ -1,3 +1,16 @@
+<%= form_with(url: search_chats_path, method: :get, local: true) do |f| %>
+  <div class="field">
+    <div class="control">
+      <%= f.text_field(:search, class: "input", placeholder: "文字列で検索", value: params[:search]) %>
+    </div>
+    <div class="control">
+      <%= f.select(:tag_id, options_from_collection_for_select(@tags_for_search, :id, :name, params[:tag_id]), include_blank: "タグで絞り込み", class: "input", value: params[:tag_id]) %>
+    </div>
+  </div>
+  <%= f.submit("検索", class: "button is-primary is-normal mt-1") %>
+<% end %>
+
+<br>
 <% if @searched_message_threads.present? %>
   <% if @searched_tag.present? %>
     「<%= @searched_tag.name %>」のタグが付いたチャットは以下になります。

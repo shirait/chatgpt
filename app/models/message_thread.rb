@@ -14,4 +14,12 @@ class MessageThread < ApplicationRecord
       creator_id: creator_id
     )
   end
+
+  scope :content_like_search, ->(param) {
+    where("messages.content LIKE ?", "%#{param}%")
+  }
+
+  scope :tags_search, ->(tag_id) {
+    joins(:tags).where(tags: { id: tag_id })
+  }
 end
