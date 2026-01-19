@@ -1,3 +1,5 @@
+<%= link_to '新規作成', new_admin_user_path, class: 'button is-primary is-light is-normal mb-4' %>
+
 <div class="box">
   <h1 class="title">ユーザー詳細</h1>
 
@@ -36,7 +38,7 @@
 
   <div class="field">
     <%= link_to(t("common.edit"), edit_admin_user_path(@user), class: 'button is-primary is-light is-normal') %>
-    <%= link_to(t("common.back"), admin_users_path, class: 'button is-warning is-light is-normal') %>
+    <%= link_to("一覧に戻る", admin_users_path, class: 'button is-warning is-light is-normal') %>
   </div>
 </div>
 

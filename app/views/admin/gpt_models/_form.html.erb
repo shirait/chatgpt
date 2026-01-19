@@ -18,5 +18,6 @@
 </div>
 <div class="field">
   <%= f.submit(class: "button is-primary is-normal mt-1") %>
-  <%= link_to t("common.back"), admin_gpt_models_path, class: "button is-warning is-normal mt-1" %>
+  <%= link_to "一覧に戻る", admin_gpt_models_path, class: "button is-warning is-normal mt-1" %>
+  <%= link_to "詳細に戻る", admin_gpt_model_path(@gpt_model), class: "button is-warning is-normal mt-1" if @gpt_model.persisted? %>
 </div>

@@ -63,6 +63,7 @@
 
 <div class="field">
   <%= f.submit(class: "button is-primary is-normal mt-1") %>
-  <%= link_to t("common.back"), admin_users_path, class: "button is-warning is-normal mt-1" %>
+  <%= link_to "一覧に戻る", admin_users_path, class: "button is-warning is-normal mt-1" %>
+  <%= link_to "詳細に戻る", admin_user_path(@user), class: "button is-warning is-normal mt-1" if @user.persisted? %>
 </div>
 
