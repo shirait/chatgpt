@@ -1,42 +1,32 @@
 <%= link_to '新規作成', new_tag_path, class: 'button is-primary is-light is-normal mb-4' %>
 
-<% # 検索フォーム %>
-<% if false %>
-<%= form_with(url: search_tags_path, method: :get, local: true, class: "box mb-4") do |f| %>
-  <div class="field is-grouped">
-    <div class="control is-expanded">
-      <%= f.label(:name, t("activerecord.attributes.tag.name"), class: "label") %>
-      <%= f.text_field(:name, class: "input", placeholder: "名前", value: params[:name]) %>
-    </div>
-  </div>
-  <%= f.submit(t("common.search"), class: "button is-primary is-light is-normal") %>
-<% end %>
-<% end %>
-
-<div class="table-container">
-  <table class="table is-bordered is-hoverable is-narrow">
-    <thead>
-      <tr>
-        <th class="has-text-centered">ID</th>
-        <th class="has-text-centered"><%= t("activerecord.attributes.tag.name") %></th>
-        <th class="has-text-centered"><%= t("common.operation") %></th>
-      </tr>
-    </thead>
-    <tbody>
-
-    <tfoot>
-      <% @tags.each do |tag| %>
+<% if @tags.present? %>
+  <div class="table-container">
+    <table class="table is-bordered is-hoverable is-narrow">
+      <thead>
         <tr>
-          <td><%= tag.id %></td>
-          <td><%= tag.name %></td>
-          <td>
-            <%= link_to(t("common.show"), tag_path(tag), class: 'button is-info is-light is-normal') %>
-            <%= link_to(t("common.edit"), edit_tag_path(tag), class: 'button is-primary is-light is-normal') %>
-            <%= link_to(t("common.delete"), tag_path(tag), class: 'button is-danger is-light is-normal', data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }) %>
-          </td>
+          <th class="has-text-centered">ID</th>
+          <th class="has-text-centered"><%= t("activerecord.attributes.tag.name") %></th>
+          <th class="has-text-centered"><%= t("common.operation") %></th>
         </tr>
-      <% end %>
-    </tfoot>
-  </table>
-</div>
+      </thead>
+      <tbody>
 
+      <tfoot>
+        <% @tags.each do |tag| %>
+          <tr>
+            <td><%= tag.id %></td>
+            <td><%= tag.name %></td>
+            <td>
+              <%= link_to(t("common.show"), tag_path(tag), class: 'button is-info is-light is-normal') %>
+              <%= link_to(t("common.edit"), edit_tag_path(tag), class: 'button is-primary is-light is-normal') %>
+              <%= link_to(t("common.delete"), tag_path(tag), class: 'button is-danger is-light is-normal', data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }) %>
+            </td>
+          </tr>
+        <% end %>
+      </tfoot>
+    </table>
+  </div>
+<% else %>
+  <p>タグが登録されていません。</p>
+<% end %>
