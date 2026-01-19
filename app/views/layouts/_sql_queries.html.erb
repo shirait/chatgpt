@@ -15,6 +15,9 @@
               <% if entry[:name].present? %>
                 <span class="tag is-light is-small ml-2"><%= entry[:name] %></span>
               <% end %>
+              <% if entry[:caller].present? %>
+                <div class="is-size-7 has-text-grey">↳ <%= entry[:caller] %></div>
+              <% end %>
             </li>
           <% end %>
         </ol>

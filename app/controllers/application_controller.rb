@@ -46,10 +46,12 @@ class ApplicationController < ActionController::Base
       return if payload[:name] == "TRANSACTION"
 
       sql = payload[:sql].to_s.squish
+      caller_line = Rails.backtrace_cleaner.clean(caller).find { |line| line.start_with?("app/") }
       @executed_sql << {
         sql: sql,
         name: payload[:name],
-        cached: payload[:cached]
+        cached: payload[:cached],
+        caller: caller_line
       }
     end
 
