@@ -1,13 +1,17 @@
 <%= form_with(url: search_chats_path, method: :get, local: true) do |f| %>
   <div class="field">
-    <div class="control">
-      <%= f.text_field(:search, class: "input", placeholder: "文字列で検索", value: params[:search]) %>
-    </div>
-    <div class="control">
-      <%= f.select(:tag_id, options_from_collection_for_select(@tags_for_search, :id, :name, params[:tag_id]), include_blank: "タグで絞り込み", class: "input", value: params[:tag_id]) %>
-    </div>
+    <%= f.label(:search, "文字列で検索", class: "label") %>
+    <%= f.text_field(:search, class: "input", value: params[:search]) %>
   </div>
-  <%= f.submit("検索", class: "button is-primary is-normal mt-1") %>
+
+  <%= f.label(:tag_id, "タグで絞り込み", class: "label") %>
+  <div class="select">
+    <%= f.select(:tag_id, options_from_collection_for_select(@tags_for_search, :id, :name, params[:tag_id]), include_blank: "", class: "", value: params[:tag_id]) %>
+  </div>
+
+  <div class="field">
+    <%= f.submit("検索", class: "button is-primary is-normal mt-4") %>
+  </div>
 <% end %>
 
 <br>
