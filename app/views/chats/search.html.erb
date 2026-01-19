@@ -1,10 +1,19 @@
 <% if @searched_message_threads.present? %>
-  検索にヒットしたチャットは以下になります。
+  <% if @searched_tag.present? %>
+    「<%= @searched_tag.name %>」のタグが付いたチャットは以下になります。
+  <% else %>
+    検索にヒットしたチャットは以下になります。
+  <% end %>
+
   <% @searched_message_threads.each do |message_thread| %>
     <div>
       <%= link_to(message_thread.title, chat_path(message_thread)) %>
     </div>
   <% end %>
 <% else %>
-  検索にヒットしたチャットはありませんでした。
+  <% if @searched_tag.present? %>
+    「<%= @searched_tag.name %>」のタグが付いたチャットはありませんでした。
+  <% else %>
+    検索にヒットしたチャットはありませんでした。
+  <% end %>
 <% end %>

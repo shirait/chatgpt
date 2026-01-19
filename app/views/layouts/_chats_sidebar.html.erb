@@ -6,6 +6,27 @@
     <% end %>
   </div>
 
+  <% if @tags_for_sidebar.present? %>
+    <div class="mb-3">
+      <%= form_with(url: search_chats_path, method: :get, local: true) do |f| %>
+        <div class="field">
+          <div class="control">
+            <div class="select is-fullwidth">
+              <%= f.collection_select(
+                :tag_id,
+                @tags_for_sidebar,
+                :id,
+                :name,
+                { include_blank: "タグで絞り込み", selected: params[:tag_id] }
+              ) %>
+            </div>
+          </div>
+        </div>
+        <%= f.submit("検索", class: "button is-link is-small") %>
+      <% end %>
+    </div>
+  <% end %>
+
   <% @message_threads_for_sidebar.each do |message_thread| %>
     <div class="sidebar-message-thread-link mb-2 <%= 'selected' if message_thread.id == @message_thread&.id %>">
       <%= link_to(message_thread.title, chat_path(message_thread)) %>

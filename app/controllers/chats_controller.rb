@@ -45,8 +45,23 @@ class ChatsController < ApplicationController
 
   def search
     authorize!(:search, MessageThread)
-    @searched_message_threads = MessageThread.eager_load(:messages).accessible_by(current_ability).order("messages.id").where("messages.content LIKE ?", "%#{params[:search]}%")
     load_message_threads_for_sidebar
+
+    if params[:tag_id].present?
+      @searched_tag = Tag.accessible_by(current_ability).find(params[:tag_id])
+      @searched_message_threads = MessageThread
+        .accessible_by(current_ability)
+        .joins(:tags)
+        .where(tags: { id: @searched_tag.id })
+        .distinct
+        .order(id: :asc)
+    else
+      @searched_message_threads = MessageThread
+        .eager_load(:messages)
+        .accessible_by(current_ability)
+        .order("messages.id")
+        .where("messages.content LIKE ?", "%#{params[:search]}%")
+    end
   end
 
   def add_message
@@ -137,6 +152,7 @@ class ChatsController < ApplicationController
 
   def load_message_threads_for_sidebar
     @message_threads_for_sidebar = MessageThread.eager_load(:tags).accessible_by(current_ability).where(active: true).order(id: :asc)
+    @tags_for_sidebar = Tag.accessible_by(current_ability).order(name: :asc)
   end
 
   def message_params
