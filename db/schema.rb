@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_18_152752) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_19_023612) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -98,6 +98,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_18_152752) do
     t.datetime "updated_at", null: false
     t.index ["creator_id", "name"], name: "index_tags_on_creator_id_and_name"
     t.index ["creator_id"], name: "index_tags_on_creator_id"
+  end
+
+  create_table "tags_chats", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "message_thread_id", null: false
+    t.bigint "tag_id", null: false
+    t.index ["message_thread_id"], name: "index_tags_chats_on_message_thread_id"
+    t.index ["tag_id", "message_thread_id"], name: "index_tags_chats_on_tag_id_and_message_thread_id", unique: true
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
