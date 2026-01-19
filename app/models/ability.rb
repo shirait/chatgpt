@@ -11,12 +11,13 @@ class Ability
   end
 
   def admin_abilities(user)
-    can :manage, GptModel
-    can :manage, User
+    can(:manage, GptModel)
+    can(:manage, User)
   end
 
   def normal_abilities(user)
-    can :manage, MessageThread, creator_id: user.id
-    can :manage, Message,       creator_id: user.id
+    can(:manage, MessageThread, creator_id: user.id)
+    can(:manage, Message,       creator_id: user.id)
+    can(:manage, Tag,           creator_id: user.id)
   end
 end

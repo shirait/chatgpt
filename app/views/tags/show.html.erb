@@ -1,0 +1,24 @@
+<div class="box">
+  <h1 class="title">タグ詳細</h1>
+
+  <div class="field">
+    <label class="label">ID</label>
+    <div class="control">
+      <p><%= @tag.id %></p>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label"><%= t("activerecord.attributes.tag.name") %></label>
+    <div class="control">
+      <p><%= @tag.name %></p>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= link_to(t("common.edit"), edit_tag_path(@tag), class: 'button is-primary is-light is-normal') %>
+    <%= link_to(t("common.back"), tags_path, class: 'button is-warning is-light is-normal') %>
+  </div>
+</div>
+
+

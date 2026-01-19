@@ -1,0 +1,23 @@
+<aside class="box has-background-white-ter scrollable-sidebar">
+  <div class="sidebar-message-thread-link mb-2 <%= 'selected' if @message_thread.nil? %>">
+    <%= link_to(new_chat_path) do %>
+      <i class="fa fa-plus"></i>
+      <span>新しいチャット</span>
+    <% end %>
+  </div>
+
+  <% @message_threads_for_sidebar.each do |message_thread| %>
+    <div class="sidebar-message-thread-link mb-2 <%= 'selected' if message_thread.id == @message_thread&.id %>">
+      <%= link_to(message_thread.title, chat_path(message_thread)) %>
+    </div>
+  <% end %>
+</aside>
+
+<aside class="box has-background-white-ter scrollable-sidebar">
+  <div class="sidebar-tag-link mb-2">
+    <%= link_to(tags_path) do %>
+      <i class="fa fa-tags"></i>
+      <span>タグ管理</span>
+    <% end %>
+  </div>
+</aside>
