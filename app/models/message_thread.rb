@@ -2,6 +2,9 @@ class MessageThread < ApplicationRecord
   belongs_to :user, foreign_key: :creator_id
   has_many :messages, dependent: :destroy
 
+  has_many :tag_message_threads, dependent: :destroy
+  has_many :tags, through: :tag_message_threads
+
   validates :title, presence: true # 長さは Message#thread_title_length でチェックする。ちょっと変だけど。
   validates :creator_id, presence: true
 

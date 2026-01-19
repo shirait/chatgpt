@@ -91,6 +91,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_19_023612) do
     t.index ["message_thread_id"], name: "fk_rails_48a2f10058"
   end
 
+  create_table "tag_message_threads", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "message_thread_id", null: false
+    t.bigint "tag_id", null: false
+    t.index ["message_thread_id"], name: "index_tag_message_threads_on_message_thread_id"
+    t.index ["tag_id"], name: "index_tag_message_threads_on_tag_id"
+  end
+
   create_table "tags", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "creator_id", null: false
@@ -98,13 +105,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_19_023612) do
     t.datetime "updated_at", null: false
     t.index ["creator_id", "name"], name: "index_tags_on_creator_id_and_name"
     t.index ["creator_id"], name: "index_tags_on_creator_id"
-  end
-
-  create_table "tags_chats", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.bigint "message_thread_id", null: false
-    t.bigint "tag_id", null: false
-    t.index ["message_thread_id"], name: "index_tags_chats_on_message_thread_id"
-    t.index ["tag_id", "message_thread_id"], name: "index_tags_chats_on_tag_id_and_message_thread_id", unique: true
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -139,5 +139,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_19_023612) do
   add_foreign_key "login_logs", "users"
   add_foreign_key "messages", "gpt_models"
   add_foreign_key "messages", "message_threads", on_delete: :cascade
+  add_foreign_key "tag_message_threads", "message_threads"
+  add_foreign_key "tag_message_threads", "tags"
   add_foreign_key "tags", "users", column: "creator_id"
 end
