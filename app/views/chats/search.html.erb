@@ -1,6 +1,6 @@
 <%= form_with(url: search_chats_path, method: :get, local: true) do |f| %>
   <div class="columns is-multiline">
-    <div class="column is-12-mobile is-6-desktop">
+    <div class="column is-12-mobile is-8-tablet is-6-desktop">
       <div class="field">
         <%= f.label(:search, "文字列で検索", class: "label") %>
         <div class="control">
@@ -8,14 +8,13 @@
         </div>
       </div>
     </div>
-    <div class="column is-12-mobile is-6-desktop">
-      <div class="field">
-        <%= f.label(:tag_id, "タグで絞り込み", class: "label") %>
-        <div class="control">
-          <div class="select is-fullwidth">
-            <%= f.select(:tag_id, options_from_collection_for_select(@tags_for_search, :id, :name, params[:tag_id]), include_blank: "", class: "", value: params[:tag_id]) %>
-          </div>
-        </div>
+  </div>
+
+  <div class="field">
+    <%= f.label(:tag_id, "タグで絞り込み", class: "label") %>
+    <div class="control">
+      <div class="select">
+        <%= f.select(:tag_id, options_from_collection_for_select(@tags_for_search, :id, :name, params[:tag_id]), include_blank: "", class: "", value: params[:tag_id]) %>
       </div>
     </div>
   </div>
@@ -29,13 +28,13 @@
     </div>
   </div>
 
-  <div class="field">
+  <div class="field mb-6">
     <%= f.submit("検索", class: "button is-primary is-light is-normal mt-4") %>
   </div>
 <% end %>
 
 <% @searched_message_threads.each do |message_thread| %>
-  <div>
+  <div class="mt-2">
     <%= link_to(message_thread.title, chat_path(message_thread)) %>
     <% message_thread.tags.each do |tag| %>
       <span class="tag is-small is-primary"><%= tag.name %></span>
