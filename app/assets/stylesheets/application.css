@@ -131,7 +131,7 @@ body.has-navbar-fixed-top .column.is-9-desktop {
 }
 
 .scrollable-sidebar {
-  max-height: 90vh;
+  max-height: 85vh;
   overflow-y: auto;
 }
 
