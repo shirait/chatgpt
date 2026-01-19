@@ -116,6 +116,23 @@ class ChatsController < ApplicationController
     redirect_to(chat_path(@message_thread))
   end
 
+  def edit_tag_message_thread
+    @message_thread = MessageThread.eager_load(:tags).find(params[:id])
+    authorize!(:link_tag, @message_thread)
+    @tags = Tag.accessible_by(current_ability).order(id: :asc)
+    load_message_threads_for_sidebar
+  end
+
+  def update_tag_message_thread
+    @message_thread = MessageThread.find(params[:id])
+    authorize!(:link_tag, @message_thread)
+
+    @link_tags = Tag.accessible_by(current_ability).where(id: params[:message_thread][:tag_ids])
+    @message_thread.tag_ids = @link_tags.pluck(:id)
+    flash[:notice] = "タグを更新しました。"
+    redirect_to(chat_path(@message_thread))
+  end
+
   private
 
   def load_message_threads_for_sidebar

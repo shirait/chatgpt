@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   resources(:chats, only: [ :new, :create, :show, :edit, :update, :destroy ]) do
     member do
       post(:add_message)
+      get(:edit_tag_message_thread)
+      post(:update_tag_message_thread)
       post(:hide)
       post(:open)
     end
