@@ -1,0 +1,24 @@
+<% if Rails.env.development? && @executed_sql.present? %>
+  <section class="mt-4">
+    <details class="box">
+      <summary class="has-text-weight-semibold">
+        SQLログ (<%= @executed_sql.size %>)
+      </summary>
+      <div class="content mt-2">
+        <ol>
+          <% @executed_sql.each do |entry| %>
+            <li>
+              <code class="is-size-7"><%= entry[:sql] %></code>
+              <% if entry[:cached] %>
+                <span class="tag is-light is-small ml-2">cached</span>
+              <% end %>
+              <% if entry[:name].present? %>
+                <span class="tag is-light is-small ml-2"><%= entry[:name] %></span>
+              <% end %>
+            </li>
+          <% end %>
+        </ol>
+      </div>
+    </details>
+  </section>
+<% end %>
