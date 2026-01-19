@@ -9,6 +9,9 @@
   <% @message_threads_for_sidebar.each do |message_thread| %>
     <div class="sidebar-message-thread-link mb-2 <%= 'selected' if message_thread.id == @message_thread&.id %>">
       <%= link_to(message_thread.title, chat_path(message_thread)) %>
+      <% message_thread.tags.each do |tag| %>
+        <span class="tag is-small is-primary"><%= tag.name %></span>
+      <% end %>
     </div>
   <% end %>
 </aside>
