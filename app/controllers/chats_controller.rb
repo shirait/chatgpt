@@ -144,7 +144,7 @@ class ChatsController < ApplicationController
   private
 
   def load_message_threads_for_sidebar
-    @message_threads_for_sidebar = MessageThread.eager_load(:tags).accessible_by(current_ability).where(active: true).order(id: :asc)
+    @message_threads_for_sidebar = MessageThread.preload(:tags).accessible_by(current_ability).where(active: true).order(id: :asc)
   end
 
   def message_params
