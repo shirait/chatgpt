@@ -18,7 +18,7 @@ class MessageThread < ApplicationRecord
   scope :content_like_search, ->(param) {
     return all if param.blank?
 
-    where("messages.content LIKE ?", "%#{param}%")
+    left_joins(:messages).where("messages.content LIKE ?", "%#{param}%")
   }
 
   scope :tags_search, ->(tag_id) {
