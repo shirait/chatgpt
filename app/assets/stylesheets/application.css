@@ -11,7 +11,8 @@
 
 /* navbarが固定表示の場合、コンテンツが隠れないようにpadding-topを設定 */
 body.has-navbar-fixed-top .column.is-9-desktop {
-  padding-top: 0.5rem; /* navbarの高さ分の余白 */
+  padding-top: 0.5rem;
+  /* navbarの高さ分の余白 */
   margin-top: 0.5rem;
 }
 
@@ -36,13 +37,15 @@ body.has-navbar-fixed-top .column.is-9-desktop {
 /* サイドバーが固定されている場合、メインコンテンツの左マージンを調整（デスクトップ表示時のみ） */
 @media screen and (min-width: 1024px) {
   body.has-navbar-fixed-top .column.is-9-desktop {
-    margin-left: 25%; /* サイドバーの幅分（is-3 = 25%） */
+    margin-left: 25%;
+    /* サイドバーの幅分（is-3 = 25%） */
   }
 }
 
 .assistant-message .box {
   margin-bottom: 0;
-  width: fit-content; /* コンテンツに合わせた幅 */
+  width: fit-content;
+  /* コンテンツに合わせた幅 */
   margin-right: 6em;
   background-color: #efefef;
 }
@@ -54,7 +57,8 @@ body.has-navbar-fixed-top .column.is-9-desktop {
 
 .user-message .box {
   margin-bottom: 0;
-  width: fit-content; /* コンテンツに合わせた幅 */
+  width: fit-content;
+  /* コンテンツに合わせた幅 */
   margin-left: 4em;
   margin-right: 1em;
   background-color: #c3f69d;
@@ -71,7 +75,8 @@ body.has-navbar-fixed-top .column.is-9-desktop {
 }
 
 .message-content-input {
-  /* max-width: 70%; *//* 最大幅を設定 */
+  /* max-width: 70%; */
+  /* 最大幅を設定 */
   margin-right: 1em;
 }
 
@@ -93,6 +98,7 @@ body.has-navbar-fixed-top .column.is-9-desktop {
 
 /* モバイル表示時のナビゲーションメニューのスタイル */
 @media screen and (max-width: 1023px) {
+
   /* モバイル表示時、navbar-menuはデフォルトで非表示（is-activeクラスがある場合のみ表示） */
   .navbar-menu {
     display: none;
@@ -135,7 +141,8 @@ body.has-navbar-fixed-top .column.is-9-desktop {
 }
 
 .scrollable-sidebar {
-  max-height: 100dvh;
+  /* PC表示の際、タブメニューが隠れないように80%に設定（モバイル表示の際は「max-height:none」で100%表示としている） */
+  max-height: 80dvh;
   overflow-y: auto;
 }
 
