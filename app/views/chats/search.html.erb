@@ -33,6 +33,14 @@
   </div>
 <% end %>
 
+<div>
+  <% if @searched_message_threads.present? %>
+    検索にヒットしたチャットは以下になります。
+  <% else %>
+    検索にヒットしたチャットがありません。
+  <% end %>
+</div>
+
 <% @searched_message_threads.each do |message_thread| %>
   <div class="mt-2">
     <%= link_to(message_thread.title, chat_path(message_thread)) %>
