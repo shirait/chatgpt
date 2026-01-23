@@ -103,5 +103,7 @@ gem "bullet"
 gem "passenger"
 
 gem "delayed_job_active_record"
+gem "daemons"
 
 gem "exception_notification"
+

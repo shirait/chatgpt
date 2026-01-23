@@ -540,6 +540,7 @@ DEPENDENCIES
   capistrano-rbenv
   capistrano3-puma
   capybara
+  daemons
   debug
   delayed_job_active_record
   devise
