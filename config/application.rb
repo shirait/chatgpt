@@ -43,5 +43,7 @@ module Chatgpt
       g.test_framework :rspec
       g.system_tests = nil
     end
+
+    config.active_job.queue_adapter = :delayed_job
   end
 end
