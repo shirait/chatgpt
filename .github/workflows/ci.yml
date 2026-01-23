@@ -45,10 +45,13 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Setup config.yml
+      - name: Setup config.yml and email.yml
         run: |
           if [ ! -f config/config.yml ]; then
             cp config/config.yml.sample config/config.yml
+          fi
+          if [ ! -f config/email.yml ]; then
+            cp config/email.yml.sample config/email.yml
           fi
 
       - name: Scan for security vulnerabilities in JavaScript dependencies
@@ -67,10 +70,13 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Setup config.yml
+      - name: Setup config.yml and email.yml
         run: |
           if [ ! -f config/config.yml ]; then
             cp config/config.yml.sample config/config.yml
+          fi
+          if [ ! -f config/email.yml ]; then
+            cp config/email.yml.sample config/email.yml
           fi
 
       - name: Prepare RuboCop cache
@@ -116,10 +122,13 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Setup config.yml
+      - name: Setup config.yml and email.yml
         run: |
           if [ ! -f config/config.yml ]; then
             cp config/config.yml.sample config/config.yml
+          fi
+          if [ ! -f config/email.yml ]; then
+            cp config/email.yml.sample config/email.yml
           fi
 
       - name: Setup database.yml
@@ -166,10 +175,13 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Setup config.yml
+      - name: Setup config.yml and email.yml
         run: |
           if [ ! -f config/config.yml ]; then
             cp config/config.yml.sample config/config.yml
+          fi
+          if [ ! -f config/email.yml ]; then
+            cp config/email.yml.sample config/email.yml
           fi
 
       - name: Setup database.yml
