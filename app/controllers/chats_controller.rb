@@ -20,6 +20,7 @@ class ChatsController < ApplicationController
       message_thread: @message_thread,
       creator_id: current_user.id
     )
+    raise "test exception"
 
     if !@message_thread.valid? || !@user_message.valid?
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"

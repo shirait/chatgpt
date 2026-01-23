@@ -4,8 +4,9 @@
 # Use this to limit dissemination of sensitive information.
 # See the ActiveSupport::ParameterFilter documentation for supported notations and behaviors.
 Rails.application.config.filter_parameters += [
-  :passw, :email, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, :cvv, :cvc
+  :passw, :email, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, :cvv, :cvc,
+  :content, :message_files
 ]
 
-# messages.contentは個人情報等を含む場合があるが、ログ出力は行うものとする。
-# ただ、DBからmessages.contentを削除してもログに残る問題があるので、ログは定期的に削除するものとする。
+# messages.contentのパラメータはログ出力しないものとする。
+# sqlログには残るので、本番環境では適切にログ出力設定を行うこと。
