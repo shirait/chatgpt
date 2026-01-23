@@ -2,6 +2,9 @@
 require "exception_notification/rails"
 require "exception_notification/rake"
 
+# メール設定を外部ファイルから読み込む
+email_config = Rails.application.config_for(:email)
+exception_notification_config = email_config[:exception_notification]
 
 ExceptionNotification.configure do |config|
   # Ignore additional exception types. The default list of exception classes is:
@@ -23,9 +26,9 @@ ExceptionNotification.configure do |config|
 
   # Email notifier sends notifications by email.
   config.add_notifier :email, {
-    email_prefix: "[ERROR] ",
-    sender_address: %("Notifier" <notifier@example.com>),
-    exception_recipients: %w[exceptions@example.com],
+    email_prefix: exception_notification_config[:email_prefix],
+    sender_address: exception_notification_config[:from_address],
+    exception_recipients: exception_notification_config[:to_address],
     sections: %w[request session backtrace]
   }
 
