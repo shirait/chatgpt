@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
     allow_browser versions: :modern
   end
 
+  rescue_from Exception, with: :handle_exception
+
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
 
@@ -58,5 +60,10 @@ class ApplicationController < ActionController::Base
     ActiveSupport::Notifications.subscribed(callback, "sql.active_record") do
       yield
     end
+  end
+
+  def handle_exception(exception)
+    ExceptionNotification.notify(exception)
+    raise exception
   end
 end

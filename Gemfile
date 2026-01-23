@@ -54,6 +54,9 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # 開発環境でメール送信テストのため
+  gem "mailcatcher"
 end
 
 group :development do
@@ -98,3 +101,7 @@ gem "bullet"
 
 # ActionCableを利用する場合、 passenger をスタンドアローンで起動する必要あり。
 gem "passenger"
+
+gem "delayed_job_active_record"
+
+gem "exception_notification"
