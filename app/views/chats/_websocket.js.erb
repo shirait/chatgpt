@@ -12,8 +12,8 @@ marked.setOptions({
   mangle: false
 })
 
-<% # DOM読み込み完了後、少し遅延してスクロール（画像読み込みを待つ） %>
 $(document).ready(function() {
+  <% # DOM読み込み完了後、少し遅延してスクロール（画像読み込みを待つ） %>
   <% # 即座に実行 %>
   setTimeout(scrollToLastMessage, 100);
   <% # 画像読み込み完了後にも実行（念のため） %>
@@ -31,9 +31,9 @@ $(document).ready(function() {
 
   <% # ChatChannelのインスタンス作成 %>
   const chatChannel = new ChatChannel(
-    <% # 第一引数。スレッドID %>
+    <% # 第一引数。(スレッドID) %>
     messageThreadId,
-    <% # onMessageChunk 第二引数。途中の文字列を受信したときの処理 %>
+    <% #  第二引数。途中の文字列を受信したときの処理(onMessageChunk) %>
     (chunk, index) => {
       if (!streamingMessageContainer) {
         streamingMessageContainer = document.getElementById('streaming-message-container');
@@ -64,14 +64,14 @@ $(document).ready(function() {
       <% # 自動スクロール %>
       streamingMessageContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
     },
-    <% # onMessageComplete 第三引数。完了通知が来た時の処理 %>
+    <% # 第三引数。完了通知が来た時の処理(onMessageComplete) %>
     () => {
       if (streamingMessageContainer) {
         <% # ページをリロードして最終的なメッセージを表示（サーバーサイドでレンダリングされたもの） %>
         window.location.reload();
       }
     },
-    <% # onMessageError 第四引数。エラー通知が来た時の処理 %>
+    <% # 第四引数。エラー通知が来た時の処理(onMessageError) %>
     (error) => {
       if (streamingMessageContainer) {
         streamingMessageContainer.style.display = 'none';
