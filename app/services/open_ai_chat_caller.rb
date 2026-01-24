@@ -49,7 +49,6 @@ class OpenAiChatCaller
           delta = chunk.dig("choices", 0, "delta", "content")
           if delta
             full_content += delta
-            # ActionCableでリアルタイム送信
             broadcast_message_chunk(delta, chunk_index)
             chunk_index += 1
           end
