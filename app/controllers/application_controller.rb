@@ -41,16 +41,18 @@ class ApplicationController < ActionController::Base
 
   def collect_sql_queries
     @executed_sql = []
-    callback = lambda do |_name, _start, _finish, _id, payload|
+    callback = lambda do |_name, start, finish, _id, payload|
       return if payload[:name] == "SCHEMA"
       return if payload[:name] == "TRANSACTION"
 
+      duration_ms = (finish - start) * 1000.0
       sql = payload[:sql].to_s.squish
       caller_line = Rails.backtrace_cleaner.clean(caller).find { |line| line.start_with?("app/") }
       @executed_sql << {
         sql: sql,
         name: payload[:name],
         cached: payload[:cached],
+        duration_ms: duration_ms,
         caller: caller_line
       }
     end
