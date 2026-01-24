@@ -7,6 +7,19 @@
   <%= f.text_area(:description, class: "textarea") %>
 </div>
 <div class="field">
+  <%= f.label(:temperature, class: "label") %>
+  <%= f.number_field(:temperature, class: "input", placeholder: "0.0から2.0の間で入力してください。") %>
+</div>
+<div class="field">
+  <%= f.label(:max_prev_message_count, class: "label") %>
+  <%= f.number_field(:max_prev_message_count, class: "input", placeholder: "送信する履歴数を入力してください。") %>
+  <span class="help">
+    送信する履歴のターン数を入力してください。
+    ユーザーからのメッセージとGPTからのメッセージで1ターンとしてカウントします。
+    0とした場合、過去のやり取りを履歴として送信しません。
+  </span>
+</div>
+<div class="field">
   <%= f.label(:active, class: "label") do %>
     <%= f.check_box(:active, class: "checkbox") %>
     <%= t("activerecord.attributes.gpt_model.active") %>

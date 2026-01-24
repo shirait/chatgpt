@@ -17,6 +17,8 @@ ja:
         description: "説明"
         status: "ステータス"
         active: "有効"
+        temperature: "temperature"
+        max_prev_message_count: "送信する履歴数"
         inactive: "無効"
       user:
         email: "メールアドレス"

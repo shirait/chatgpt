@@ -21,11 +21,11 @@ class OpenAiMessageBuilder
 
   def should_include_prev_messages?
     @message.send_prev_messages_to_openai_api? &&
-      Rails.configuration.static_config.max_prev_message_count.to_i > 0
+      @message.gpt_model.send_prev_messasge?
   end
 
   def prev_messages
-    limit = Rails.configuration.static_config.max_prev_message_count * 2
+    limit = @message.gpt_model.max_prev_message_count * 2
     messages = Message.prev_messages(@message, limit)
     messages.map do |msg|
       { role: msg.message_type.to_s, content: msg.content }

@@ -7,8 +7,6 @@ default: &default
   use_openai_stub: false
   # サイトタイトル
   title: 'ChatGPT Web版クローンアプリ'
-  # 過去何セット分のメッセージを送信可能か（ユーザーの送信とGPTの回答で1セットとする。3セットの場合、都合6回のメッセージとなる。）
-  max_prev_message_count: 5
   # http通信とsocket通信のどちらを使うか。(falseの場合socket通信になる。)
   use_http_call: true
 
