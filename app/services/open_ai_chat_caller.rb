@@ -50,14 +50,7 @@ class OpenAiChatCaller
           if delta
             full_content += delta
             # ActionCableでリアルタイム送信
-            ActionCable.server.broadcast(
-              "chat_#{@message_thread.id}",
-              {
-                type: "message_chunk",
-                content: delta,
-                index: chunk_index
-              }
-            )
+            broadcast_message_chunk(delta, chunk_index)
             chunk_index += 1
           end
         end
@@ -65,6 +58,17 @@ class OpenAiChatCaller
     )
 
     full_content
+  end
+
+  def broadcast_message_chunk(delta, chunk_index)
+    ActionCable.server.broadcast(
+      "chat_#{@message_thread.id}",
+      {
+        type: "message_chunk",
+        content: delta,
+        index: chunk_index
+      }
+    )
   end
 
   def request_to_openai_api_with_http(message)
@@ -95,14 +99,7 @@ class OpenAiChatCaller
     # スタブの場合もストリーミング風に送信（文字ごとに送信）
     chunk_index = 0
     content.each_char do |char|
-      ActionCable.server.broadcast(
-        "chat_#{@message_thread.id}",
-        {
-          type: "message_chunk",
-          content: char,
-          index: chunk_index
-        }
-      )
+      broadcast_message_chunk(char, chunk_index)
       chunk_index += 1
       sleep(0.01) # リアルタイム感を出すため少し待機
     end
