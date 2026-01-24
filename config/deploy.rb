@@ -18,7 +18,7 @@ set :rbenv_map_bins, %w[rake gem bundle ruby rails]
 set :rbenv_roles, :all
 
 # linked files and directories
-append :linked_files, "config/database.yml", "config/config.yml", "config/credentials/production.key", "config/credentials/production.yml.enc", "config/puma.rb"
+append :linked_files, "config/database.yml", "config/config.yml", "config/credentials/production.key", "config/credentials/production.yml.enc", "config/email.yml", "config/puma.rb"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bundle", ".bundle", "public/system", "storage"
 
 # bundle settings

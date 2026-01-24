@@ -1,0 +1,17 @@
+# メール設定ファイル
+
+default: &default
+  exception_notification:
+    email_prefix: "[ERROR] "
+    from_address: '"Notifier" <notifier@example.com>'
+    to_address:
+      - exceptions@example.com
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
