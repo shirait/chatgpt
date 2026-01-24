@@ -4,7 +4,7 @@ import { createConsumer } from "@rails/actioncable"
 const cableUrl = '/cable'
 const cableConsumer = createConsumer(cableUrl)
 
-// チャネルクラス。
+// チャネルクラス。ActionCableのコンシューマーに接続するために必要なクラス。
 export default class ChatChannel {
   // ChatChannelのインスタンスを作成する。
   constructor(messageThreadId, onMessageChunk, onMessageComplete, onMessageError) {
