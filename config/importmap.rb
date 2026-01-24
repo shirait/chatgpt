@@ -6,6 +6,7 @@
 # import "navbar_burger"
 # import ChatChannel from "channels/chat_channel"
 pin "@hotwired/turbo-rails", to: "turbo.min.js"
+pin "application", to: "application.js", preload: true
 pin "navbar_burger", to: "navbar_burger.js"
 pin "@rails/actioncable", to: "actioncable.esm.js"
 pin "channels/chat_channel", to: "channels/chat_channel.js"
