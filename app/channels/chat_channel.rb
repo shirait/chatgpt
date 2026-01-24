@@ -3,7 +3,9 @@ class ChatChannel < ApplicationCable::Channel
   def subscribed
     message_thread = MessageThread.find(params[:message_thread_id])
     authorize!(:read, message_thread)
-    stream_from "chat_#{params[:message_thread_id]}"
+
+    # ブラウザにサブスクライブを実行。（引数がチャネル名になる）
+    stream_from("chat_#{params[:message_thread_id]}")
   end
 
   # サーバー側で保持している状態や、一時的なデータ作成がある場合、破棄するコードを記述する。

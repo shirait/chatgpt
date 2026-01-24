@@ -18,10 +18,12 @@
               <% if entry[:caller].present? %>
                 <div class="is-size-7 has-text-grey">↳ <%= entry[:caller] %></div>
               <% end %>
+              <span class="is-size-7 has-text-grey"><%= entry[:duration_ms].round(2) %>ms</span>
             </li>
           <% end %>
         </ol>
       </div>
+      <div class="is-size-7 has-text-grey">Total: <%= @executed_sql.sum { |entry| entry[:duration_ms] }.round(2) %>ms</div>
     </details>
   </section>
 <% end %>

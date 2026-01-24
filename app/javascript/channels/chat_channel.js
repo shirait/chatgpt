@@ -1,16 +1,12 @@
 import { createConsumer } from "@rails/actioncable"
 
-let consumer = null
+// ActionCableのURL。基本的に /cable とする。
+const cableUrl = '/cable'
+const cableConsumer = createConsumer(cableUrl)
 
-function getConsumer() {
-  if (!consumer) {
-    const cableUrl = '/cable'
-    consumer = createConsumer(cableUrl)
-  }
-  return consumer
-}
-
+// チャネルクラス。ActionCableのコンシューマーに接続するために必要なクラス。
 export default class ChatChannel {
+  // ChatChannelのインスタンスを作成する。
   constructor(messageThreadId, onMessageChunk, onMessageComplete, onMessageError) {
     this.messageThreadId = messageThreadId
     this.onMessageChunk = onMessageChunk
@@ -19,8 +15,9 @@ export default class ChatChannel {
     this.subscription = null
   }
 
+  // ChatChannelのインスタンスメソッド。
+  // WebSocketの購読（subscription）を作成する。
   connect() {
-    const cableConsumer = getConsumer()
     this.subscription = cableConsumer.subscriptions.create(
       {
         channel: "ChatChannel",
@@ -46,6 +43,8 @@ export default class ChatChannel {
     )
   }
 
+  // ChatChannelのインスタンスメソッド。
+  // WebSocketの購読（subscription）を解除する。
   disconnect() {
     if (this.subscription) {
       this.subscription.unsubscribe()

@@ -1,34 +1,41 @@
 import ChatChannel from "channels/chat_channel"
 import { marked } from "marked"
 
-// marked.jsの設定（サーバーサイドのredcarpetと同様の設定を目指す）
+<% # marked.jsの設定（サーバーサイドのredcarpetと同様の設定を目指す） %>
 marked.setOptions({
-  breaks: true, // 改行を<br>に変換
-  gfm: true, // GitHub Flavored Markdownを有効化
-  headerIds: false, // ヘッダーIDを無効化（シンプルに）
+  <% # 改行を<br>に変換 %>
+  breaks: true,
+  <% # GitHub Flavored Markdownを有効化 %>
+  gfm: true,
+  <% # ヘッダーIDを無効化（シンプルに） %>
+  headerIds: false,
   mangle: false
 })
 
-// DOM読み込み完了後、少し遅延してスクロール（画像読み込みを待つ）
 $(document).ready(function() {
-  // 即座に実行
+  <% # DOM読み込み完了後、少し遅延してスクロール（画像読み込みを待つ） %>
+  <% # 即座に実行 %>
   setTimeout(scrollToLastMessage, 100);
-  // 画像読み込み完了後にも実行（念のため）
+  <% # 画像読み込み完了後にも実行（念のため） %>
   $(window).on('load', function() {
     setTimeout(scrollToLastMessage, 50);
   });
 
-  // ActionCable接続
+  <% # ActionCable接続 %>
   const messageThreadId = <%= @message_thread.id %>;
   let streamingContent = "";
+  <% # ストリーミング中のチャンクのインデックス。これを使って表示順を整理しないと、「チャット」という文字列を受け取ったのに「チャトッ」等と表示される可能性がある。 %>
   let expectedChunkIndex = 0;
   const chunkBuffer = new Map();
   let streamingMessageContainer = null;
   let streamingMessageContent = null;
 
+  <% # ChatChannelのインスタンス作成 %>
   const chatChannel = new ChatChannel(
-    messageThreadId,  // 第一引数。スレッドID。
-    // onMessageChunk 第二引数。途中の文字列を受診したときの処理
+    <% # 第一引数。(スレッドID) %>
+    messageThreadId,
+    <% #  第二引数。途中の文字列を受信したときの処理(onMessageChunk) %>
+    <% # OpenAiChatCaller#broadcast_message_chunk から呼び出される。 %>
     (chunk, index) => {
       if (!streamingMessageContainer) {
         streamingMessageContainer = document.getElementById('streaming-message-container');
@@ -48,25 +55,27 @@ $(document).ready(function() {
           expectedChunkIndex += 1;
         }
       }
-      // マークダウンをHTMLに変換して表示
+      <% # マークダウンをHTMLに変換して表示 %>
       try {
         const html = marked.parse(streamingContent);
         streamingMessageContent.innerHTML = html;
       } catch (e) {
-        // マークダウンのパースエラー時はテキストとして表示
+        <% # マークダウンのパースエラー時はテキストとして表示 %>
         streamingMessageContent.textContent = streamingContent;
       }
-      // 自動スクロール
+      <% # 自動スクロール %>
       streamingMessageContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
     },
-    // onMessageComplete 第三引数。完了通知が来た時の処理
+    <% # 第三引数。完了通知が来た時の処理(onMessageComplete) %>
+    <% # OpenAiChatCaller#broadcast_message_complete から呼び出される。 %>
     () => {
       if (streamingMessageContainer) {
-        // ページをリロードして最終的なメッセージを表示（サーバーサイドでレンダリングされたもの）
+        <% # ページをリロードして最終的なメッセージを表示（サーバーサイドでレンダリングされたもの） %>
         window.location.reload();
       }
     },
-    // onMessageError 第四引数。エラー通知が来た時の処理
+    <% # 第四引数。エラー通知が来た時の処理(onMessageError) %>
+    <% # OpenAiChatCaller#broadcast_message_error から呼び出される。 %>
     (error) => {
       if (streamingMessageContainer) {
         streamingMessageContainer.style.display = 'none';
@@ -74,7 +83,7 @@ $(document).ready(function() {
       } else {
         alert(error);
       }
-      // エラー時もページをリロード
+      <% # エラー時もページをリロード %>
       setTimeout(() => {
         window.location.reload();
       }, 1000);
@@ -83,7 +92,7 @@ $(document).ready(function() {
 
   chatChannel.connect();
 
-  // ページ離脱時に切断
+  <% # ページ離脱時に切断 %>
   window.addEventListener('beforeunload', () => {
     chatChannel.disconnect();
   });
