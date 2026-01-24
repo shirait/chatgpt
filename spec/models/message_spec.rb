@@ -27,7 +27,8 @@ RSpec.describe Message, type: :model do
     let(:params) do
       {
         content: 'Test message content',
-        send_prev_messages_to_openai_api: '1'
+        send_prev_messages_to_openai_api: '1',
+        message_files: [""]
       }
     end
 
