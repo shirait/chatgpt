@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_23_061140) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_24_215950) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -59,12 +59,30 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_23_061140) do
     t.datetime "created_at", null: false
     t.integer "creator_id", null: false
     t.string "description"
+    t.integer "max_prev_message_count", default: 5, null: false
     t.string "name", null: false
+    t.float "temperature", default: 0.7, null: false
     t.datetime "updated_at", null: false
     t.integer "updater_id", null: false
     t.index ["creator_id"], name: "index_gpt_models_on_creator_id"
     t.index ["name"], name: "index_gpt_models_on_name"
     t.index ["updater_id"], name: "index_gpt_models_on_updater_id"
+  end
+
+  create_table "login_logs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "ip_address", null: false
+    t.string "login_identifier", null: false
+    t.integer "login_type", default: 0, null: false
+    t.string "referer"
+    t.integer "result", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.string "user_agent", null: false
+    t.bigint "user_id"
+    t.index ["created_at"], name: "index_login_logs_on_created_at"
+    t.index ["login_type"], name: "index_login_logs_on_login_type"
+    t.index ["result"], name: "index_login_logs_on_result"
+    t.index ["user_id"], name: "index_login_logs_on_user_id"
   end
 
   create_table "message_threads", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -135,6 +153,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_23_061140) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "login_logs", "users"
   add_foreign_key "messages", "gpt_models"
   add_foreign_key "messages", "message_threads", on_delete: :cascade
   add_foreign_key "tag_message_threads", "message_threads"

@@ -1,7 +1,6 @@
 # OpenAI APIを呼び出してアシスタントメッセージを作成するサービスクラス
 class OpenAiChatCaller
   include ConfigSwitches
-  TEMPERATURE = 0.7
 
   def initialize(message_thread:, user_message:)
     @message_thread = message_thread
@@ -44,7 +43,7 @@ class OpenAiChatCaller
       parameters: {
         model: message.gpt_model.name,
         messages: OpenAiMessageBuilder.build(message: message),
-        temperature: TEMPERATURE,
+        temperature: message.gpt_model.temperature,
         stream: proc do |chunk, _bytesize|
           delta = chunk.dig("choices", 0, "delta", "content")
           if delta
@@ -78,7 +77,7 @@ class OpenAiChatCaller
       parameters: {
         model: message.gpt_model.name,
         messages: OpenAiMessageBuilder.build(message: message),
-        temperature: TEMPERATURE
+        temperature: message.gpt_model.temperature
       }
     )
 

@@ -5,6 +5,8 @@
         <th class="has-text-centered">ID</th>
         <th class="has-text-centered"><%= t("activerecord.attributes.gpt_model.name") %></th>
         <th class="has-text-centered"><%= t("activerecord.attributes.gpt_model.description") %></th>
+        <th class="has-text-centered"><%= t("activerecord.attributes.gpt_model.temperature") %></th>
+        <th class="has-text-centered"><%= t("activerecord.attributes.gpt_model.max_prev_message_count") %></th>
         <th class="has-text-centered"><%= t("activerecord.attributes.gpt_model.status") %></th>
         <th class="has-text-centered"><%= t("common.operation") %></th>
       </tr>
@@ -16,6 +18,8 @@
           <td><%= gpt_model.id %></td>
           <td><%= gpt_model.name %></td>
           <td><%= simple_format(gpt_model.description) %></td>
+          <td><%= gpt_model.temperature %></td>
+          <td><%= gpt_model.max_prev_message_count %></td>
           <td class="has-text-centered"><%= active_icon(gpt_model) %></td>
           <td>
             <%= link_to(t("common.show"), admin_gpt_model_path(gpt_model), class: 'button is-info is-light is-normal') %>

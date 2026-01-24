@@ -25,7 +25,7 @@ class Message < ApplicationRecord
       send_prev_messages_to_openai_api: params[:send_prev_messages_to_openai_api] == "1"
     )
 
-    if params[:message_files].present?
+    if params[:message_files].any?(&:present?)
       message.message_files.attach(params[:message_files])
     end
 

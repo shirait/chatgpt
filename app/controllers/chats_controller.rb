@@ -40,7 +40,7 @@ class ChatsController < ApplicationController
     @message_thread = MessageThread.eager_load(messages: :message_files_attachments).order("messages.id").find(params[:id])
     authorize!(:read, @message_thread)
     load_message_threads_for_sidebar
-    @user_message = Message.new(message_thread_id: @message_thread.id, send_prev_messages_to_openai_api: true)
+    @user_message = Message.new(message_thread_id: @message_thread.id, gpt_model: GptModel.active_gpt_model)
   end
 
   def search

@@ -4,6 +4,8 @@ class GptModel < ApplicationRecord
   has_many :messages, dependent: :restrict_with_error
 
   validates :name, presence: true, length: { maximum: 255 }
+  validates :temperature, presence: true, numericality: { greater_than_or_equal_to: 0.0, less_than_or_equal_to: 2.0 }
+  validates :max_prev_message_count, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :description, length: { maximum: 255 }
   validates :creator_id, presence: true
   validates :updater_id, presence: true
@@ -26,6 +28,10 @@ class GptModel < ApplicationRecord
 
   def save_with_inactive_other_gpt_models
     save && update_inactive_other_gpt_models
+  end
+
+  def send_prev_messages?
+    max_prev_message_count > 0
   end
 
   private

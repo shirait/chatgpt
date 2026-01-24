@@ -89,7 +89,7 @@ RSpec.describe OpenAiChatCaller, type: :service do
           parameters: {
             model: gpt_model.name,
             messages: [ { role: "user", content: "Test message" } ],
-            temperature: 0.7
+            temperature: gpt_model.temperature
           }
         )
       end
