@@ -4,6 +4,8 @@ class GptModel < ApplicationRecord
   has_many :messages, dependent: :restrict_with_error
 
   validates :name, presence: true, length: { maximum: 255 }
+  validates :temperature, presence: true, numericality: { greater_than_or_equal_to: 0.0, less_than_or_equal_to: 2.0 }
+  validates :max_prev_message_count, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :description, length: { maximum: 255 }
   validates :creator_id, presence: true
   validates :updater_id, presence: true
