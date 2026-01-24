@@ -21,7 +21,7 @@ class OpenAiMessageBuilder
 
   def should_include_prev_messages?
     @message.send_prev_messages_to_openai_api? &&
-      @message.gpt_model.send_prev_messasge?
+      @message.gpt_model.send_prev_messages?
   end
 
   def prev_messages

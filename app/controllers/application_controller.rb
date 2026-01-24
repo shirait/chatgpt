@@ -63,7 +63,7 @@ class ApplicationController < ActionController::Base
   end
 
   def handle_exception(exception)
-    ExceptionNotification.notify(exception)
+    ExceptionNotifier.notify_exception(exception, env: request.env)
     raise exception
   end
 end
