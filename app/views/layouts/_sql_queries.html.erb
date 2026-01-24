@@ -23,6 +23,7 @@
           <% end %>
         </ol>
       </div>
+      <div class="is-size-7 has-text-grey">Total: <%= @executed_sql.sum { |entry| entry[:duration_ms] }.round(2) %>ms</div>
     </details>
   </section>
 <% end %>
