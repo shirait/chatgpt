@@ -30,7 +30,7 @@ class GptModel < ApplicationRecord
     save && update_inactive_other_gpt_models
   end
 
-  def send_prev_messasge?
+  def send_prev_messages?
     max_prev_message_count > 0
   end
 
