@@ -1,6 +1,9 @@
 <div class="field">
   <%= f.label(:name, class: "label") %>
   <%= f.text_field(:name, class: "input", placeholder: "GPTモデルの名前を入力。間違えるとOpanAI APIへのリクエストに失敗するのでご注意ください。") %>
+  <% if @gpt_model.errors[:name].present? %>
+    <p class="help is-danger"><%= @gpt_model.errors[:name].join(", ") %></p>
+  <% end %>
 </div>
 <div class="field">
   <%= f.label(:description, class: "label") %>
@@ -8,11 +11,17 @@
 </div>
 <div class="field">
   <%= f.label(:temperature, class: "label") %>
-  <%= f.number_field(:temperature, class: "input", placeholder: "0.0から2.0の間で入力してください。") %>
+  <%= f.text_field(:temperature, class: "input", placeholder: "0.0から2.0の間で入力してください。") %>
+  <% if @gpt_model.errors[:temperature].present? %>
+    <p class="help is-danger"><%= @gpt_model.errors[:temperature].join(", ") %></p>
+  <% end %>
 </div>
 <div class="field">
   <%= f.label(:max_prev_message_count, class: "label") %>
-  <%= f.number_field(:max_prev_message_count, class: "input", placeholder: "送信する履歴数を入力してください。") %>
+  <%= f.text_field(:max_prev_message_count, class: "input", placeholder: "送信する履歴数を入力してください。") %>
+  <% if @gpt_model.errors[:max_prev_message_count].present? %>
+    <p class="help is-danger"><%= @gpt_model.errors[:max_prev_message_count].join(", ") %></p>
+  <% end %>
   <span class="help">
     送信する履歴のターン数を入力してください。
     ユーザーからのメッセージとGPTからのメッセージで1ターンとしてカウントします。

@@ -54,6 +54,6 @@ class Admin::GptModelsController < ApplicationController
   private
 
   def gpt_model_params
-    params.require(:gpt_model).permit(:name, :description, :active)
+    params.require(:gpt_model).permit(:name, :description, :temperature, :max_prev_message_count, :active)
   end
 end

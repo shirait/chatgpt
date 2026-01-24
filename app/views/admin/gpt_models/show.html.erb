@@ -7,6 +7,12 @@
   <div class="subtitle is-6">
     <%= @gpt_model.description %>
   </div>
+  <div>
+    <%= t("activerecord.attributes.gpt_model.temperature") %>：<%= @gpt_model.temperature %>
+  </div>
+  <div>
+    <%= t("activerecord.attributes.gpt_model.max_prev_message_count") %>：<%= @gpt_model.max_prev_message_count %>
+  </div>
   <div class="is-size-6 mb-4">
     <%= t("activerecord.attributes.gpt_model.status") %>：<%= active_icon(@gpt_model) %>
   </div>
