@@ -15,11 +15,11 @@
   </aside>
 <% end %>
 
-<% if @selected_user.present? %>
+<% if current_user.admin? && @selected_user.present? || current_user.normal? %>
   <div class="box">
     <p class="subtitle is-6">
       <span>相手: </span>
-      <strong><%= @selected_user.name %></strong>
+      <strong><%= talk_to_user_name %></strong>
     </p>
     <div
       id="talk-messages"
