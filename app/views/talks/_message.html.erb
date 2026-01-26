@@ -1,0 +1,10 @@
+<div class="is-flex <%= talk_message_direction_class(message) %>" data-talk-message-id="<%= message.id %>">
+  <div class="<%= talk_message_box_class(message) %>">
+    <div class="box">
+      <div class="talk-message-content"><%= message.content %></div>
+      <div class="talk-message-meta">
+        <%= message.sender.name %> • <%= l(message.created_at, format: :short) %>
+      </div>
+    </div>
+  </div>
+</div>

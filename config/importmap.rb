@@ -10,4 +10,5 @@ pin "application", to: "application.js", preload: true
 pin "navbar_burger", to: "navbar_burger.js"
 pin "@rails/actioncable", to: "actioncable.esm.js"
 pin "channels/chat_channel", to: "channels/chat_channel.js"
+pin "channels/talk_channel", to: "channels/talk_channel.js"
 pin "marked", to: "marked.esm.js"

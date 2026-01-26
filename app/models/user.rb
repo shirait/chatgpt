@@ -13,6 +13,8 @@ class User < ApplicationRecord
   # 一般ユーザーのリレーション
   has_many :message_threads, foreign_key: :creator_id, dependent: :destroy
   has_many :messages,        foreign_key: :creator_id, dependent: :destroy
+  has_many :talk_threads,    foreign_key: :user_id, dependent: :destroy
+  has_many :talk_messages,   foreign_key: :sender_id, dependent: :destroy
 
   # 管理者、一般ユーザーに共通のリレーション
   belongs_to :creator, class_name: "User", foreign_key: :creator_id

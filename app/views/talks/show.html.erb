@@ -1,0 +1,134 @@
+<div class="mb-4">
+  <h1 class="title is-4">Talk</h1>
+</div>
+
+<% if current_user.admin? %>
+  <aside class="box has-background-white-ter scrollable-sidebar mb-4">
+    <p class="subtitle is-6 mb-2">ユーザー</p>
+    <% @users.each do |user| %>
+      <div class="sidebar-user-link mb-2 <%= 'selected' if user == @selected_user %>">
+        <%= link_to(talk_path(user_id: user.id)) do %>
+          <span><%= user.name %></span>
+        <% end %>
+      </div>
+    <% end %>
+  </aside>
+<% end %>
+
+<% if @selected_user.present? %>
+  <div class="box">
+    <p class="subtitle is-6">
+      <span>相手: </span>
+      <strong><%= @selected_user.name %></strong>
+    </p>
+    <div
+      id="talk-messages"
+      data-current-user-id="<%= current_user.id %>"
+      data-talk-thread-id="<%= @talk_thread.id %>">
+      <%= render partial: "message", collection: @talk_messages, as: :message %>
+    </div>
+  </div>
+
+  <%= form_with(url: talk_messages_path, method: :post, html: { id: "talk-message-form" }) do %>
+    <% if current_user.admin? %>
+      <%= hidden_field_tag(:user_id, @selected_user.id) %>
+    <% end %>
+    <div class="field">
+      <div class="control">
+        <%= text_area_tag(:content, nil, class: "textarea", rows: 3, required: true, placeholder: "メッセージを入力") %>
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <%= submit_tag("送信", class: "button is-primary") %>
+      </div>
+    </div>
+  <% end %>
+
+  <script type="module">
+    import TalkChannel from "channels/talk_channel"
+
+    const buildMessageElement = (message, currentUserId) => {
+      const wrapper = document.createElement("div")
+      const isMine = Number(message.sender_id) === Number(currentUserId)
+      wrapper.className = `is-flex ${isMine ? "is-flex-direction-row-reverse" : ""}`
+      wrapper.dataset.talkMessageId = message.id
+
+      const messageContainer = document.createElement("div")
+      messageContainer.className = isMine ? "user-message" : "assistant-message"
+
+      const box = document.createElement("div")
+      box.className = "box"
+
+      const content = document.createElement("div")
+      content.className = "talk-message-content"
+      content.textContent = message.content
+
+      const meta = document.createElement("div")
+      meta.className = "talk-message-meta"
+      meta.textContent = `${message.sender_name} • ${message.created_at}`
+
+      box.appendChild(content)
+      box.appendChild(meta)
+      messageContainer.appendChild(box)
+      wrapper.appendChild(messageContainer)
+
+      return wrapper
+    }
+
+    const scrollToLatest = (element) => {
+      element.scrollIntoView({ behavior: "smooth", block: "end" })
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const messagesContainer = document.getElementById("talk-messages")
+      const form = document.getElementById("talk-message-form")
+      if (!messagesContainer || !form) {
+        return
+      }
+
+      const talkThreadId = messagesContainer.dataset.talkThreadId
+      const currentUserId = messagesContainer.dataset.currentUserId
+
+      const talkChannel = new TalkChannel(talkThreadId, (message) => {
+        const element = buildMessageElement(message, currentUserId)
+        messagesContainer.appendChild(element)
+        scrollToLatest(element)
+      })
+      talkChannel.connect()
+
+      window.addEventListener("beforeunload", () => {
+        talkChannel.disconnect()
+      })
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault()
+        const textarea = form.querySelector("textarea[name='content']")
+        const content = textarea.value.trim()
+        if (!content) {
+          return
+        }
+
+        const formData = new FormData(form)
+        const response = await fetch(form.action, {
+          method: "POST",
+          headers: {
+            "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
+          },
+          body: formData
+        })
+
+        if (response.ok) {
+          textarea.value = ""
+        } else {
+          const payload = await response.json().catch(() => null)
+          alert(payload?.error || "送信に失敗しました。")
+        }
+      })
+    })
+  </script>
+<% else %>
+  <div class="notification is-warning">
+    対象のユーザーが存在しません。
+  </div>
+<% end %>

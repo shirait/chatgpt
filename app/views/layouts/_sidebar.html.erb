@@ -1,3 +1,12 @@
+<aside class="box has-background-white-ter scrollable-sidebar">
+  <div class="sidebar-talk-link mb-2 <%= 'selected' if params[:controller] == "talks" %>">
+    <%= link_to(talk_path) do %>
+      <i class="fa fa-comments"></i>
+      <span>Talk</span>
+    <% end %>
+  </div>
+</aside>
+
 <% if current_user.normal? %>
   <%= render('layouts/chats_sidebar') if chats_controller? %>
   <%= render('layouts/tags_sidebar')  if tags_controller? %>

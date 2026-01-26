@@ -13,11 +13,16 @@ class Ability
   def admin_abilities(user)
     can(:manage, GptModel)
     can(:manage, User)
+    can(:manage, TalkThread)
+    can(:manage, TalkMessage)
   end
 
   def normal_abilities(user)
     can(:manage, MessageThread, creator_id: user.id)
     can(:manage, Message,       creator_id: user.id)
     can(:manage, Tag,           creator_id: user.id)
+    can(:read, TalkThread, user_id: user.id)
+    can(:read, TalkMessage, talk_thread: { user_id: user.id })
+    can(:create, TalkMessage, sender_id: user.id, talk_thread: { user_id: user.id })
   end
 end

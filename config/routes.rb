@@ -14,6 +14,9 @@ Rails.application.routes.draw do
 
   root("application#root_redirect")
 
+  get("/talk", to: "talks#show")
+  post("/talk/messages", to: "talks#create_message", as: :talk_messages)
+
   resources(:chats, only: [ :new, :create, :show, :edit, :update, :destroy ]) do
     member do
       post(:add_message)

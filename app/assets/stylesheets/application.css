@@ -88,6 +88,10 @@ body.has-navbar-fixed-top .column.is-9-desktop {
   font-weight: bold;
 }
 
+.sidebar-talk-link.selected {
+  font-weight: bold;
+}
+
 .sidebar-gpt-model-link.selected {
   font-weight: bold;
 }
@@ -148,4 +152,14 @@ body.has-navbar-fixed-top .column.is-9-desktop {
 
 .table-container thead tr {
   background-color: #f0f0f0;
+}
+
+.talk-message-content {
+  white-space: pre-wrap;
+}
+
+.talk-message-meta {
+  color: #666;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
 }
