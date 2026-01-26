@@ -9,6 +9,7 @@ pin "@hotwired/turbo-rails", to: "turbo.min.js"
 pin "application", to: "application.js", preload: true
 pin "navbar_burger", to: "navbar_burger.js"
 pin "@rails/actioncable", to: "actioncable.esm.js"
+pin "channels/consumer", to: "channels/consumer.js"
 pin "channels/chat_channel", to: "channels/chat_channel.js"
 pin "channels/talk_channel", to: "channels/talk_channel.js"
 pin "marked", to: "marked.esm.js"
