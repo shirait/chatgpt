@@ -1,7 +1,7 @@
 class CreateTalkThreadsAndMessages < ActiveRecord::Migration[8.1]
   def change
     create_table :talk_threads do |t|
-      t.references :user, null: false, foreign_key: true#, unique: true
+      t.references :user, null: false, foreign_key: true# , unique: true
       t.timestamps
     end
 
