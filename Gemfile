@@ -4,6 +4,7 @@ source "https://rubygems.org"
 gem "rails", "~> 8.1.1"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
+gem "dartsass-rails"
 # Use mysql as the database for Active Record
 gem "mysql2", "~> 0.5"
 # Use the Puma web server [https://github.com/puma/puma]
@@ -106,3 +107,5 @@ gem "delayed_job_active_record"
 gem "daemons"
 
 gem "exception_notification"
+
+gem "bulma-rails"

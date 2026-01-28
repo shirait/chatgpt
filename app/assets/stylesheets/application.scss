@@ -9,6 +9,8 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
+@import "bulma";
+
 /* navbarが固定表示の場合、コンテンツが隠れないようにpadding-topを設定 */
 body.has-navbar-fixed-top .column.is-9-desktop {
   padding-top: 0.5rem;
