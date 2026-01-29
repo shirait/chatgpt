@@ -29,11 +29,13 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <%= link_to(
-          'ログアウト',
           destroy_user_session_path,
-          class: 'navbar-item button delete-link fa fa-door-open',
+          class: 'navbar-item button delete-link',
           data: { turbo_method: :delete, turbo_confirm: 'ログアウトしますか？' }
-        ) %>
+          ) do %>
+          <i class="fa fa-sign-out"></i>
+          <span>ログアウト</span>
+        <% end %>
       </div>
     </div>
   </div>
