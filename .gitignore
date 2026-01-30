@@ -42,3 +42,6 @@
 
 # Ignore spec files
 spec/examples.txt
+
+/app/assets/builds/*
+!/app/assets/builds/.keep
