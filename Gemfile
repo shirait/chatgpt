@@ -109,3 +109,5 @@ gem "daemons"
 gem "exception_notification"
 
 gem "bulma-rails"
+
+gem "ransack"
