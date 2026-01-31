@@ -49,7 +49,7 @@ class ChatsController < ApplicationController
 
     @tags_for_search = Tag.accessible_by(current_ability).order(name: :asc)
     @searched_message_threads = MessageThread.
-      eager_load(:tags).
+      eager_load(:tags, :messages).
       accessible_by(current_ability).
       content_like_search(params[:search]).
       tags_search(params[:tag_id]).
