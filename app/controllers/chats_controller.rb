@@ -50,8 +50,9 @@ class ChatsController < ApplicationController
     @tags_for_search = Tag.accessible_by(current_ability).order(id: :asc).pluck(:name, :id)
 
     params[:q] ||= { active_eq: "1" }
-    @q = MessageThread.eager_load(:tags, :messages).accessible_by(current_ability).ransack(params[:q])
-    @searched_message_threads = @q.result(distinct: true)
+    # タグは preload にすること。eager_load だと tags_id_eq の JOIN 条件で指定タグのみが読み込まれる
+    @q = MessageThread.eager_load(:messages).accessible_by(current_ability).ransack(params[:q])
+    @searched_message_threads = @q.result(distinct: true).preload(:tags)
   end
 
   def add_message
