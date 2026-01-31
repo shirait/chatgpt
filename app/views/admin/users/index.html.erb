@@ -1,26 +1,34 @@
 <% # 検索フォーム %>
-<%= form_with(url: search_admin_users_path, method: :get, local: true, class: "box mb-4") do |f| %>
+<%= search_form_for(@q, url: admin_users_path, local: true, class: "box mb-4") do |f| %>
   <div class="field is-grouped">
     <div class="control is-expanded">
-      <%= f.label(:name, t("activerecord.attributes.user.name"), class: "label") %>
-      <%= f.text_field(:name, class: "input", placeholder: "名前", value: params[:name]) %>
+      <%= f.label(:name_cont, t("activerecord.attributes.user.name"), class: "label") %>
+      <%= f.text_field(:name_cont, class: "input", placeholder: "名前", value: params.dig(:q, :name_cont)) %>
     </div>
     <div class="control is-expanded">
-      <%= f.label(:email, t("activerecord.attributes.user.email"), class: "label") %>
-      <%= f.text_field(:email, class: "input", placeholder: "メールアドレス", value: params[:email]) %>
+      <%= f.label(:email_cont, t("activerecord.attributes.user.email"), class: "label") %>
+      <%= f.text_field(:email_cont, class: "input", placeholder: "メールアドレス", value: params.dig(:q, :email_cont)) %>
     </div>
   </div>
   <div class="field is-grouped">
     <div class="control is-expanded">
-      <%= f.label(:role, t("activerecord.attributes.user.role"), class: "label") %>
+      <%= f.label(:role_eq, t("activerecord.attributes.user.role"), class: "label") %>
       <div class="select">
-        <%= f.select(:role, user_role_select_options, { include_blank: true, selected: params[:role] }, { class: "select" }) %>
+        <%= f.select(
+          :role_eq,
+          User.roles.map{|role_name, value| [t("activerecord.attributes.user.#{role_name}"), value] },
+          { include_blank: "", selected: params.dig(:q, :role_eq) },
+          { class: "select" }) %>
       </div>
     </div>
     <div class="control is-expanded">
-      <%= f.label(:active, t("activerecord.attributes.user.status"), class: "label") %>
+      <%= f.label(:active_eq, t("activerecord.attributes.user.status"), class: "label") %>
       <div class="select">
-        <%= f.select(:active, { t("activerecord.attributes.user.active") => "1", t("activerecord.attributes.user.inactive") => "0" }, { include_blank: true, selected: params[:active] }, { class: "select" }) %>
+        <%= f.select(
+          :active_eq,
+          { t("activerecord.attributes.user.active") => "1", t("activerecord.attributes.user.inactive") => "0" },
+          { include_blank: "", selected: params.dig(:q, :active_eq) },
+          { class: "select" }) %>
       </div>
     </div>
   </div>

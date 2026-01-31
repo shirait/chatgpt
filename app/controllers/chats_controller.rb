@@ -47,14 +47,14 @@ class ChatsController < ApplicationController
     authorize!(:search, MessageThread)
     load_message_threads_for_sidebar
 
-    @tags_for_search = Tag.accessible_by(current_ability).order(name: :asc)
-    @searched_message_threads = MessageThread.
-      eager_load(:tags, :messages).
-      accessible_by(current_ability).
-      content_like_search(params[:search]).
-      tags_search(params[:tag_id]).
-      active_search(params[:active] || 1).
-      order(id: :asc)
+    @tags_for_search = Tag.accessible_by(current_ability).order(id: :asc).pluck(:name, :id)
+
+    params[:q] ||= { active_eq: "1" }
+    # タグは preload にすること。
+    # eager_load だと tags_id_eq の JOIN 条件で指定タグのみが読み込まれる
+    # （タグA、タグB、タグCが紐づいたスレッドをタグAで検索すると、画面にタグB、タグCが表示されない）
+    @q = MessageThread.eager_load(:messages).accessible_by(current_ability).ransack(params[:q])
+    @searched_message_threads = @q.result(distinct: true).preload(:tags)
   end
 
   def add_message

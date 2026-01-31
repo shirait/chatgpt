@@ -11,4 +11,8 @@ class Tag < ApplicationRecord
     tag.creator_id = creator_id
     tag
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w[id]
+  end
 end

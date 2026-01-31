@@ -2,7 +2,8 @@ class Admin::UsersController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @users = User.all
+    @q = User.ransack(params[:q])
+    @users = @q.result(distinct: true)
   end
 
   def new
@@ -49,27 +50,6 @@ class Admin::UsersController < ApplicationController
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
       render(:show, status: :unprocessable_entity)
     end
-  end
-
-  def search
-    @users = User.all
-    if params[:name].present?
-      @users = @users.where("name LIKE ?", "%#{params[:name]}%")
-    end
-
-    if params[:email].present?
-      @users = @users.where("email LIKE ?", "%#{params[:email]}%")
-    end
-
-    if params[:role].present? && params[:role].in?(User.roles.keys)
-      @users = @users.where(role: params[:role])
-    end
-
-    if params[:active].present? && params[:active].in?([ "1", "0" ])
-      @users = @users.where(active: params[:active] == "1")
-    end
-
-    render :index
   end
 
   private
