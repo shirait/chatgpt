@@ -15,22 +15,11 @@ class MessageThread < ApplicationRecord
     )
   end
 
-  scope :content_like_search, ->(param) {
-    return all if param.blank?
+  def self.ransackable_attributes(auth_object = nil)
+    %w[active]
+  end
 
-    where("messages.content LIKE ?", "%#{param}%")
-  }
-
-  scope :tags_search, ->(tag_id) {
-    return all if tag_id.blank?
-
-    where(tags: { id: tag_id })
-  }
-
-  scope :active_search, ->(active) {
-    return all if active.blank?
-
-    bool = (active.to_i == 1)
-    where(active: bool)
-  }
+  def self.ransackable_associations(auth_object = nil)
+    %w[tags messages]
+  end
 end

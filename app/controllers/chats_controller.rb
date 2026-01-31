@@ -47,14 +47,11 @@ class ChatsController < ApplicationController
     authorize!(:search, MessageThread)
     load_message_threads_for_sidebar
 
-    @tags_for_search = Tag.accessible_by(current_ability).order(name: :asc)
-    @searched_message_threads = MessageThread.
-      eager_load(:tags, :messages).
-      accessible_by(current_ability).
-      content_like_search(params[:search]).
-      tags_search(params[:tag_id]).
-      active_search(params[:active] || 1).
-      order(id: :asc)
+    @tags_for_search = Tag.accessible_by(current_ability).order(id: :asc).pluck(:name, :id)
+
+    params[:q] ||= { active_eq: "1" }
+    @q = MessageThread.eager_load(:tags, :messages).accessible_by(current_ability).ransack(params[:q])
+    @searched_message_threads = @q.result(distinct: true)
   end
 
   def add_message

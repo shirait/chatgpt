@@ -43,6 +43,10 @@ class Message < ApplicationRecord
       .limit(limit)
   }
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[content]
+  end
+
   private
 
   def thread_title_length

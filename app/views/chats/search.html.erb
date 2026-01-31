@@ -1,29 +1,29 @@
-<%= form_with(url: search_chats_path, method: :get, local: true) do |f| %>
+<%= search_form_for(@q, url: search_chats_path) do |f| %>
   <div class="columns is-multiline">
     <div class="column is-12-mobile is-8-tablet is-6-desktop">
       <div class="field">
-        <%= f.label(:search, "文字列で検索", class: "label") %>
+        <%= f.label(:messages_content_cont, "文字列で検索", class: "label") %>
         <div class="control">
-          <%= f.text_field(:search, class: "input", value: params[:search]) %>
+          <%= f.search_field(:messages_content_cont, class: "input", value: params.dig(:q, :messages_content_cont)) %>
         </div>
       </div>
     </div>
   </div>
 
   <div class="field">
-    <%= f.label(:tag_id, "タグで絞り込み", class: "label") %>
+    <%= f.label(:tags_id_eq, "タグで絞り込み", class: "label") %>
     <div class="control">
       <div class="select">
-        <%= f.select(:tag_id, options_from_collection_for_select(@tags_for_search, :id, :name, params[:tag_id]), include_blank: "", class: "", value: params[:tag_id]) %>
+        <%= f.select(:tags_id_eq, @tags_for_search, { include_blank: "", selected: params.dig(:q, :tags_id_eq) }) %>
       </div>
     </div>
   </div>
 
   <div class="field">
-    <%= f.label(:active, "表示状態", class: "label") %>
+    <%= f.label(:active_eq, "表示状態", class: "label") %>
     <div class="control">
       <div class="select">
-        <%= f.select(:active, options_for_select([["表示中のみ", "1"], ["非表示のみ", "0"], ["すべて", ""]], params[:active].presence || "1")) %>
+        <%= f.select(:active_eq, options_for_select([["表示中のみ", "1"], ["非表示のみ", "0"], ["すべて", ""]], params.dig(:q, :active_eq))) %>
       </div>
     </div>
   </div>
