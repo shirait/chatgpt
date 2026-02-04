@@ -6,19 +6,25 @@ require "exception_notification/rake"
 email_config = Rails.application.config_for(:email)
 exception_notification_config = email_config[:exception_notification]
 
-ExceptionNotification.configure do |config|
-  # 送信制限: 同じ例外をグループ化し、2**n 回目 (1, 2, 4, 8, 16...) のみ送信
-  config.error_grouping = true
-  # config.error_grouping_period = 5.minutes
-  config.error_grouping_cache = Rails.cache
-  config.notification_trigger = lambda { |_exception, count|
-    count.positive? && (count & (count - 1)).zero?  # 2**n 回目のみ送信
-  }
+# config/config.yml（config.static_config）でオン／オフを制御する
+static_config = Rails.application.config.static_config
+enabled_exception_notification = static_config["exception_notification_enabled"]
 
-  config.add_notifier :email, {
-    email_prefix: exception_notification_config[:email_prefix],
-    sender_address: exception_notification_config[:from_address],
-    exception_recipients: exception_notification_config[:to_address],
-    sections: %w[request session backtrace]
-  }
+if enabled_exception_notification
+  ExceptionNotification.configure do |config|
+    # 送信制限: 同じ例外をグループ化し、2**n 回目 (1, 2, 4, 8, 16...) のみ送信
+    config.error_grouping = true
+    # config.error_grouping_period = 5.minutes
+    config.error_grouping_cache = Rails.cache
+    config.notification_trigger = lambda { |_exception, count|
+      count.positive? && (count & (count - 1)).zero?  # 2**n 回目のみ送信
+    }
+
+    config.add_notifier :email, {
+      email_prefix: exception_notification_config[:email_prefix],
+      sender_address: exception_notification_config[:from_address],
+      exception_recipients: exception_notification_config[:to_address],
+      sections: %w[request session backtrace]
+    }
+  end
 end

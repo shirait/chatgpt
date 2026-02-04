@@ -5,6 +5,8 @@ default: &default
   openai_key: 'XXXXXXXX'
   # openai apiへのリクエストにスタブを使用する場合は true に設定
   use_openai_stub: false
+  # ExceptionNotification を有効にするかどうか
+  exception_notification_enabled: true
   # サイトタイトル
   title: 'ChatGPT Web版クローンアプリ'
   # http通信とsocket通信のどちらを使うか。(falseの場合socket通信になる。)
@@ -13,11 +15,14 @@ default: &default
 development:
   <<: *default
   use_openai_stub: true  # 開発環境ではデフォルトでスタブを使用
+  exception_notification_enabled: false  # 開発ではデフォルト無効
 
 test:
   <<: *default
   use_openai_stub: true  # テスト環境ではデフォルトでスタブを使用
+  exception_notification_enabled: false  # テストでもデフォルト無効
 
 production:
   <<: *default
   use_openai_stub: false  # 本番環境では常に false
+  exception_notification_enabled: true   # 本番では有効
