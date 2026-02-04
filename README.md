@@ -80,14 +80,14 @@ bin/rails server
 
 ブラウザで `http://localhost:3000` にアクセスするとアプリが表示されます。
 
-以下でログインすることでChatGPTとの対話が可能です。
-email: normal@example.com
-password: password
-※スタブを利用しない設定でエラーになる場合、 config/config.yml にOpenAI APIのキーが正しくセットされているかをご確認ください。
+以下でログインすることでChatGPTとの対話が可能です。  
+email: normal@example.com  
+password: password  
+※スタブを利用しない設定でエラーになる場合、 config/config.yml にOpenAI APIのキーが正しくセットされているかをご確認ください。  
 
-利用するGPTモデルを変更したり、ユーザーのCRUDを行う場合は以下でログインしてください。
-email: admin@example.com
-password: password
+利用するGPTモデルを変更したり、ユーザーのCRUDを行う場合は以下でログインしてください。  
+email: admin@example.com  
+password: password  
 
 ---
 
