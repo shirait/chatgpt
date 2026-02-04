@@ -55,7 +55,8 @@ cp config/config.yml.sample config/config.yml
 - `config.yml`:
   - `openai_key`: OpenAI API キー
   - `use_openai_stub`: スタブ利用有無
-  - `exception_notification_enabled`: ExceptionNotification を有効にするか（開発環境では無効推奨）
+  - `exception_notification_enabled`: ExceptionNotification を有効にするか
+  - ` use_http_call`: OpenAI APIとの通信をhttpで行う。（falseにした場合、websocketを用いてリアルタイムで回答を表示します。websocketの利用にはredisのインストールが必要になります。）
 
 ---
 
