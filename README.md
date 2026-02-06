@@ -20,7 +20,7 @@ OpenAI API を利用して、ブラウザ上から ChatGPT のように対話で
 ### 1. リポジトリのクローン
 
 ```bash
-git clone git@github.com:shirait/chatgpt.git
+git clone https://github.com/shirait/chatgpt.git
 cd chatgpt
 ```
 
