@@ -60,8 +60,6 @@ bin/rails db:migrate
 bin/rails db:seed
 ```
 
-`db/seeds` 配下に、環境ごとの seed（ユーザーや GPT モデルなど）が定義されています。
-
 ---
 
 ## CSSファイルのコンパイル
