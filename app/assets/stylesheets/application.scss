@@ -6,6 +6,11 @@
 @use "bulma";
 @use "css/all.min";
 
+/* Bulmaのcolumns負マージンによる横スクロールを防ぐ（769〜945px等で発生） */
+body {
+  overflow-x: hidden;
+}
+
 /* navbarが固定表示の場合、コンテンツが隠れないようにpadding-topを設定 */
 body.has-navbar-fixed-top .column.is-9-desktop {
   padding-top: 0.5rem;
@@ -144,7 +149,15 @@ body.has-navbar-fixed-top .column.is-9-desktop {
     overflow: visible;
   }
 
-  /* 画面幅が狭い時、ユーザーメッセージのマージンを縮小してはみ出しを防ぐ */
+  /* 画面幅が狭い時、メッセージのマージンを縮小してはみ出しを防ぐ（769〜945px等で発生） */
+  .assistant-message .box {
+    margin-right: 0.5em;
+  }
+
+  .assistant-message .copy {
+    margin-right: 0.5em;
+  }
+
   .user-message .box {
     margin-left: 0.5em;
     margin-right: 0.5em;
