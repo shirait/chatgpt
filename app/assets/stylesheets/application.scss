@@ -143,6 +143,17 @@ body.has-navbar-fixed-top .column.is-9-desktop {
     max-height: none;
     overflow: visible;
   }
+
+  /* 画面幅が狭い時、ユーザーメッセージのマージンを縮小してはみ出しを防ぐ */
+  .user-message .box {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
+
+  .user-message .copy {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
 }
 
 .login-form {
