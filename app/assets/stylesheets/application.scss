@@ -39,12 +39,21 @@ body.has-navbar-fixed-top .column.is-9-desktop {
   }
 }
 
+.assistant-message,
+.user-message {
+  min-width: 0;
+  /* flexアイテムがコンテンツ幅で縮まない問題を防ぐ */
+}
+
 .assistant-message .box {
   margin-bottom: 0;
   width: fit-content;
+  max-width: 100%;
   /* コンテンツに合わせた幅 */
   margin-right: 6em;
   background-color: #efefef;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .assistant-message .copy {
@@ -55,10 +64,13 @@ body.has-navbar-fixed-top .column.is-9-desktop {
 .user-message .box {
   margin-bottom: 0;
   width: fit-content;
+  max-width: 100%;
   /* コンテンツに合わせた幅 */
   margin-left: 4em;
   margin-right: 1em;
   background-color: #c3f69d;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .user-message .copy {
