@@ -10,7 +10,7 @@ else
   session_redis_url = "#{redis_url}/session"
 
   Rails.application.config.session_store :redis_store,
-    servers: [session_redis_url],
+    servers: [ session_redis_url ],
     expire_after: 24.hours,
     key: "_chatgpt_session",
     threadsafe: true,
