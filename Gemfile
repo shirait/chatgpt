@@ -30,6 +30,8 @@ gem "solid_queue"
 gem "solid_cable"
 # Redis adapter for Action Cable
 gem "redis", ">= 4.0.1"
+# Redis session store for ActionPack
+gem "redis-actionpack"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
