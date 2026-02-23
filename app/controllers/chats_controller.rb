@@ -1,5 +1,5 @@
 class ChatsController < ApplicationController
-  include ConfigSwitches
+  include ConfigResponseType
   # メインで扱うモデル名が Chat ではないので load_and_authorize_resource を使用しない。
   # 権限チェックは各アクションで authorize! を実行すること。
 

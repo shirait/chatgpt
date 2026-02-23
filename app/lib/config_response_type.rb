@@ -1,4 +1,4 @@
-module ConfigSwitches
+module ConfigResponseType
   VALID_RESPONSE_TYPES = ["http", "websocket"]
 
   def initialize
@@ -12,6 +12,9 @@ module ConfigSwitches
   def response_type_websocket?
     Rails.configuration.static_config.response_type == "websocket"
   end
+
+  alias_method :use_http_call?, :response_type_http?
+  alias_method :use_websocket?, :response_type_websocket?
 
   private
 

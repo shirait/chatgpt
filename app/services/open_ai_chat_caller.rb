@@ -1,6 +1,6 @@
 # OpenAI APIを呼び出してアシスタントメッセージを作成するサービスクラス
 class OpenAiChatCaller
-  include ConfigSwitches
+  include ConfigResponseType
 
   def initialize(message_thread:, user_message:)
     @message_thread = message_thread
