@@ -1,9 +1,22 @@
 module ConfigSwitches
-  def use_http_call?
+  VALID_RESPONSE_TYPES = ["http", "websocket"]
+
+  def initialize
+    response_type_check!
+  end
+
+  def response_type_http?
     Rails.configuration.static_config.response_type == "http"
   end
 
-  def use_websocket?
+  def response_type_websocket?
     Rails.configuration.static_config.response_type == "websocket"
+  end
+
+  private
+
+  def response_type_check!
+    return if VALID_RESPONSE_TYPES.include?(Rails.configuration.static_config.response_type)
+    raise "response_type は http または websocket のどちらかを指定してください。"
   end
 end
