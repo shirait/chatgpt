@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe OpenAiChatCaller, type: :service do
+RSpec.describe OpenAiChatCallerHttp, type: :service do
   describe '#call!' do
     let(:admin_user) { create(:user, :admin, :self_referential) }
     let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }

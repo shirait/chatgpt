@@ -139,7 +139,7 @@ class ChatsController < ApplicationController
 
   def call_openai_api_with_http(render_path)
     begin
-      OpenAiChatCaller.new(message_thread: @message_thread, user_message: @user_message).call!
+      OpenAiChatCallerHttp.new(message_thread: @message_thread, user_message: @user_message).call!
       flash[:notice] = "メッセージの送受信に成功しました。"
       redirect_to chat_path(@message_thread) and return
     # 例外処理について、StandardError以外はrescueしないように注意（ https://github.com/shirait/blog_import_sample/issues/9#issuecomment-2142528418 ）
