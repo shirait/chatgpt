@@ -11,25 +11,15 @@ class ChatsController < ApplicationController
 
   def create
     authorize!(:create, MessageThread)
-    @message_thread = MessageThread.build_message_thread(
-      params: message_params,
-      creator_id: current_user.id
-    )
-    @user_message = Message.build_user_message(
-      params: message_params,
-      message_thread: @message_thread,
-      creator_id: current_user.id
-    )
 
-    @message_thread.valid?
-    @user_message.valid?
-    if @message_thread.errors.any? || @user_message.errors.any?
-      flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
-      load_message_threads_for_sidebar
+    prepare_message_thread_and_user_message_for_create
+
+    if !message_thread_and_user_message_valid?
+      set_flash_message_for_unprocessable_entity
       render(:new, status: :unprocessable_entity) and return
     end
 
-    @message_thread.save && @user_message.save
+    @message_thread.save! && @user_message.save!
 
     call_openai_api
   end
@@ -65,8 +55,7 @@ class ChatsController < ApplicationController
     )
 
     unless @user_message.save
-      flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
-      load_message_threads_for_sidebar
+      set_flash_message_for_unprocessable_entity
       render(:show, status: :unprocessable_entity) and return
     end
 
@@ -88,8 +77,7 @@ class ChatsController < ApplicationController
       flash[:notice] = "タイトルを更新しました。"
       redirect_to(chat_path(@message_thread))
     else
-      flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
-      load_message_threads_for_sidebar
+      set_flash_message_for_unprocessable_entity
       render(:edit) and return
     end
   end
@@ -180,5 +168,28 @@ class ChatsController < ApplicationController
     elsif use_websocket?
       call_openai_api_with_websocket
     end
+  end
+
+  def prepare_message_thread_and_user_message_for_create
+    @message_thread = MessageThread.build_message_thread(
+      params: message_params,
+      creator_id: current_user.id
+    )
+    @user_message = Message.build_user_message(
+      params: message_params,
+      message_thread: @message_thread,
+      creator_id: current_user.id
+    )
+  end
+
+  def message_thread_and_user_message_valid?
+    @message_thread.valid?
+    @user_message.valid?
+    @message_thread.errors.none? && @user_message.errors.none?
+  end
+
+  def set_flash_message_for_unprocessable_entity
+    flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
+    load_message_threads_for_sidebar
   end
 end
