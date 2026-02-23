@@ -1,9 +1,9 @@
 module ConfigSwitches
   def use_http_call?
-    Rails.configuration.static_config.use_http_call == true
+    Rails.configuration.static_config.response_type == "http"
   end
 
   def use_websocket?
-    !use_http_call?
+    Rails.configuration.static_config.response_type == "websocket"
   end
 end
