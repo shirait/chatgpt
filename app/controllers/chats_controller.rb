@@ -21,7 +21,9 @@ class ChatsController < ApplicationController
       creator_id: current_user.id
     )
 
-    if !@message_thread.valid? || !@user_message.valid?
+    @message_thread.valid?
+    @user_message.valid?
+    if @message_thread.errors.any? || @user_message.errors.any?
       flash.now[:alert] = "入力に問題があります。エラー内容を確認してください。"
       load_message_threads_for_sidebar
       render(:new, status: :unprocessable_entity) and return
