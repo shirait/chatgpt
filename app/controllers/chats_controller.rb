@@ -90,6 +90,25 @@ class ChatsController < ApplicationController
     redirect_to(root_path)
   end
 
+  def delete_messages
+    @message_thread = MessageThread.find(params[:id])
+    authorize!(:add_message, @message_thread)
+
+    message_ids = Array(params[:message_ids]).reject(&:blank?).map(&:to_i)
+    deletable_messages = @message_thread.messages.where(id: message_ids).select { |m| can?(:destroy, m) }
+
+    if deletable_messages.any?
+      Message.where(id: deletable_messages.map(&:id)).destroy_all
+      flash[:notice] = "#{deletable_messages.size}件のメッセージを削除しました。"
+    elsif message_ids.any?
+      flash[:alert] = "削除できるメッセージがありません。"
+    else
+      flash[:alert] = "削除するメッセージを選択してください。"
+    end
+
+    redirect_to(chat_path(@message_thread))
+  end
+
   def hide
     @message_thread = MessageThread.find(params[:id])
     authorize!(:hide, @message_thread)

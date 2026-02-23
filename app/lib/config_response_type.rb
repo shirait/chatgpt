@@ -1,5 +1,5 @@
 module ConfigResponseType
-  VALID_RESPONSE_TYPES = ["http", "websocket"]
+  VALID_RESPONSE_TYPES = [ "http", "websocket" ]
 
   def initialize(*)
     super

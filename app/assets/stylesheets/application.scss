@@ -63,6 +63,10 @@ body.has-navbar-fixed-top .column.is-9-desktop {
 
 .assistant-message .copy {
   margin-right: 6em;
+}
+
+.assistant-message .message-delete-check {
+  margin-right: 6em;
   margin-bottom: 3em;
 }
 
@@ -79,6 +83,16 @@ body.has-navbar-fixed-top .column.is-9-desktop {
 }
 
 .user-message .copy {
+  margin-left: 4em;
+  margin-right: 1em;
+}
+
+.user-message .message-time {
+  margin-left: 4em;
+  margin-right: 1em;
+}
+
+.user-message .message-delete-check {
   margin-left: 4em;
   margin-right: 1em;
   margin-bottom: 1em;
@@ -158,12 +172,21 @@ body.has-navbar-fixed-top .column.is-9-desktop {
     margin-right: 0.5em;
   }
 
+  .assistant-message .message-delete-check {
+    margin-right: 0.5em;
+  }
+
   .user-message .box {
     margin-left: 0.5em;
     margin-right: 0.5em;
   }
 
   .user-message .copy {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
+
+  .user-message .message-delete-check {
     margin-left: 0.5em;
     margin-right: 0.5em;
   }
