@@ -21,7 +21,7 @@ class ChatsController < ApplicationController
 
     @message_thread.save! && @user_message.save!
 
-    call_openai_api
+    call_openai_api(:new)
   end
 
   def show
@@ -59,7 +59,7 @@ class ChatsController < ApplicationController
       render(:show, status: :unprocessable_entity) and return
     end
 
-    call_openai_api
+    call_openai_api(:show)
   end
 
   def edit
@@ -162,9 +162,9 @@ class ChatsController < ApplicationController
     redirect_to chat_path(@message_thread)
   end
 
-  def call_openai_api
+  def call_openai_api(render_path)
     if use_http_call?
-      call_openai_api_with_http(:new)
+      call_openai_api_with_http(render_path)
     elsif use_websocket?
       call_openai_api_with_websocket
     end
