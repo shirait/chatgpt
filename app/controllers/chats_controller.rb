@@ -78,7 +78,7 @@ class ChatsController < ApplicationController
       redirect_to(chat_path(@message_thread))
     else
       set_flash_message_for_unprocessable_entity
-      render(:edit) and return
+      render(:edit, status: :unprocessable_entity) and return
     end
   end
 
