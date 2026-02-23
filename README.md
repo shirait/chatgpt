@@ -47,7 +47,7 @@ bundle install
   - `openai_key`: OpenAI API キー
   - `use_openai_stub`: スタブ利用有無
   - `exception_notification_enabled`: ExceptionNotification の有効無効
-  - ` use_http_call`: OpenAI APIとの通信をhttpで行う。（falseにした場合、websocketを用いてリアルタイムで回答を表示します。websocketの利用にはredisのインストールが必要になります。）
+  - `response_type`: OpenAI APIとの通信方式。`http` または `websocket` を指定。（websocket の利用には redis のインストールが必要です。）
 - `email.yml`: 例外通知メールのfrom, to。（開発環境ではデフォルトで送信しない設定になっているので、内容を編集する必要はありません。）
 
 ---

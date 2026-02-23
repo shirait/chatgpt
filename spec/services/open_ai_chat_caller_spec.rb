@@ -74,7 +74,7 @@ RSpec.describe OpenAiChatCallerHttp, type: :service do
         allow(Rails.env).to receive(:development?).and_return(false)
         allow(Rails.configuration.static_config).to receive(:use_openai_stub).and_return(false)
         allow(Rails.configuration.static_config).to receive(:openai_key).and_return('test-key')
-        allow(Rails.configuration.static_config).to receive(:use_http_call).and_return(true)
+        allow(Rails.configuration.static_config).to receive(:response_type).and_return("http")
         allow(OpenAI::Client).to receive(:new).with(access_token: 'test-key').and_return(mock_client)
         allow(mock_client).to receive(:chat).and_return(mock_response)
         allow(OpenAiMessageBuilder).to receive(:build).and_return([ { role: "user", content: "Test message" } ])

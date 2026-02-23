@@ -9,8 +9,8 @@ default: &default
   exception_notification_enabled: true
   # サイトタイトル
   title: 'ChatGPT Web版クローンアプリ'
-  # http通信とsocket通信のどちらを使うか。(falseの場合socket通信になる。)
-  use_http_call: true
+  # OpenAI APIとの通信方式。http または websocket を指定
+  response_type: http
 
 development:
   <<: *default
