@@ -163,9 +163,9 @@ class ChatsController < ApplicationController
   end
 
   def call_openai_api(render_path)
-    if use_http_call?
+    if response_type_http?
       call_openai_api_with_http(render_path)
-    elsif use_websocket?
+    elsif response_type_websocket?
       call_openai_api_with_websocket
     end
   end

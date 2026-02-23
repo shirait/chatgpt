@@ -9,7 +9,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <% if use_websocket? %>
+    <% if response_type_websocket? %>
       <% # ActionCableのURL設定 %>
       <%= tag.meta name: "action-cable-url", content: "/cable" %>
     <% end %>

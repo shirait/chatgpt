@@ -5,16 +5,12 @@ module ConfigResponseType
     response_type_check!
   end
 
-  def response_type_http?
-    Rails.configuration.static_config.response_type == "http"
+  # response_type_http? や response_type_websocket? を定義
+  VALID_RESPONSE_TYPES.each do |type|
+    define_method "response_type_#{type}?" do
+      Rails.configuration.static_config.response_type == response_type
+    end
   end
-
-  def response_type_websocket?
-    Rails.configuration.static_config.response_type == "websocket"
-  end
-
-  alias_method :use_http_call?, :response_type_http?
-  alias_method :use_websocket?, :response_type_websocket?
 
   private
 
