@@ -35,7 +35,7 @@ $(document).ready(function() {
     <% # 第一引数。(スレッドID) %>
     messageThreadId,
     <% #  第二引数。途中の文字列を受信したときの処理(onMessageChunk) %>
-    <% # OpenAiChatCaller#broadcast_message_chunk から呼び出される。 %>
+    <% # OpenAiChatCallerWebsocket#broadcast_message_chunk から呼び出される。 %>
     (chunk, index) => {
       if (!streamingMessageContainer) {
         streamingMessageContainer = document.getElementById('streaming-message-container');
@@ -67,7 +67,7 @@ $(document).ready(function() {
       streamingMessageContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
     },
     <% # 第三引数。完了通知が来た時の処理(onMessageComplete) %>
-    <% # OpenAiChatCaller#broadcast_message_complete から呼び出される。 %>
+    <% # OpenAiChatCallerWebsocket#broadcast_message_complete から呼び出される。 %>
     () => {
       if (streamingMessageContainer) {
         <% # ページをリロードして最終的なメッセージを表示（サーバーサイドでレンダリングされたもの） %>
@@ -75,7 +75,7 @@ $(document).ready(function() {
       }
     },
     <% # 第四引数。エラー通知が来た時の処理(onMessageError) %>
-    <% # OpenAiChatCaller#broadcast_message_error から呼び出される。 %>
+    <% # OpenAiChatCallerWebsocket#broadcast_message_error から呼び出される。 %>
     (error) => {
       if (streamingMessageContainer) {
         streamingMessageContainer.style.display = 'none';

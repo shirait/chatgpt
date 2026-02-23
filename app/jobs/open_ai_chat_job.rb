@@ -8,7 +8,7 @@ class OpenAiChatJob < ApplicationJob
     user_message.send_prev_messages_to_openai_api = send_prev_messages_to_openai_api
 
     begin
-      OpenAiChatCaller.new(message_thread: message_thread, user_message: user_message).call!
+      OpenAiChatCallerWebsocket.new(message_thread: message_thread, user_message: user_message).call!
       broadcast_message_complete(message_thread_id)
     rescue Faraday::Error => e
       Rails.logger.error "OpenAiChatJob Faraday::Error: #{e.class} - #{e.message}"
