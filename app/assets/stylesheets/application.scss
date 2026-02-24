@@ -62,6 +62,9 @@ body.has-navbar-fixed-top .column.is-9-desktop {
   background-color: #efefef;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  /* 半角のみの長い文字列も折り返す */
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .assistant-message .copy {
@@ -83,6 +86,9 @@ body.has-navbar-fixed-top .column.is-9-desktop {
   background-color: #c3f69d;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  /* 半角のみの長い文字列も折り返す */
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .user-message .copy {
@@ -166,32 +172,36 @@ body.has-navbar-fixed-top .column.is-9-desktop {
     overflow: visible;
   }
 
-  /* 画面幅が狭い時、メッセージのマージンを縮小してはみ出しを防ぐ（769〜945px等で発生） */
   .assistant-message .box {
-    margin-right: 0.5em;
+    margin-right: 0.75em;
   }
 
   .assistant-message .copy {
-    margin-right: 0.5em;
+    margin-right: 0.75em;
   }
 
   .assistant-message .message-delete-check {
-    margin-right: 0.5em;
+    margin-right: 0.75em;
   }
 
   .user-message .box {
-    margin-left: 0.5em;
-    margin-right: 0.5em;
+    margin-left: 0.75em;
+    margin-right: 0.15em;
   }
 
   .user-message .copy {
-    margin-left: 0.5em;
-    margin-right: 0.5em;
+    margin-left: 0.75em;
+    margin-right: 0.15em;
+  }
+
+  .user-message .message-time {
+    margin-left: 0.75em;
+    margin-right: 0.15em;
   }
 
   .user-message .message-delete-check {
-    margin-left: 0.5em;
-    margin-right: 0.5em;
+    margin-left: 0.75em;
+    margin-right: 0.15em;
   }
 }
 
