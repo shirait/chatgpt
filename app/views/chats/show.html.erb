@@ -1,28 +1,37 @@
-<% @message_thread.messages.each do |message| %>
-  <% flex_direction = message.user? ? "is-flex-direction-row-reverse" : "" %>
-  <div style="" class="is-flex <%= flex_direction %>" data-message-id="<%= message.id %>">
-    <div class="<%= message_type_class(message) %>">
-      <div class="box">
-        <%= markdown_to_html(message.content) %>
-        <%= hidden_field_tag("message-#{message.id}", message.content) %>
-        <% if message.message_files.attached? %>
-          <% message.message_files.each do |message_file| %>
-            <%= link_message_file(message_file) %><br>
+<%= form_with url: delete_messages_chat_path(@message_thread), method: :delete, html: { id: "delete-messages-form" } do |f| %>
+  <% @message_thread.messages.each do |message| %>
+    <% flex_direction = message.user? ? "is-flex-direction-row-reverse" : "" %>
+    <div style="" class="is-flex <%= flex_direction %>" data-message-id="<%= message.id %>">
+      <div class="<%= message_type_class(message) %>">
+        <div class="message-time">
+          <%= message.created_at.strftime("%Y-%m-%d %H:%M:%S") %>
+        </div>
+        <div class="box">
+          <%= markdown_to_html(message.content) %>
+          <%= hidden_field_tag("message-#{message.id}", message.content) %>
+          <% if message.message_files.attached? %>
+            <% message.message_files.each do |message_file| %>
+              <%= link_message_file(message_file) %><br>
+            <% end %>
           <% end %>
-        <% end %>
-      </div>
-      <div class="copy">
-        <%= link_to(
-          "#",
-          onclick: "copyButton('message-#{message.id}'); return false;"
-          ) do %>
-          <i class="fa fa-copy"></i>
-          <span><%= t("common.copy") %></span>
-        <% end %>
-        <%= content_tag(:span, t("common.copied"), id: "copy-message-#{message.id}", style: "color:red; display: none;") %>
+        </div>
+        <div class="copy">
+          <%= link_to(
+            "#",
+            onclick: "copyButton('message-#{message.id}'); return false;"
+            ) do %>
+            <i class="fa fa-copy"></i>
+            <span><%= t("common.copy") %></span>
+          <% end %>
+          <%= content_tag(:span, t("common.copied"), id: "copy-message-#{message.id}", style: "color:red; display: none;") %>
+        </div>
+        <div class="message-delete-check mt-1">
+          <%= check_box_tag "message_ids[]", message.id, false, id: "message_ids_#{message.id}" %>
+          <label for="message_ids_<%= message.id %>"><%= t("common.select_for_delete") %></label>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
 
 <%# リアルタイム表示用のアシスタントメッセージ領域 %>
@@ -47,6 +56,13 @@
   chat_path(@message_thread),
   class: 'delete-link button is-danger is-light is-normal mt-1',
   data: { turbo_method: :delete, turbo_confirm: t("common.delete_confirm") }
+) %><br>
+<%= button_tag(
+  t("common.delete_checked_messages"),
+  type: "submit",
+  form: "delete-messages-form",
+  class: "button is-danger is-light is-normal mt-1",
+  data: { turbo_confirm: t("common.delete_checked_messages_confirm") }
 ) %><br>
 <%= open_hide_link %>
 
