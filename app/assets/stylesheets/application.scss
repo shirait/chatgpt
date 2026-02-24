@@ -39,8 +39,11 @@ body.has-navbar-fixed-top .column.is-9-desktop {
 /* サイドバーが固定されている場合、メインコンテンツの左マージンを調整（デスクトップ表示時のみ） */
 @media screen and (min-width: 1024px) {
   body.has-navbar-fixed-top .column.is-9-desktop {
-    margin-left: 25%;
-    /* サイドバーの幅分（is-3 = 25%） */
+    /* サイドバーの幅分（is-3 = 25%）。 さらに、 mainタグに「is-gapless」を指定しているため、1%分右にずらす。 */
+    margin-left: 26%;
+
+    /* メインコンテンツの最大幅を設定（これを設定しないと右側に少し見切れる。） */
+    max-width: 74%;
   }
 }
 
