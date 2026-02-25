@@ -50,6 +50,10 @@ module ApplicationHelper
     user_signed_in? && params[:controller] == "chats"
   end
 
+  def chat_show_page?
+    chats_controller? && params[:action] == "show"
+  end
+
   def tags_controller?
     user_signed_in? && params[:controller] == "tags"
   end

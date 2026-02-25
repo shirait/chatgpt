@@ -111,6 +111,11 @@ body.has-navbar-fixed-top .column.is-9-desktop {
   margin-right: 1em;
 }
 
+/* chat showページ用：最後のメッセージ直前のフラッシュ */
+.flash-near-messages .notification {
+  margin-right: 0;
+}
+
 .message-content-input {
   /* max-width: 70%; */
   /* 最大幅を設定 */

@@ -46,8 +46,10 @@
         <% # navbarメニュー %>
         <%= render('layouts/navbar_menu') if user_signed_in? %>
 
-        <% # フラッシュメッセージ %>
-        <%= render('layouts/flash_messages') if user_signed_in? %>
+        <% # フラッシュメッセージ（chat showページではコンテンツ内に表示） %>
+        <% if user_signed_in? && !chat_show_page? %>
+          <%= render('layouts/flash_messages') %>
+        <% end %>
 
         <% # メインコンテンツ %>
         <%= yield %>

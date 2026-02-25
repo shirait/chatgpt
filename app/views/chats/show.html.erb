@@ -1,5 +1,24 @@
 <%= form_with url: delete_messages_chat_path(@message_thread), method: :delete, html: { id: "delete-messages-form" } do |f| %>
-  <% @message_thread.messages.each do |message| %>
+  <% messages = @message_thread.messages.to_a %>
+  <% if messages.empty? && flash.any? %>
+    <div class="flash-near-messages mb-3">
+      <% flash.each do |key, value| %>
+        <div class="notification <%= flash_messages_class(key, light: true) %>" data-flash-toast>
+          <%= value %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  <% messages.each_with_index do |message, index| %>
+    <% if index == messages.size - 1 && flash.any? %>
+      <div class="flash-near-messages mb-3">
+        <% flash.each do |key, value| %>
+          <div class="notification <%= flash_messages_class(key, light: true) %>" data-flash-toast>
+            <%= value %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
     <% flex_direction = message.user? ? "is-flex-direction-row-reverse" : "" %>
     <div style="" class="is-flex <%= flex_direction %>" data-message-id="<%= message.id %>">
       <div class="<%= message_type_class(message) %>">
