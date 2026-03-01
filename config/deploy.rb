@@ -29,9 +29,9 @@ set :bundle_flags, "--deployment --quiet"
 set :puma_service_unit_name, "puma_chatgpt"
 set :puma_systemctl_user, :system
 
-# zero downtime restart settings
-# うまく機能しないため、一次的にコメントアウト
-# set :puma_workers, 2
-# set :puma_preload_app, false
-# set :prune_bundler, true
-# set :puma_phased_restart, true
+# zero downtime restart settings (phased restart / ホットリロード)
+# ※workers が2以上必要。1だとダウンタイムが発生する
+set :puma_workers, 2
+set :puma_preload_app, false
+set :prune_bundler, true
+set :puma_phased_restart, true

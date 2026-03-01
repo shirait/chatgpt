@@ -34,8 +34,9 @@ end
 # https://github.com/shirait/programs/issues/39 の対処で追加したが、いらないかもしれない。
 before "bundler:install", "deploy:setup_bundle_config"
 
-# デプロイ後にPumaを再起動（※reloadにしてもダウンタイムが発生するため、restartにしている）
-after "deploy:published", "puma:restart"
+# デプロイ後にPumaをホットリロード（phased restart）
+# capistrano/puma/systemd が smart_restart を登録済み。
+# puma_phased_restart: true のとき reload（SIGUSR1）で phased restart が実行される
 
 # デプロイ後、passenger再起動ファイルを配置。（apache+passengerの場合）
 # after "deploy:published", "deploy:restart_app"

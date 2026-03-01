@@ -31,6 +31,13 @@ threads threads_count, threads_count
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 port ENV.fetch("PORT", 3000)
 
+# Cluster mode: phased restart でホットリロードするには workers が2以上必要
+workers ENV.fetch("WEB_CONCURRENCY", 2) if ENV["RAILS_ENV"] == "production"
+
+# Capistrano デプロイ時、phased restart で新しいコードを読み込むために必要
+# current はシンボリックリンクなので、新しいワーカー起動時に最新リリースを参照する
+directory "/home/chatgpt/production/current" if ENV["RAILS_ENV"] == "production"
+
 # Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
 
