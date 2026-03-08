@@ -44,10 +44,12 @@
           <% end %>
           <%= content_tag(:span, t("common.copied"), id: "copy-message-#{message.id}", style: "color:red; display: none;") %>
         </div>
-        <div class="message-delete-check mt-1">
-          <%= check_box_tag "message_ids[]", message.id, false, id: "message_ids_#{message.id}" %>
-          <label for="message_ids_<%= message.id %>"><%= t("common.select_for_delete") %></label>
-        </div>
+        <% unless message.first_user_or_assistant_in_thread? %>
+          <div class="message-delete-check mt-1">
+            <%= check_box_tag "message_ids[]", message.id, false, id: "message_ids_#{message.id}" %>
+            <label for="message_ids_<%= message.id %>"><%= t("common.select_for_delete") %></label>
+          </div>
+        <% end %>
       </div>
     </div>
   <% end %>

@@ -36,6 +36,15 @@ class Message < ApplicationRecord
     !!send_prev_messages_to_openai_api
   end
 
+  # user および assistant のスレッド内での最初の1件は削除不可
+  def first_user_or_assistant_in_thread?
+    return false unless message_thread.present?
+
+    first_user_id = message_thread.messages.where(message_type: :user).minimum(:id)
+    first_assistant_id = message_thread.messages.where(message_type: :assistant).minimum(:id)
+    id == first_user_id || id == first_assistant_id
+  end
+
   scope :prev_messages, ->(message, limit) {
     where(message_thread_id: message.message_thread.id)
       .where.not(id: message.id)

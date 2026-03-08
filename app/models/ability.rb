@@ -18,6 +18,7 @@ class Ability
   def normal_abilities(user)
     can(:manage, MessageThread, creator_id: user.id)
     can(:manage, Message,       creator_id: user.id)
+    cannot(:destroy, Message) { |message| message.first_user_or_assistant_in_thread? }
     can(:manage, Tag,           creator_id: user.id)
   end
 end
