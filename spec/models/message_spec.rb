@@ -19,6 +19,40 @@ RSpec.describe Message, type: :model do
     it { should define_enum_for(:message_type).with_values(user: 0, assistant: 1) }
   end
 
+  describe '#first_user_or_assistant_in_thread?' do
+    let(:admin_user) { create(:user, :admin, :self_referential) }
+    let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
+    let(:gpt_model) { create(:gpt_model, :active, creator_id: admin_user.id, updater_id: admin_user.id) }
+    let(:message_thread) { create(:message_thread, creator_id: user.id) }
+
+    it 'returns true for the first user message in the thread' do
+      first_user = create(:message, message_thread: message_thread, gpt_model: gpt_model, creator_id: user.id, message_type: :user, content: 'First user')
+      create(:message, message_thread: message_thread, gpt_model: gpt_model, creator_id: user.id, message_type: :user, content: 'Second user')
+      expect(first_user.first_user_or_assistant_in_thread?).to be true
+    end
+
+    it 'returns true for the first assistant message in the thread' do
+      create(:message, message_thread: message_thread, gpt_model: gpt_model, creator_id: user.id, message_type: :user, content: 'User')
+      first_assistant = create(:message, message_thread: message_thread, gpt_model: gpt_model, creator_id: user.id, message_type: :assistant, content: 'First assistant')
+      create(:message, message_thread: message_thread, gpt_model: gpt_model, creator_id: user.id, message_type: :assistant, content: 'Second assistant')
+      expect(first_assistant.first_user_or_assistant_in_thread?).to be true
+    end
+
+    it 'returns false for non-first user/assistant messages' do
+      create(:message, message_thread: message_thread, gpt_model: gpt_model, creator_id: user.id, message_type: :user, content: 'First user')
+      second_user = create(:message, message_thread: message_thread, gpt_model: gpt_model, creator_id: user.id, message_type: :user, content: 'Second user')
+      create(:message, message_thread: message_thread, gpt_model: gpt_model, creator_id: user.id, message_type: :assistant, content: 'First assistant')
+      second_assistant = create(:message, message_thread: message_thread, gpt_model: gpt_model, creator_id: user.id, message_type: :assistant, content: 'Second assistant')
+      expect(second_user.first_user_or_assistant_in_thread?).to be false
+      expect(second_assistant.first_user_or_assistant_in_thread?).to be false
+    end
+
+    it 'returns false when message_thread is blank' do
+      message = build(:message, message_thread: nil, message_type: :user, content: 'Orphan')
+      expect(message.first_user_or_assistant_in_thread?).to be false
+    end
+  end
+
   describe '.build_user_message' do
     let(:admin_user) { create(:user, :admin, :self_referential) }
     let(:user) { create(:user, creator_user: admin_user, updater_user: admin_user) }
