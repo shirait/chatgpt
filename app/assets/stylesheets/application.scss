@@ -6,11 +6,6 @@
 @use "bulma";
 @use "css/all.min";
 
-/* Bulmaのcolumns負マージンによる横スクロールを防ぐ（769〜945px等で発生） */
-body {
-  overflow-x: hidden;
-}
-
 /* navbarが固定表示の場合、コンテンツが隠れないようにpadding-topを設定 */
 body.has-navbar-fixed-top .column.is-9-desktop {
   padding-top: 0.5rem;
@@ -212,6 +207,36 @@ body.has-navbar-fixed-top .column.is-9-desktop {
 
 .login-form {
   width: 480px;
+}
+
+/* searchページ：columnsを使わず横はみ出しを防ぐ */
+.search-page-container {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.search-form-field {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.search-form-field .input,
+.search-form-field .select,
+.search-page-container .select {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.search-results {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.search-result-item a {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .scrollable-sidebar {

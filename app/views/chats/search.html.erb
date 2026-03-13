@@ -1,11 +1,10 @@
+<div class="search-page-container">
 <%= search_form_for(@q, url: search_chats_path) do |f| %>
-  <div class="columns is-multiline">
-    <div class="column is-12-mobile is-8-tablet is-6-desktop">
-      <div class="field">
-        <%= f.label(:messages_content_cont, "文字列で検索", class: "label") %>
-        <div class="control">
-          <%= f.search_field(:messages_content_cont, class: "input", value: params.dig(:q, :messages_content_cont)) %>
-        </div>
+  <div class="search-form-field">
+    <div class="field">
+      <%= f.label(:messages_content_cont, "文字列で検索", class: "label") %>
+      <div class="control">
+        <%= f.search_field(:messages_content_cont, class: "input", value: params.dig(:q, :messages_content_cont)) %>
       </div>
     </div>
   </div>
@@ -33,11 +32,11 @@
   </div>
 <% end %>
 
-<div>
+<div class="search-results">
   <% if @searched_message_threads.present? %>
     検索にヒットしたチャットは以下になります。
     <% @searched_message_threads.each do |message_thread| %>
-      <div class="mt-2">
+      <div class="mt-2 search-result-item">
         <%= link_to(message_thread.title, chat_path(message_thread)) %>
         <% message_thread.tags.each do |tag| %>
           <span class="tag is-small is-primary"><%= tag.name %></span>
@@ -48,4 +47,4 @@
     検索にヒットしたチャットがありません。
   <% end %>
 </div>
-
+</div>
