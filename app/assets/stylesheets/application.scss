@@ -220,7 +220,11 @@ body.has-navbar-fixed-top .column.is-9-desktop {
   max-width: 100%;
 }
 
-.search-form-field .input,
+.search-form-field .input {
+  max-width: 50%;
+  box-sizing: border-box;
+}
+
 .search-form-field .select,
 .search-page-container .select {
   max-width: 100%;

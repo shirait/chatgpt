@@ -1,6 +1,6 @@
 <div class="search-page-container">
 <%= search_form_for(@q, url: search_chats_path) do |f| %>
-  <div class="search-form-field">
+  <div class="search-form-field mb-4">
     <div class="field">
       <%= f.label(:messages_content_cont, "文字列で検索", class: "label") %>
       <div class="control">
@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <div class="field">
+  <div class="field mb-4">
     <%= f.label(:tags_id_eq, "タグで絞り込み", class: "label") %>
     <div class="control">
       <div class="select">
